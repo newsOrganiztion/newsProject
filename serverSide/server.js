@@ -10,16 +10,12 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: 'http://localhost:5173', // Make sure this matches the URL of your frontend
+    origin: "http://localhost:5173", 
     credentials: true,
   })
 );
 
-
-
-
-mongoose
-  .connect(process.env.MONGODB_URI, {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

@@ -5,7 +5,6 @@ const User = require('../models/User');
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// تسجيل الدخول عبر Google
 exports.googleLogin = async (req, res) => {
   const { token } = req.body;
 
@@ -16,7 +15,6 @@ exports.googleLogin = async (req, res) => {
     });
     const payload = ticket.getPayload();
 
-    // التحقق من البيانات الأساسية
     if (!payload.name || !payload.email) {
       return res.status(400).json({ message: 'Missing required data from Google' });
     }
@@ -41,7 +39,6 @@ exports.googleLogin = async (req, res) => {
   }
 };
 
-// تسجيل مستخدم جديد
 exports.registerUser = async (req, res) => {
   const { email, password, name } = req.body;
 
@@ -61,7 +58,6 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-// تسجيل الدخول العادي
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
