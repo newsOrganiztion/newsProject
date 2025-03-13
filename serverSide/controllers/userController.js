@@ -107,11 +107,17 @@ exports.loginUser = async (req, res) => {
   }
 };
 
+
 exports.getUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    const userId = req.user.id; // ID المستخدم يتم استخراجه من التوكن
 
+    const user = await User.findById(userId).select('-password'); // استبعاد كلمة المرور
+    if (!user) {
+      return res.status(404).json({ message: 'لم يتم العثور على المستخدم' });
+    }
+
+    // إرجاع البيانات المطلوبة
     res.status(200).json({
       user: {
         _id: user._id,
@@ -119,10 +125,49 @@ exports.getUserProfile = async (req, res) => {
         email: user.email,
         role: user.role,
         profilePicture: user.profilePicture,
-        createdAt: user.createdAt
+        createdAt: user.createdAt,
+        savedArticles: user.savedArticles,
+        comments: user.comments,
+        readingHistory: user.readingHistory
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+exports.updateUserProfile = async (req, res) => {
+  const { name, email, profilePicture } = req.body;
+
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    // تحديث البيانات
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.profilePicture = profilePicture || user.profilePicture;
+
+    await user.save();
+
+    res.status(200).json({
+      message: "User profile updated successfully",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        profilePicture: user.profilePicture,
+        savedArticles: user.savedArticles,   // إضافة savedArticles
+        comments: user.comments,             // إضافة comments
+        readingHistory: user.readingHistory  // إضافة readingHistory
       }
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+};
+
+exports.logoutUser = (req, res) => {
+  res.clearCookie('authToken').status(200).json({ message: 'تم تسجيل الخروج' });
 };
