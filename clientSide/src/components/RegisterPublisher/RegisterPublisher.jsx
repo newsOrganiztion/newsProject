@@ -3,8 +3,6 @@ import React, { useState } from "react";
 const AddJournalistForm = () => {
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
-    role: "reader", // تم تعيين القيمة هنا لتكون ثابتة
     name: "",
     description: "",
     proofPicture: "",
@@ -50,15 +48,15 @@ const AddJournalistForm = () => {
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-semibold text-center mb-6">
-        Become a Journalist
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-4"> <div>
+      <h2 className="text-2xl font-semibold text-center mb-6">كن صحفيًا</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {" "}
+        <div>
           <label
             htmlFor="name"
             className="block text-sm font-medium text-gray-700"
           >
-            Name:
+            الاسم:
           </label>
           <input
             type="text"
@@ -70,13 +68,12 @@ const AddJournalistForm = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
         <div>
           <label
             htmlFor="email"
             className="block text-sm font-medium text-gray-700"
           >
-            Email:
+            الايميل:
           </label>
           <input
             type="email"
@@ -88,52 +85,14 @@ const AddJournalistForm = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
-        <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Password:
-          </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        {/* تم إزالة حقل role لكي يكون ثابتاً */}
-        <div>
-          <label
-            htmlFor="role"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Role:
-          </label>
-          <input
-            type="text"
-            id="role"
-            name="role"
-            value="reader" // القيمة ثابتة هنا
-            readOnly
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
        
-
-
+     
         <div>
           <label
             htmlFor="description"
             className="block text-sm font-medium text-gray-700"
           >
-            Description:
+            الوصف:
           </label>
           <textarea
             id="description"
@@ -144,13 +103,12 @@ const AddJournalistForm = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
         <div>
           <label
             htmlFor="proofPicture"
             className="block text-sm font-medium text-gray-700"
           >
-            Proof Picture:
+            صورة اثبات انك صحفي:
           </label>
           <input
             type="file"
@@ -162,12 +120,11 @@ const AddJournalistForm = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
         <button
           type="submit"
           className="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-         Send Request
+          ارسال طلب{" "}
         </button>
       </form>
     </div>
