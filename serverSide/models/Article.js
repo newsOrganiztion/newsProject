@@ -28,4 +28,4 @@ const articleSchema = new Schema({
   views: { type: Number, default: 0 },
 }, { timestamps: true });
 
-module.exports = mongoose.model('article', articleSchema);
+module.exports = mongoose.model('Article', articleSchema);

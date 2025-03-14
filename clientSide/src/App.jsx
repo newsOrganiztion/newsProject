@@ -34,7 +34,7 @@ function App() {
          
             <Route path="/admin-dashboard" element={<AdminDash />} />
             <Route path="/register-publisher" element={<RegisterPublisher />} />
-            <Route path="/article-creation" element={<ArticleCreationPage />} />
+            {/* <Route path="/article-creation" element={<ArticleCreationPage />} /> */}
             <Route path="/article-detail" element={<ArticleDetailPage />} />
        
             <Route path="/category-pages" element={<CategoryPages />} />

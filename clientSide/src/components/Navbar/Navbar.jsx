@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const navigation = [
   { name: 'الصفحة الرئيسية', href: '/', current: true },
   { name: 'عن الموقع', href: '/about-us', current: false },
-  { name: 'إنشاء مقال', href: '/ArticleCreationPage', current: false },
+  { name: 'إنشاء مقال', href: '/article/submit', current: false },
   { name: 'تفاصيل المقال', href: '/ ArticleDetailPage', current: false },
   { name: 'المقالات المحفوظة', href: '/BookmarkPage', current: false },
   { name: 'صفحات الفئات', href: '/category-pages', current: false },
