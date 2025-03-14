@@ -9,7 +9,7 @@ import {
   RegisterPublisher,
   ArticleCreationPage,
   ArticleDetailPage,
-  Bookmark,
+  BookmarkPage,
   CategoryPages,
   Profile,
   PublisherProfile,
@@ -26,12 +26,13 @@ function App() {
 
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/BookmarkPage" element={<BookmarkPage />} />
             <Route path="/auth/*" element={<AuthContainer />} />
             <Route path="/admin-dashboard" element={<AdminDash />} />
             <Route path="/register-publisher" element={<RegisterPublisher />} />
             <Route path="/article-creation" element={<ArticleCreationPage />} />
             <Route path="/article-detail" element={<ArticleDetailPage />} />
-            <Route path="/bookmark" element={<Bookmark />} />
+       
             <Route path="/category-pages" element={<CategoryPages />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/publisher-profile" element={<PublisherProfile />} />

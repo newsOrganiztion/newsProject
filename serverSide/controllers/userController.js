@@ -1,4 +1,3 @@
-
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
@@ -39,15 +38,17 @@ exports.googleLogin = async (req, res) => {
     });
 
     // Set the token in cookies
-    res.cookie('authToken', authToken, {
+    res.cookie("authToken", authToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 3600000, 
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600000,
     });
 
     res.status(200).json({ message: "Google login successful" });
   } catch (error) {
-    res.status(500).json({ message: "Google login failed", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Google login failed", error: error.message });
   }
 };
 
@@ -68,10 +69,10 @@ exports.registerUser = async (req, res) => {
     });
 
     // Set the token in cookies
-    res.cookie('authToken', token, {
+    res.cookie("authToken", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 3600000, 
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600000,
     });
 
     res.status(201).json({ message: "User registered successfully", token });
@@ -88,16 +89,17 @@ exports.loginUser = async (req, res) => {
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch)
+      return res.status(400).json({ message: "Invalid credentials" });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
     // Set the token in cookies
-    res.cookie('authToken', token, {
+    res.cookie("authToken", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === "production",
       maxAge: 3600000, // 1 hour expiration
     });
 
@@ -107,14 +109,13 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-
 exports.getUserProfile = async (req, res) => {
   try {
     const userId = req.user.id; // ID المستخدم يتم استخراجه من التوكن
 
-    const user = await User.findById(userId).select('-password'); // استبعاد كلمة المرور
+    const user = await User.findById(userId).select("-password"); // استبعاد كلمة المرور
     if (!user) {
-      return res.status(404).json({ message: 'لم يتم العثور على المستخدم' });
+      return res.status(404).json({ message: "لم يتم العثور على المستخدم" });
     }
 
     // إرجاع البيانات المطلوبة
@@ -128,7 +129,7 @@ exports.getUserProfile = async (req, res) => {
         createdAt: user.createdAt,
         savedArticles: user.savedArticles,
         comments: user.comments,
-        readingHistory: user.readingHistory
+        readingHistory: user.readingHistory,
       },
     });
   } catch (error) {
@@ -136,13 +137,12 @@ exports.getUserProfile = async (req, res) => {
   }
 };
 
-
 exports.updateUserProfile = async (req, res) => {
   const { name, email, profilePicture } = req.body;
 
   try {
     const user = await User.findById(req.user.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!user) return res.status(404).json({ message: "User not found" });
 
     // تحديث البيانات
     user.name = name || user.name;
@@ -158,10 +158,10 @@ exports.updateUserProfile = async (req, res) => {
         name: user.name,
         email: user.email,
         profilePicture: user.profilePicture,
-        savedArticles: user.savedArticles,   // إضافة savedArticles
-        comments: user.comments,             // إضافة comments
-        readingHistory: user.readingHistory  // إضافة readingHistory
-      }
+        savedArticles: user.savedArticles, // إضافة savedArticles
+        comments: user.comments, // إضافة comments
+        readingHistory: user.readingHistory, // إضافة readingHistory
+      },
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -169,5 +169,24 @@ exports.updateUserProfile = async (req, res) => {
 };
 
 exports.logoutUser = (req, res) => {
-  res.clearCookie('authToken').status(200).json({ message: 'تم تسجيل الخروج' });
+  res.clearCookie("authToken").status(200).json({ message: "تم تسجيل الخروج" });
+};
+exports.getUserFromToken = async (req, res) => {
+  try {
+    console.log("Cookies received:", req.cookies); // Debugging
+    const token = req.cookies.authToken;
+
+    if (!token) {
+      console.log("No token found in cookies");
+      return res.status(401).json({ message: "No token found" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Decoded Token:", decoded);
+
+    res.status(200).json({ userId: decoded.id });
+  } catch (error) {
+    console.error("Token verification error:", error.message);
+    return res.status(401).json({ message: "Invalid or expired token" });
+  }
 };

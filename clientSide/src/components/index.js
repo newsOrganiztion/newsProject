@@ -5,7 +5,7 @@ export { default as AdminDash } from "./AdminDashboard/AdminDashboard.jsx";
 export { default as RegisterPublisher } from "./RegisterPublisher/RegisterPublisher.jsx";
 export { default as ArticleCreationPage } from "./ArticleCreationPage/ArticleCreationPage.jsx";
 export { default as ArticleDetailPage } from "./ArticleDetailPage/ArticleDetailPage.jsx";
-export { default as Bookmark } from "./Bookmark/Bookmark.jsx";
+export { default as BookmarkPage } from "./Bookmark/BookmarkPage.jsx";
 export { default as CategoryPages } from "./CategoryPages/CategoryPages.jsx";
 export { default as Profile } from "./UserProfile/UserProfile.jsx";
 export { default as PublisherProfile } from "./PublisherProfile/PublisherProfile.jsx";

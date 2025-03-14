@@ -7,7 +7,7 @@ const navigation = [
   { name: 'عن الموقع', href: '/about-us', current: false },
   { name: 'إنشاء مقال', href: '/ArticleCreationPage', current: false },
   { name: 'تفاصيل المقال', href: '/ ArticleDetailPage', current: false },
-  { name: 'المقالات المحفوظة', href: '/bookmark', current: false },
+  { name: 'المقالات المحفوظة', href: '/BookmarkPage', current: false },
   { name: 'صفحات الفئات', href: '/category-pages', current: false },
   { name: 'تواصل معنا', href: '/contact-us', current: false },
   { name: 'تسجيل الدخول', href: '/auth', current: false },

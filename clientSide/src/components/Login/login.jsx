@@ -9,26 +9,44 @@ const Login = ({ switchForm }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   setError('');
     
-    try {
-      const res = await axios.post(
-        'http://localhost:5000/api/users/login', 
-        formData, 
-        { withCredentials: true } // أضف هذا
-      );
+  //   try {
+  //     const res = await axios.post(
+  //       'http://localhost:5000/api/users/login', 
+  //       formData, 
+  //       { withCredentials: true } // أضف هذا
+  //     );
     
-      window.location.href = '/profile';
-    } catch (error) {
-      setError(error.response?.data?.message || 'فشل تسجيل الدخول');
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     window.location.href = '/profile';
+  //   } catch (error) {
+  //     setError(error.response?.data?.message || 'فشل تسجيل الدخول');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError("");
+
+  try {
+    await axios.post("http://localhost:5000/api/users/login", formData, {
+      withCredentials: true, // 🔥 Ensures cookies are stored
+    });
+
+    window.location.href = "/profile"; // Redirect after login
+  } catch (error) {
+    setError(error.response?.data?.message || "فشل تسجيل الدخول");
+  } finally {
+    setLoading(false);
+  }
+};
   const handleGoogleLogin = async (credentialResponse) => {
     setLoading(true);
     setError('');
