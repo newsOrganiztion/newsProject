@@ -4,6 +4,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const userRoutes = require("./routes/userRoutes");
 const cookieParser = require('cookie-parser');
+const journalistRoutes = require("./routes/journalistRoutes");
 const contactRoutes = require('./routes/contactRoutes');
 const articleRoutes = require("./routes/savedArticlesRoute");
 
@@ -28,6 +29,7 @@ mongoose
   .catch((err) => console.log("MongoDB connection error:", err));
 
 app.use("/api/users", userRoutes);
+app.use("/api/journalist", journalistRoutes);
 app.use("/api/users", contactRoutes); 
 app.use("/api/articles", articleRoutes);
 
