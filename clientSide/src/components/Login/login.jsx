@@ -15,8 +15,12 @@ const Login = ({ switchForm }) => {
   //   setError('');
     
   //   try {
-  //     const res = await axios.post('http://localhost:5000/api/users/login', formData);
-  //     localStorage.setItem('token', res.data.token);
+  //     const res = await axios.post(
+  //       'http://localhost:5000/api/users/login', 
+  //       formData, 
+  //       { withCredentials: true } // أضف هذا
+  //     );
+    
   //     window.location.href = '/profile';
   //   } catch (error) {
   //     setError(error.response?.data?.message || 'فشل تسجيل الدخول');

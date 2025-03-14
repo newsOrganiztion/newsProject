@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const userRoutes = require("./routes/userRoutes");
-const cookieParser = require("cookie-parser");
+const cookieParser = require('cookie-parser');
+const contactRoutes = require('./routes/contactRoutes');
 const articleRoutes = require("./routes/savedArticlesRoute");
 
 dotenv.config();
@@ -14,7 +15,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:5173",
-    credentials: true,
+    credentials: true, // يجب أن تكون true
   })
 );
 
@@ -27,6 +28,7 @@ mongoose
   .catch((err) => console.log("MongoDB connection error:", err));
 
 app.use("/api/users", userRoutes);
+app.use("/api/users", contactRoutes); 
 app.use("/api/articles", articleRoutes);
 
 const PORT = process.env.PORT || 5000;
