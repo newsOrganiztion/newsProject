@@ -28,6 +28,10 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/BookmarkPage" element={<BookmarkPage />} />
             <Route path="/auth/*" element={<AuthContainer />} />
+            <Route path="/category/*" element={<CategoryPages />} />
+            <Route path="/article/:id" element={<ArticleDetailPage />} />
+            <Route path="/article/submit" element={<ArticleCreationPage />} />
+         
             <Route path="/admin-dashboard" element={<AdminDash />} />
             <Route path="/register-publisher" element={<RegisterPublisher />} />
             <Route path="/article-creation" element={<ArticleCreationPage />} />
