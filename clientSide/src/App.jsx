@@ -38,7 +38,7 @@ function App() {
             <Route path="/register-publisher" element={<RegisterPublisher />} />
     
             <Route path="/article-detail" element={<ArticleDetailPage />} />
-       
+
             <Route path="/category-pages" element={<CategoryPages />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/publisher-profile" element={<PublisherProfile />} />
