@@ -17,7 +17,7 @@ const Login = ({ switchForm }) => {
     try {
       const res = await axios.post('http://localhost:5000/api/users/login', formData);
       localStorage.setItem('token', res.data.token);
-      window.location.href = '/dashboard';
+      window.location.href = '/profile';
     } catch (error) {
       setError(error.response?.data?.message || 'فشل تسجيل الدخول');
     } finally {

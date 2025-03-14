@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const userRoutes = require("./routes/userRoutes");
+const cookieParser = require('cookie-parser');
 const journalistRoutes = require("./routes/journalistRoutes");
-const bodyParser = require("body-parser");
 
 dotenv.config();
 
@@ -16,6 +16,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(cookieParser());
 
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,

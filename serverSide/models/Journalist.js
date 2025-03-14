@@ -16,7 +16,7 @@ const JournalistSchema = new Schema({
   savedArticles: [{ type: Schema.Types.ObjectId, ref: "Article" }],
   comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   readingHistory: [{ type: Schema.Types.ObjectId, ref: "Article" }],
-  subscriptions: { type: Object }, // Can store subscription details like active plans
+  subscriptions: { type: Object }, 
   createdAt: { type: Date, default: Date.now },
   description: { type: String, required: true },
   proofPicture: { type: String, required: true },
