@@ -3,11 +3,12 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const userRoutes = require("./routes/userRoutes");
-const articleRoutes = require('./routes/articleRoutes');
-const cookieParser = require('cookie-parser');
+const articleRoutes = require("./routes/articleRoutes");
+const cookieParser = require("cookie-parser");
 const journalistRoutes = require("./routes/journalistRoutes");
-const contactRoutes = require('./routes/contactRoutes');
-const savedArticlRoutes = require("./routes/savedArticlesRoute");
+const contactRoutes = require("./routes/contactRoutes");
+
+const savedArticles = require("./routes/savedArticlesRoute");
 
 dotenv.config();
 
@@ -30,13 +31,12 @@ mongoose
   .catch((err) => console.log("MongoDB connection error:", err));
 
 app.use("/api/users", userRoutes);
-app.use('/api/articles', articleRoutes);
-app.use('/api/articles', savedArticlRoutes);
-app.use('/uploads', express.static('uploads'));
+app.use("/api/articles", articleRoutes);
+app.use("/api/artic", savedArticles);
+app.use("/uploads", express.static("uploads"));
 
 app.use("/api/journalist", journalistRoutes);
-app.use("/api/users", contactRoutes); 
-
+app.use("/api/users", contactRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
