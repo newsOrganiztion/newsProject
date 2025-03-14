@@ -5,6 +5,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Home from './components/Home/Home';
 import AuthContainer from './components/Login/AuthContainer';
+import ArticleCreationPage from './components/ArticleCreationPage/ArticleCreationPage';
+import PaymentModal from './components/PaymentPage/Payment';
+
+
+
 
 
 function App() {
@@ -15,7 +20,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/auth/*" element={<AuthContainer />} />
-         
+            <Route path="/artical" element={<ArticleCreationPage />} />
+            <Route path="/payment" element={<PaymentModal />} />
           </Routes>
         </div>
       </Router>
