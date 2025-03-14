@@ -4,6 +4,8 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import Home from './components/Home/Home';
 import AuthContainer from './components/Login/AuthContainer';
 import Register from "./components/RegisterPublisher/RegisterPublisher";
+import BookmarkPage from "./components/Bookmark/BookmarkPage"
+
 
 function App() {
   return (
@@ -12,6 +14,7 @@ function App() {
         <div className="App font-cairo">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/bookmark" element={<BookmarkPage />} />
             <Route path="/auth/*" element={<AuthContainer />} />
          <Route path="/register" element={<Register />} />
           </Routes>

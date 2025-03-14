@@ -1,4 +1,3 @@
-
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
@@ -39,15 +38,17 @@ exports.googleLogin = async (req, res) => {
     });
 
     // Set the token in cookies
-    res.cookie('authToken', authToken, {
+    res.cookie("authToken", authToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 3600000, 
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600000,
     });
 
     res.status(200).json({ message: "Google login successful" });
   } catch (error) {
-    res.status(500).json({ message: "Google login failed", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Google login failed", error: error.message });
   }
 };
 
@@ -68,10 +69,10 @@ exports.registerUser = async (req, res) => {
     });
 
     // Set the token in cookies
-    res.cookie('authToken', token, {
+    res.cookie("authToken", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 3600000, 
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600000,
     });
 
     res.status(201).json({ message: "User registered successfully", token });
@@ -88,16 +89,17 @@ exports.loginUser = async (req, res) => {
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch)
+      return res.status(400).json({ message: "Invalid credentials" });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
     // Set the token in cookies
-    res.cookie('authToken', token, {
+    res.cookie("authToken", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === "production",
       maxAge: 3600000, // 1 hour expiration
     });
 
@@ -109,8 +111,8 @@ exports.loginUser = async (req, res) => {
 
 exports.getUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
 
     res.status(200).json({
       user: {
@@ -119,10 +121,30 @@ exports.getUserProfile = async (req, res) => {
         email: user.email,
         role: user.role,
         profilePicture: user.profilePicture,
-        createdAt: user.createdAt
-      }
+        createdAt: user.createdAt,
+      },
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getUserFromToken = async (req, res) => {
+  try {
+    console.log("Cookies received:", req.cookies); // Debugging
+    const token = req.cookies.authToken;
+
+    if (!token) {
+      console.log("No token found in cookies");
+      return res.status(401).json({ message: "No token found" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Decoded Token:", decoded);
+
+    res.status(200).json({ userId: decoded.id });
+  } catch (error) {
+    console.error("Token verification error:", error.message);
+    return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
