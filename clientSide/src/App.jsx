@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Home from './components/Home/Home';
 import AuthContainer from './components/Login/AuthContainer';
+import BookmarkPage from "./components/Bookmark/BookmarkPage"
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <div className="App font-cairo">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/bookmark" element={<BookmarkPage />} />
             <Route path="/auth/*" element={<AuthContainer />} />
          
           </Routes>
