@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const userRoutes = require("./routes/userRoutes");
 const cookieParser = require('cookie-parser');
 const journalistRoutes = require("./routes/journalistRoutes");
+const contactRoutes = require('./routes/contactRoutes');
 const articleRoutes = require("./routes/savedArticlesRoute");
 
 dotenv.config();
@@ -15,7 +16,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:5173",
-    credentials: true,
+    credentials: true, // يجب أن تكون true
   })
 );
 
@@ -29,6 +30,7 @@ mongoose
 
 app.use("/api/users", userRoutes);
 app.use("/api/journalist", journalistRoutes);
+app.use("/api/users", contactRoutes); 
 app.use("/api/articles", articleRoutes);
 
 const PORT = process.env.PORT || 5000;
