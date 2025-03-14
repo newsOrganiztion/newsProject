@@ -1,27 +1,31 @@
-// serverSide/models/Article.js
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const articleSchema = new Schema({
   title: { type: String, required: true },
-  content: { type: String, required: true },
-  author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  featuredImage: { type: String }, // لحفظ رابط الصورة المميزة للمقال
-  multimedia: [{
-    url: { type: String, required: true }, // رابط الملف المرفوع (صورة أو فيديو)
-    type: { type: String, enum: ['image', 'video'], required: true }, // نوع الملف (صورة أو فيديو)
-  }],
-  category: { type: String, required: true },
+  description: { type: String },
+  excerpt: { type: String },
+  author: { type: String, required: true },
+  // author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  authorDescription: { type: String },
+  featuredImage: { type: String },
+  category: { type: String, enum: ['صحي', 'سياسي', 'زراعي'], required: true },
   tags: [{ type: String }],
   publishedDate: { type: Date, default: Date.now },
+
+  paragraph1: { type: String, required: true },
+  paragraph2: { type: String, required: true },
+  paragraph3Title: { type: String },
+  paragraph3: { type: String },
+  paragraph4Title: { type: String },
+  paragraph4: { type: String },
+
   status: { type: String, enum: ['draft', 'published', 'pending approval'], default: 'draft' },
   scheduledDate: { type: Date },
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   likes: { type: Number, default: 0 },
   shares: { type: Number, default: 0 },
   views: { type: Number, default: 0 },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
-});
+}, { timestamps: true });
 
-module.exports = mongoose.model('Article', articleSchema);
+module.exports = mongoose.model('article', articleSchema);
