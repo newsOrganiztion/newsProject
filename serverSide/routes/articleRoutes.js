@@ -1,22 +1,3 @@
-// const express = require('express');
-// const router = express.Router();
-// const articleController = require('../controllers/articleController');
-
-// // إنشاء مقال جديد
-// router.post('/article', articleController.createArticle);
-
-// module.exports = router; 
-
-
-// const express = require('express');
-// const articleController = require('../controllers/articleController');
-
-// const router = express.Router();
-
-// router.post('/api/article', articleController.createArticle);
-
-// module.exports = router; 
-
 const express = require('express');
 const router = express.Router();
 const articleController = require('../controllers/articleController');
