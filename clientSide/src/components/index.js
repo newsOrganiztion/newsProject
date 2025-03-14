@@ -11,3 +11,4 @@ export { default as Profile } from "./UserProfile/UserProfile.jsx";
 export { default as PublisherProfile } from "./PublisherProfile/PublisherProfile.jsx";
 export { default as About } from "./AboutUsPage/AboutUsPage.jsx";
 export { default as Contact } from "./ContactUsPage/ContactUsPage.jsx";
+export { default as PaymentModal } from "./PaymentPage/Payment.jsx";
