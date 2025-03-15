@@ -6,15 +6,13 @@
 // const articleRoutes = require('./routes/articleRoutes');
 // const paymentRoutes = require("./routes/paymentRoutes");
 
-
-
 // dotenv.config();
 
 // const app = express();
 // app.use(express.json());
 // app.use(
 //   cors({
-//     origin: "http://localhost:5173", 
+//     origin: "http://localhost:5173",
 //     credentials: true,
 //   })
 // );
@@ -30,12 +28,10 @@
 // app.use('/', articleRoutes);
 // app.use("/api", paymentRoutes);
 
-
 // const PORT = process.env.PORT || 5000;
 // app.listen(PORT, () => {
 //   console.log(`Server is running on port ${PORT}`);
 // });
-
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -48,6 +44,7 @@ const journalistRoutes = require("./routes/journalistRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 
 const savedArticles = require("./routes/savedArticlesRoute");
+const homeArticles = require("./routes/HomeRoutes");
 
 dotenv.config();
 
@@ -76,6 +73,7 @@ app.use("/uploads", express.static("uploads"));
 
 app.use("/api/journalist", journalistRoutes);
 app.use("/api/users", contactRoutes);
+app.use("/api/home-articles", homeArticles);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
