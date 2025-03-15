@@ -1,4 +1,3 @@
-// serverSide/models/User.js
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -9,10 +8,13 @@ const userSchema = new Schema({
   role: { type: String, enum: ['journalist', 'reader', 'admin'], default: 'reader' },
   name: { type: String, required: true },
   profilePicture: { type: String },
-  savedArticles: [{ type: Schema.Types.ObjectId, ref: 'Article' }],
-  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
-  readingHistory: [{ type: Schema.Types.ObjectId, ref: 'Article' }],
-  subscriptions: { type: Object },  // Can store subscription details like active plans
+  savedArticles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+  readingHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
+  status: { type: String, enum: ['pending', 'approved', 'rejected'], default: '' }, 
+  explanation: { type: String },  
+  identityProof: { type: String }, 
+  subscriptions: { type: Object },
   createdAt: { type: Date, default: Date.now }
 });
 
