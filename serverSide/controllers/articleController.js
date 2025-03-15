@@ -4,7 +4,7 @@ const Article = require('../models/Article');
 exports.createArticle = async (req, res) => {
   try {
 
-    const { title, author, authorDescription, category, tags, paragraph1, paragraph2, paragraph3Title, paragraph3, paragraph4Title, paragraph4 } = req.body;
+    const { title, author, authorDescription, category, tags, paragraph1, paragraph2, paragraph3Title, paragraph3, paragraph4Title, paragraph4 ,authorId} = req.body;
     const featuredImage = req.file ? req.file.path : null;
     // const userId = req.user._id;
 
@@ -33,6 +33,7 @@ exports.createArticle = async (req, res) => {
       paragraph4Title,
       paragraph4,
       description,
+      authorId,
       // author: userId,
     });
 
