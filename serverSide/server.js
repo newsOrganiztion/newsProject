@@ -7,6 +7,8 @@ const articleRoutes = require("./routes/articleRoutes");
 const cookieParser = require("cookie-parser");
 const contactRoutes = require("./routes/contactRoutes");
 const savedArticles = require("./routes/savedArticlesRoute");
+const homeArticles = require("./routes/HomeRoutes");
+
 dotenv.config();
 
 const app = express();
@@ -15,7 +17,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:5173",
-    credentials: true, 
+    credentials: true,
   })
 );
 
@@ -33,6 +35,7 @@ app.use("/api/artic", savedArticles);
 app.use("/uploads", express.static("uploads"));
 
 app.use("/api/users", contactRoutes);
+app.use("/api/home-articles", homeArticles);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
