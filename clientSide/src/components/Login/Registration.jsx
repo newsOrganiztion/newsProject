@@ -40,8 +40,11 @@ const Register = ({ switchForm }) => {
         password: formData.password
       };
       
-      await axios.post('http://localhost:5000/api/users/register', dataToSend);
-      alert('تم التسجيل بنجاح!');
+      await axios.post(
+        'http://localhost:5000/api/users/register', 
+        dataToSend, 
+        { withCredentials: true } // أضف هذا
+      );      alert('تم التسجيل بنجاح!');
       switchForm();
     } catch (error) {
       setError(error.response?.data?.message || 'فشل التسجيل');
