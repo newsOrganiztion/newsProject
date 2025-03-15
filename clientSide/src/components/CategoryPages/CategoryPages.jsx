@@ -3,25 +3,24 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const CategoryPage = () => {
-  const [articles, setArticles] = useState([]); 
-  const [activeCategory, setActiveCategory] = useState("الكل"); 
-  const [loading, setLoading] = useState(true); 
+  const [articles, setArticles] = useState([]);
+  const [activeCategory, setActiveCategory] = useState("الكل");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    
     const fetchArticles = async () => {
       try {
         const response = await axios.get("http://localhost:5000/api/articles/all");
-        setArticles(response.data); 
-        setLoading(false); 
+        setArticles(response.data);
+        setLoading(false);
       } catch (error) {
         console.error("خطأ في جلب البيانات:", error);
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
     fetchArticles();
-  }, []); 
+  }, []);
 
   const filteredArticles =
     activeCategory === "الكل"
@@ -79,7 +78,7 @@ const CategoryPage = () => {
         </div>
       </div>
 
-     {/* List of articles */}
+      {/* List of articles */}
       <div className="container mx-auto px-4 py-8 mt-4">
         {loading ? (
           <p className="text-center text-lg text-gray-600">جارٍ تحميل المقالات...</p>
@@ -89,22 +88,28 @@ const CategoryPage = () => {
               filteredArticles.map((article) => (
                 <Link to={`/article/${article._id}`} key={article._id} className="flex flex-col bg-white p-3 rounded-lg shadow-sm">
                   <div className="overflow-hidden rounded-lg mb-3 relative">
-                  <img src={`http://localhost:5000/${article.featuredImage}`} alt={article.title} className="w-full h-48 object-cover transition-transform duration-700 hover:scale-105" />
-                  
+                    <img src={`http://localhost:5000/${article.featuredImage}`} alt={article.title} className="w-full h-48 object-cover transition-transform duration-700 hover:scale-105" />
                   </div>
                   <h2 className="text-lg font-bold text-[#383838] mb-1">{article.title}</h2>
                   <div className="text-xs text-gray-500 mb-2">
                     بواسطة {article.author} - {new Date(article.publishedDate).toLocaleDateString()}
                   </div>
-                  <p className="text-sm">{article.excerpt}</p>
+                  <p className="text-sm">{article.description}</p>
                   <div className="flex flex-wrap gap-2 mt-3">
-                    {["#أخبار", "#رائج", "#صحة", "#اقتصاد", "#سياسة", "#زراعة"].map((tag, index) => (
-                      <span key={index} className="text-gray-500 text-xs bg-gray-100 px-2 py-1 rounded-full cursor-pointer hover:bg-[rgba(117,133,255,0.2)]">
-                        {tag}
-                      </span>
-                    ))}
+                     {article.tags &&
+                    (typeof article.tags === "string" 
+                   ? article.tags.split(" ").map((tag, index) => (
+                 <span key={index} className="text-gray-500 text-xs bg-gray-100 px-2 py-1 rounded-full cursor-pointer hover:bg-[rgba(117,133,255,0.2)]">
+                 #{tag.replace("#", "")} 
+                 </span>
+                   ))
+                    : article.tags.map((tag, index) => (
+                <span key={index} className="text-gray-500 text-xs bg-gray-100 px-2 py-1 rounded-full cursor-pointer hover:bg-[rgba(117,133,255,0.2)]">
+                    #{tag}
+              </span>
+                  )))} 
                   </div>
-                  </Link>
+                </Link>
               ))
             ) : (
               <p className="text-center text-lg text-gray-600">لا توجد مقالات متاحة في هذا التصنيف.</p>

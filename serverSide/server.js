@@ -1,4 +1,3 @@
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -6,10 +5,9 @@ const dotenv = require("dotenv");
 const userRoutes = require("./routes/userRoutes");
 const articleRoutes = require("./routes/articleRoutes");
 const cookieParser = require("cookie-parser");
-const journalistRoutes = require("./routes/journalistRoutes");
 const contactRoutes = require("./routes/contactRoutes");
-
 const savedArticles = require("./routes/savedArticlesRoute");
+const homeArticles = require("./routes/HomeRoutes");
 
 dotenv.config();
 
@@ -19,7 +17,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:5173",
-    credentials: true, // يجب أن تكون true
+    credentials: true,
   })
 );
 
@@ -36,8 +34,8 @@ app.use("/api/articles", articleRoutes);
 app.use("/api/artic", savedArticles);
 app.use("/uploads", express.static("uploads"));
 
-app.use("/api/journalist", journalistRoutes);
 app.use("/api/users", contactRoutes);
+app.use("/api/home-articles", homeArticles);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
