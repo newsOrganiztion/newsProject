@@ -2,8 +2,23 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const User = require("../models/User");
+const multer = require("multer");
+const path = require("path");
+const Joi = require("joi");
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+// تهيئة multer لتخزين الصور
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({ storage: storage });
 
 exports.googleLogin = async (req, res) => {
   const { token } = req.body;
@@ -37,7 +52,6 @@ exports.googleLogin = async (req, res) => {
       expiresIn: "1h",
     });
 
-    // Set the token in cookies
     res.cookie("authToken", authToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -68,7 +82,6 @@ exports.registerUser = async (req, res) => {
       expiresIn: "1h",
     });
 
-    // Set the token in cookies
     res.cookie("authToken", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -96,11 +109,10 @@ exports.loginUser = async (req, res) => {
       expiresIn: "1h",
     });
 
-    // Set the token in cookies
     res.cookie("authToken", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 3600000, // 1 hour expiration
+      maxAge: 3600000,
     });
 
     res.status(200).json({ message: "Login successful" });
@@ -111,14 +123,13 @@ exports.loginUser = async (req, res) => {
 
 exports.getUserProfile = async (req, res) => {
   try {
-    const userId = req.user.id; // ID المستخدم يتم استخراجه من التوكن
+    const userId = req.user.id;
 
-    const user = await User.findById(userId).select("-password"); // استبعاد كلمة المرور
+    const user = await User.findById(userId).select("-password");
     if (!user) {
       return res.status(404).json({ message: "لم يتم العثور على المستخدم" });
     }
 
-    // إرجاع البيانات المطلوبة
     res.status(200).json({
       user: {
         _id: user._id,
@@ -137,30 +148,63 @@ exports.getUserProfile = async (req, res) => {
   }
 };
 
+// مخطط التحقق باستخدام Joi
+const profileUpdateSchema = Joi.object({
+  name: Joi.string().min(3).max(50).optional().messages({
+    "string.base": "الاسم يجب أن يكون نصًا",
+    "string.min": "الاسم يجب أن يكون على الأقل 3 أحرف",
+    "string.max": "الاسم يجب أن لا يتجاوز 50 حرفًا",
+  }),
+  email: Joi.string()
+    .email({ tlds: { allow: false } })
+    .optional()
+    .messages({
+      "string.base": "البريد الإلكتروني يجب أن يكون نصًا",
+      "string.email": "صيغة البريد الإلكتروني غير صحيحة",
+    }),
+  file: Joi.any().optional(), // للتحقق من الصورة إذا كانت موجودة
+});
+
 exports.updateUserProfile = async (req, res) => {
-  const { name, email, profilePicture } = req.body;
+  const { name, email } = req.body;
+  const profilePicture = req.file ? `/uploads/${req.file.filename}` : null;
+
+  // التحقق من البيانات باستخدام Joi
+  const { error } = profileUpdateSchema.validate(
+    { name, email, file: req.file },
+    { abortEarly: false }
+  );
+
+  if (error) {
+    return res.status(400).json({
+      message: "خطأ في التحقق",
+      errors: error.details.map((err) => err.message),
+    });
+  }
 
   try {
     const user = await User.findById(req.user.id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // تحديث البيانات
+    // تحديث بيانات المستخدم
     user.name = name || user.name;
     user.email = email || user.email;
-    user.profilePicture = profilePicture || user.profilePicture;
+    if (profilePicture) {
+      user.profilePicture = profilePicture;
+    }
 
     await user.save();
 
     res.status(200).json({
-      message: "User profile updated successfully",
+      message: "تم تحديث بيانات المستخدم بنجاح",
       user: {
         _id: user._id,
         name: user.name,
         email: user.email,
         profilePicture: user.profilePicture,
-        savedArticles: user.savedArticles, // إضافة savedArticles
-        comments: user.comments, // إضافة comments
-        readingHistory: user.readingHistory, // إضافة readingHistory
+        savedArticles: user.savedArticles,
+        comments: user.comments,
+        readingHistory: user.readingHistory,
       },
     });
   } catch (error) {
@@ -171,22 +215,18 @@ exports.updateUserProfile = async (req, res) => {
 exports.logoutUser = (req, res) => {
   res.clearCookie("authToken").status(200).json({ message: "تم تسجيل الخروج" });
 };
+
 exports.getUserFromToken = async (req, res) => {
   try {
-    console.log("Cookies received:", req.cookies); // Debugging
     const token = req.cookies.authToken;
 
     if (!token) {
-      console.log("No token found in cookies");
       return res.status(401).json({ message: "No token found" });
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Decoded Token:", decoded);
-
     res.status(200).json({ userId: decoded.id });
   } catch (error) {
-    console.error("Token verification error:", error.message);
-    return res.status(401).json({ message: "Invalid or expired token" });
+    res.status(401).json({ message: "Invalid or expired token" });
   }
 };

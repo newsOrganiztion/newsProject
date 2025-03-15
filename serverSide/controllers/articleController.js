@@ -4,32 +4,23 @@ const Article = require('../models/Article');
 exports.createArticle = async (req, res) => {
   try {
 
-    const { title, description, author, authorDescription, category, tags, paragraph1, paragraph2, paragraph3Title, paragraph3, paragraph4Title, paragraph4 } = req.body;
+    const { title, author, authorDescription, category, tags, paragraph1, paragraph2, paragraph3Title, paragraph3, paragraph4Title, paragraph4 ,authorId} = req.body;
     const featuredImage = req.file ? req.file.path : null;
+    // const userId = req.user._id;
 
      
-     if (!title || !description || !author || !category || !paragraph1 || !paragraph2) {
+     if (!title ||  !author || !category || !paragraph1 || !paragraph2) {
       return res.status(400).json({ error: 'بعض الحقول مفقودة' });
-    }
-
-  
-    // Create an automatic excerpt from the first paragraph
-    let excerpt;
-    if (paragraph1) {
-      excerpt = paragraph1.substring(0, 200) + '...';
-    } else {
-      excerpt = '';
     }
     
     if (paragraph1 && paragraph1.length > 200) {
-      excerpt = paragraph1.substring(0, 200) + '...';
+      description = paragraph1.substring(0, 200) + '...';
     } else {
-      excerpt = paragraph1 || '';
+      description = paragraph1 || '';
     }
 
     const newArticle = new Article({
       title,
-      description,
       author,
       authorDescription,
       featuredImage,
@@ -41,7 +32,9 @@ exports.createArticle = async (req, res) => {
       paragraph3,
       paragraph4Title,
       paragraph4,
-      excerpt
+      description,
+      authorId,
+      // author: userId,
     });
 
      
@@ -57,7 +50,7 @@ exports.createArticle = async (req, res) => {
 exports.getAllArticles = async (req, res) => {
   try {
     const articles = await Article.find()
-      .select('_id title excerpt featuredImage author publishedDate category tags') 
+      .select('_id title description featuredImage author publishedDate category tags') 
       .populate('author', 'name');
 
     res.status(200).json(articles);

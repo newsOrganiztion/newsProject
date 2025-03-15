@@ -1,212 +1,191 @@
-import React, { useState } from "react";
-import Swal from "sweetalert2"; 
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const AddJournalistForm = () => {
-  // State to manage form data
-  const [formData, setFormData] = useState({
-    email: "",
-    name: "",
-    description: "",
-    proofPicture: "",
-  });
+const RegisterPublisher = () => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState(null);
 
-  // Handle input field changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/users/profile", {
+          withCredentials: true,
+        });
+        setUser(res.data.user);
+      } catch (error) {
+        toast.error(
+          error.response?.data?.message || "فشل في جلب بيانات المستخدم"
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUserProfile();
+  }, []);
+
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
   };
 
-  // Handle file selection
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData((prevData) => ({ ...prevData, proofPicture: file.name }));
-    }
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch("http://localhost:5000/api/journalist/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit request. Please try again.");
+      const formData = new FormData();
+      formData.append("description", description);
+      if (image) {
+        formData.append("image", image);
       }
 
-      const result = await response.json();
+      await axios.put("http://localhost:5000/api/users/profileProf", formData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-      // Show success alert
-      Swal.fire({
-        icon: "success",
-        title: "تم تقديم الطلب بنجاح!",
-        text: result.message,
-        confirmButtonText: "موافق",
-      });
+      setDescription("");
+      setImage(null);
+      toast.success("تم إرسال الطلب بنجاح");
     } catch (error) {
-      // Show error alert
-      Swal.fire({
-        icon: "error",
-        title: "حدث خطأ",
-        text: "تعذر إرسال البيانات. يرجى المحاولة لاحقًا.",
-        confirmButtonText: "موافق",
-      });
+      toast.error(error.response?.data?.message || "فشل في إرسال الطلب");
     }
   };
 
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="w-full max-w-5xl p-6 bg-white shadow-xl rounded-xl">
-        {/* Header Section */}
-        <div className="text-center mb-6">
-          <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-[#51a31d] to-[#7585ff] flex items-center justify-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-10 h-10 text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-              />
-            </svg>
-          </div>
-          <h2 className="text-3xl font-bold text-gray-800">كن صحفيًا</h2>
-          <p className="mt-2 text-gray-600">انضم إلى فريقنا الصحفي المتميز</p>
-        </div>
-
-        {/* Form Section */}
-        <form onSubmit={handleSubmit} className="space-y-4" dir="rtl">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Name Input */}
-            <InputField
-              label="الاسم:"
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="ادخل اسمك الكامل"
-              required
-            />
-
-            {/* Email Input */}
-            <InputField
-              label="البريد الإلكتروني:"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="example@domain.com"
-              required
-            />
-
-            {/* Description Textarea */}
-            <TextAreaField
-              label="الوصف المهني:"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              placeholder="اكتب نبذة عن خبرتك وخلفيتك الصحفية"
-              required
-            />
-
-            {/* File Upload */}
-            <FileUploadField
-              label="إثبات الهوية الصحفية:"
-              fileName={formData.proofPicture}
-              onChange={handleFileChange}
-            />
-          </div>
-
-          {/* Submit Button */}
-          <div className="pt-4">
-            <button
-              type="submit"
-              className="w-full px-6 py-3 text-base font-medium text-white bg-gradient-to-r from-[#51a31d] to-[#7585ff] rounded-lg shadow-md hover:from-[#469119] hover:to-[#6a77e8] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#51a31d]"
-            >
-              تقديم الطلب
-            </button>
-          </div>
-        </form>
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#51a31d]"></div>
+        <span className="ml-4 text-[#383838] text-xl">جاري التحميل...</span>
       </div>
-    </div>
+    );
+  }
+
+  return (
+    <>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+      />
+      <div
+        className="bg-[#f9f9fb] min-h-screen py-8 px-4 sm:px-6 lg:px-8"
+        dir="rtl"
+      >
+        <div className="max-w-4xl mx-auto">
+          {/* Card Container */}
+          <div className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+            {/* Header Section */}
+            <div className="bg-gradient-to-r from-[#51a31d] to-[#7585ff] px-6 py-8 text-center md:text-right">
+              <div className="flex flex-col md:flex-row items-center justify-center md:justify-start">
+                {/* User Image */}
+                {user.profilePicture ? (
+                  <img
+                    src={`http://localhost:5000${user.profilePicture}`} // المسار الكامل للصورة
+                    alt="الصورة الشخصية"
+                    className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-white shadow-md object-cover"
+                  />
+                ) : (
+                  <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gray-300 flex items-center justify-center border-4 border-white shadow-md">
+                    <span className="text-4xl text-gray-600">
+                      {user.name?.charAt(0).toUpperCase() || "؟"}
+                    </span>
+                  </div>
+                )}
+                {/* User Details */}
+                <div className="mt-4 md:mt-0 md:mr-6 text-center md:text-right flex-grow">
+                  <h1 className="text-2xl md:text-3xl font-bold text-white transition-colors duration-300 hover:text-[#f9f9fb]">
+                    {user.name}
+                  </h1>
+                  <p className="text-blue-100">{user.email}</p>
+                  <p className="text-white mt-2">الحالة: {user.role}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Main Content */}
+            <div className="p-6">
+              {/* Personal Information */}
+              <div className="mb-8">
+                <h2 className="text-xl font-semibold text-[#383838] mb-4">
+                  المعلومات الشخصية
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-[#f9f9fb] p-4 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-lg">
+                    <label className="text-sm text-gray-500">الاسم</label>
+                    <p className="font-medium text-[#383838]">{user.name}</p>
+                  </div>
+                  <div className="bg-[#f9f9fb] p-4 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-lg">
+                    <label className="text-sm text-gray-500">
+                      البريد الإلكتروني
+                    </label>
+                    <p className="font-medium text-[#383838]">{user.email}</p>
+                  </div>
+                  <div className="bg-[#f9f9fb] p-4 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-lg">
+                    <label className="text-sm text-gray-500">الحالة</label>
+                    <p className="font-medium text-[#383838]">{user.role}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Request Form */}
+              <div>
+                <h2 className="text-xl font-semibold text-[#383838] mb-4">
+                  إرسال طلب جديد
+                </h2>
+                <form onSubmit={handleSubmit}>
+                  {/* Description Field */}
+                  <div className="bg-[#f9f9fb] p-4 rounded-lg shadow-md mb-4 transition-shadow duration-300 hover:shadow-lg">
+                    <label className="text-sm text-gray-500 block mb-1">
+                      الشرح
+                    </label>
+                    <textarea
+                      name="description"
+                      value={description}
+                      onChange={handleDescriptionChange}
+                      rows="4"
+                      className="w-full p-2 border border-[#7585ff] rounded-md bg-[#f9f9fb] focus:outline-none focus:border-[#51a31d]"
+                      placeholder="أدخل الشرح هنا..."
+                    />
+                  </div>
+
+                  {/* Image Upload Field */}
+                  <div className="bg-[#f9f9fb] p-4 rounded-lg shadow-md mb-4 transition-shadow duration-300 hover:shadow-lg">
+                    <label className="text-sm text-gray-500 block mb-1">
+                      إرفاق صورة
+                    </label>
+                    <input
+                      type="file"
+                      name="image"
+                      onChange={handleImageChange}
+                      className="w-full p-2 border border-[#7585ff] rounded-md bg-[#f9f9fb] focus:outline-none focus:border-[#51a31d]"
+                    />
+                  </div>
+
+                  {/* Submit Button */}
+                  <div className="flex justify-end">
+                    <button
+                      type="submit"
+                      className="bg-[#7585ff] hover:bg-[#6a79e6] text-white px-6 py-2 rounded-lg transition-colors duration-300"
+                    >
+                      إرسال الطلب
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
-// Reusable Input Field Component
-const InputField = ({
-  label,
-  type,
-  name,
-  value,
-  onChange,
-  placeholder,
-  required,
-}) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700">{label}</label>
-    <input
-      type={type}
-      name={name}
-      value={value}
-      onChange={onChange}
-      required={required}
-      className="w-full px-4 py-3 mt-1 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7585ff] focus:border-transparent"
-      placeholder={placeholder}
-    />
-  </div>
-);
-
-// Reusable Textarea Field Component
-const TextAreaField = ({
-  label,
-  name,
-  value,
-  onChange,
-  placeholder,
-  required,
-}) => (
-  <div className="col-span-2">
-    <label className="block text-sm font-medium text-gray-700">{label}</label>
-    <textarea
-      name={name}
-      value={value}
-      onChange={onChange}
-      required={required}
-      rows="3"
-      className="w-full px-4 py-3 mt-1 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7585ff] focus:border-transparent"
-      placeholder={placeholder}
-    />
-  </div>
-);
-
-// Reusable File Upload Component
-const FileUploadField = ({ label, fileName, onChange }) => (
-  <div className="col-span-2">
-    <label className="block text-sm font-medium text-gray-700">{label}</label>
-    <div className="mt-1 flex items-center justify-center w-full">
-      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
-        <p className="mb-2 text-sm text-gray-500">
-          {fileName || "اضغط لرفع صورة أو اسحب الملف هنا"}
-        </p>
-        <input
-          type="file"
-          name="proofPicture"
-          onChange={onChange}
-          className="hidden"
-        />
-      </label>
-    </div>
-  </div>
-);
-
-export default AddJournalistForm;
+export default RegisterPublisher;
