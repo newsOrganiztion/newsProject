@@ -133,7 +133,7 @@ const BookmarkPage = () => {
     
     const getSavedArticles=async () => {
       
-      const response=await axios.get("http://localhost:5000/api/articles/saved-articles",{withCredentials:true});
+      const response=await axios.get("http://localhost:5000/api/artic/saved-articles",{withCredentials:true});
       
       const savedArticles = response.data.savedArticles || [];
       console.log(savedArticles)

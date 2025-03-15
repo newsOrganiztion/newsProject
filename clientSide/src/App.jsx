@@ -15,6 +15,8 @@ import {
   PublisherProfile,
   About,
   Contact,
+  PaymentModal
+  
 } from "./components";
 
 function App() {
@@ -28,9 +30,13 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/BookmarkPage" element={<BookmarkPage />} />
             <Route path="/auth/*" element={<AuthContainer />} />
+            <Route path="/category/*" element={<CategoryPages />} />
+            <Route path="/article/:id" element={<ArticleDetailPage />} />
+            <Route path="/article/submit" element={<ArticleCreationPage />} />
+         
             <Route path="/admin-dashboard" element={<AdminDash />} />
             <Route path="/register-publisher" element={<RegisterPublisher />} />
-            <Route path="/article-creation" element={<ArticleCreationPage />} />
+    
             <Route path="/article-detail" element={<ArticleDetailPage />} />
 
             <Route path="/category-pages" element={<CategoryPages />} />
@@ -38,6 +44,7 @@ function App() {
             <Route path="/publisher-profile" element={<PublisherProfile />} />
             <Route path="/about-us" element={<About />} />
             <Route path="/contact-us" element={<Contact />} />
+            <Route path="/payment" element={<PaymentModal/>} />
           </Routes>
         </div>
       </Router>

@@ -13,7 +13,8 @@ const userSchema = new Schema({
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   readingHistory: [{ type: Schema.Types.ObjectId, ref: 'Article' }],
   subscriptions: { type: Object },  // Can store subscription details like active plans
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+
 });
 
 module.exports = mongoose.model('User', userSchema);

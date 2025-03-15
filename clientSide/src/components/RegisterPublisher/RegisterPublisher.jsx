@@ -1,10 +1,70 @@
-import React, { useState } from "react";
-import Swal from "sweetalert2"; 
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Swal from "sweetalert2"; // استيراد SweetAlert2
 
+// مكون Profile
 const AddJournalistForm = () => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/users/profile", {
+          withCredentials: true,
+        });
+        setUser(res.data.user); // تخزين بيانات المستخدم
+      } catch (error) {
+        setError(error.response?.data?.message || "فشل في جلب بيانات المستخدم");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUserProfile();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-xl text-[#383838]">جاري التحميل...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div
+          className="bg-[#383838] border border-[#51a31d] text-white px-4 py-3 rounded-lg relative"
+          role="alert"
+        >
+          <span className="block sm:inline">{error}</span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="bg-[#f9f9fb] min-h-screen py-8 px-4 sm:px-6 lg:px-8"
+      dir="rtl"
+    >
+      <div className="max-w-4xl mx-auto">
+        {/* تمرير البيانات إلى AddJournalistForm */}
+        {user && (
+          <AddJournalistFormm userName={user.name} userEmail={user.email} />
+        )}
+      </div>
+    </div>
+  );
+};
+
+// مكون AddJournalistForm
+const AddJournalistFormm = ({ userName, userEmail }) => {
   const [formData, setFormData] = useState({
-    email: "",
-    name: "",
+    email: userEmail || "", // استخدام البريد الإلكتروني المرسل كـ prop
+    name: userName || "", // استخدام الاسم المرسل كـ prop
     description: "",
     proofPicture: "",
   });
@@ -37,14 +97,12 @@ const AddJournalistForm = () => {
       });
 
       if (!response.ok) {
-        throw new Error(
-          "Failed to connect to the server or journalist not added"
-        );
+        throw new Error("فشل في الاتصال بالخادم أو الصحفي لم يُضاف");
       }
 
       const result = await response.json();
 
-      // Show success alert using SweetAlert2
+      // إظهار تنبيه بنجاح العملية باستخدام SweetAlert2
       Swal.fire({
         icon: "success",
         title: "تم تقديم الطلب بنجاح!",
@@ -54,7 +112,7 @@ const AddJournalistForm = () => {
     } catch (error) {
       console.error(error);
 
-      // Show error alert using SweetAlert2
+      // إظهار تنبيه بالخطأ باستخدام SweetAlert2
       Swal.fire({
         icon: "error",
         title: "حدث خطأ",
@@ -101,6 +159,7 @@ const AddJournalistForm = () => {
                 type="text"
                 id="name"
                 name="name"
+                readOnly
                 value={formData.name}
                 onChange={handleChange}
                 required
@@ -120,6 +179,7 @@ const AddJournalistForm = () => {
                 type="email"
                 id="email"
                 name="email"
+                readOnly
                 value={formData.email}
                 onChange={handleChange}
                 required
@@ -169,7 +229,7 @@ const AddJournalistForm = () => {
                         strokeLinejoin="round"
                         strokeWidth="2"
                         d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                      ></path>
+                      />
                     </svg>
                     <p className="mb-2 text-sm text-gray-500">
                       {formData.proofPicture

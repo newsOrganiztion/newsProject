@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const Article = require("../models/Article");
+const article = require("../models/Article");
 
 // Controller to get saved articles for the logged-in user
 exports.getSavedArticles = async (req, res) => {
