@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Home from './components/Home/Home';
 import AuthContainer from './components/Login/AuthContainer';
-
+import ArticleManagement from './components/AdminDashboard/ArticleManagement'
 
 function App() {
   return (
@@ -15,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/auth/*" element={<AuthContainer />} />
+            <Route path="/ArticleManagement/*" element={<ArticleManagement/>}/>
          
           </Routes>
         </div>
