@@ -11,7 +11,7 @@ const userSchema = new Schema({
   savedArticles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
   readingHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
-  status: { type: String, enum: ['pending', 'approved', 'rejected'], default: '' }, 
+  status: { type: String, enum: ['pending', 'approved', 'rejected','user'], default: 'user' }, 
   explanation: { type: String },  
   identityProof: { type: String }, 
   subscriptions: { type: Object },
