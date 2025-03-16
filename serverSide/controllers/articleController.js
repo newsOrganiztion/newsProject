@@ -121,3 +121,31 @@ exports.shareArticle = async (req, res) => {
   }
 };
 
+
+
+
+// exports.getArticles = async (req, res) => {
+//   const userId = req.params.id;
+//   try {
+//     const articles = await Article.find(userId); //userid
+//     res.json(articles);
+//   } catch (err) {
+//     res.status(500).json({ message: "Error fetching articles" });
+//   }
+// };
+
+
+exports.getArticles = async (req, res) => {
+  try {
+    const { id } = req.params; // جلب الـ userId من params
+    console.log("Fetching articles for user ID:", id); // إضافة سجل للتأكد من ID
+    const articles = await Article.find({ authorId: id }); // البحث عن المقالات التي تحتوي على الـ userId
+    if (!articles || articles.length === 0) {
+      return res.status(404).send("No articles found for this user");
+    }
+    res.status(200).json(articles);
+  } catch (error) {
+    console.error("Database error:", error);
+    res.status(500).send("An error occurred while fetching articles");
+  }
+};

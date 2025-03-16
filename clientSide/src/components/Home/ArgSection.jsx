@@ -4,6 +4,9 @@ import "swiper/css";
 import "swiper/css/autoplay";
 import { Autoplay } from "swiper/modules";
 import { Newspaper, User } from "lucide-react";
+import{ useEffect, useState } from "react";
+import axios from "axios";
+
 
 const newsSlides = [
   {
@@ -47,6 +50,21 @@ const articles = [
 ];
 
 const ArgSection = () => {
+
+    const[newsSlide,setnewsSlide]=useState([]);
+  useEffect(()=>{
+    
+    async function getNewsSlide(){
+      
+      const response=await axios.get("http://localhost:5000/api/home-articles/arg");
+      console.log(response.data.data);
+  setnewsSlide(response.data.data)
+  
+  }
+
+getNewsSlide();
+
+},[])
   
   return (
     <>
@@ -63,11 +81,11 @@ const ArgSection = () => {
           loop
           className="w-full h-[500px] rounded-lg overflow-hidden shadow-2xl"
         >
-          {newsSlides.map((slide, index) => (
+          {newsSlide.map((slide, index) => (
             <SwiperSlide key={index} className="relative">
               <div
                 className="w-full h-full bg-cover bg-center flex flex-col justify-center items-center text-center p-10 text-white"
-                style={{ backgroundImage: `url(${slide.image})` }}
+                style={{ backgroundImage: `url(https://images.unsplash.com/photo-1731964877414-217cdc9b5b37?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)` }}
               >
                 <div className="bg-black bg-opacity-60 p-6 rounded-lg max-w-2xl">
                   <h3 className="text-3xl font-bold">{slide.title}</h3>
@@ -83,13 +101,13 @@ const ArgSection = () => {
 
         {/* Articles */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-12">
-          {articles.map((article, index) => (
+          {newsSlide.map((article, index) => (
             <div
               key={index}
               className="border rounded-lg shadow-xl p-5 transition-all hover:scale-105 bg-[#f9f9fb] hover:shadow-2xl flex flex-col items-center text-center overflow-hidden"
             >
               <img
-                src={article.image}
+                src="https://images.unsplash.com/photo-1731964877414-217cdc9b5b37?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt={article.title}
                 className="w-full h-52 object-cover rounded-lg shadow-md"
               />

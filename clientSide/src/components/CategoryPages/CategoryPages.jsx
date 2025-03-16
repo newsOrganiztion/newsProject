@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { 
+
+  Bookmark, 
+
+} from "lucide-react";
 
 const CategoryPage = () => {
   const [articles, setArticles] = useState([]);
   const [activeCategory, setActiveCategory] = useState("الكل");
   const [loading, setLoading] = useState(true);
+  const [id,setId]=useState("");
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -19,8 +25,45 @@ const CategoryPage = () => {
       }
     };
 
+    const getUserId = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/users/get-user", {
+          withCredentials: true, // Important for sending cookies
+        });
+        
+        console.log("✅ User ID received:", res.data.userId);
+        setId(res.data.userId)
+      } catch (error) {
+        console.error("❌ Error fetching user:", error.response?.data || error.message);
+      }
+    };
+
+
+    
+
     fetchArticles();
+    getUserId();
   }, []);
+
+  const handleBookmark = async (articleId) => {
+  if (!id) {
+    console.error("❌ User ID is missing. Please make sure the user is logged in.");
+    return;
+  }
+
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/api/users/save-article",
+      { articleId },
+      { withCredentials: true } // Ensures cookies are sent
+    );
+
+    console.log("✅ Article saved successfully:", response.data);
+  } catch (error) {
+    console.error("❌ Error saving article:", error.response?.data || error.message);
+  }
+}; 
+    
 
   const filteredArticles =
     activeCategory === "الكل"
@@ -86,9 +129,14 @@ const CategoryPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {filteredArticles.length > 0 ? (
               filteredArticles.map((article) => (
+                <div>
+                    
                 <Link to={`/article/${article._id}`} key={article._id} className="flex flex-col bg-white p-3 rounded-lg shadow-sm">
                   <div className="overflow-hidden rounded-lg mb-3 relative">
                     <img src={`http://localhost:5000/${article.featuredImage}`} alt={article.title} className="w-full h-48 object-cover transition-transform duration-700 hover:scale-105" />
+                       <button  onClick={() => handleBookmark(article._id)} className="absolute top-4 right-4 bg-white/80 hover:bg-white text-[#383838] p-2 rounded-full transition-all">
+                <Bookmark size={16} />
+              </button>
                   </div>
                   <h2 className="text-lg font-bold text-[#383838] mb-1">{article.title}</h2>
                   <div className="text-xs text-gray-500 mb-2">
@@ -99,7 +147,7 @@ const CategoryPage = () => {
                      {article.tags &&
                     (typeof article.tags === "string" 
                    ? article.tags.split(" ").map((tag, index) => (
-                 <span key={index} className="text-gray-500 text-xs bg-gray-100 px-2 py-1 rounded-full cursor-pointer hover:bg-[rgba(117,133,255,0.2)]">
+                     <span key={index} className="text-gray-500 text-xs bg-gray-100 px-2 py-1 rounded-full cursor-pointer hover:bg-[rgba(117,133,255,0.2)]">
                  #{tag.replace("#", "")} 
                  </span>
                    ))
@@ -110,6 +158,7 @@ const CategoryPage = () => {
                   )))} 
                   </div>
                 </Link>
+                   </div>
               ))
             ) : (
               <p className="text-center text-lg text-gray-600">لا توجد مقالات متاحة في هذا التصنيف.</p>
