@@ -522,7 +522,7 @@ const BookmarkPage = () => {
   {/* Category tabs */}
   <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-8 mb-4">
     <div className="flex space-x-3 space-x-reverse pb-4 overflow-x-auto scrollbar-hide">
-      {categories.map((category) => (
+      {/* {categories.map((category) => (
         <button
           key={category.id}
           onClick={() => setActiveCategory(category.id)}
@@ -540,7 +540,7 @@ const BookmarkPage = () => {
             </span>
           )}
         </button>
-      ))}
+      ))} */}
     </div>
   </div>
   

@@ -10,15 +10,14 @@ const PublisherProfile = () => {
   const [articles, setArticles] = useState([]);
   const [activeTab, setActiveTab] = useState("published");
   const [searchTerm, setSearchTerm] = useState("");
-const [updateSuccess, setUpdateSuccess] = useState("");
+  const [updateSuccess, setUpdateSuccess] = useState("");
   const [updatedUser, setUpdatedUser] = useState({
     name: "",
     email: "",
     profilePicture: "",
   });
 
-const [userId, setUserId] = useState("");
-
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     const getUserId = async () => {
@@ -44,21 +43,21 @@ const [userId, setUserId] = useState("");
   }, []);
 
   // تعديل الـ useEffect الخاص بجلب المقالات ليعمل بعد تعيين userId
- useEffect(() => {
-   if (!userId) return; // إذا كانت userId فارغة، لا تبدأ الطلب لجلب المقالات
+  useEffect(() => {
+    if (!userId) return; // إذا كانت userId فارغة، لا تبدأ الطلب لجلب المقالات
 
-   console.log("🚀 Fetching articles for user ID:", userId);
-   axios
-     .get(`http://localhost:5000/api/articles/foruser/${userId}`)
-     .then((response) => {
-       setArticles(response.data);
-       setLoading(false);
-     })
-     .catch((err) => {
-       setError("خطأ في جلب المقالات");
-       setLoading(false);
-     });
- }, [userId]);
+    console.log("🚀 Fetching articles for user ID:", userId);
+    axios
+      .get(`http://localhost:5000/api/articles/foruser/${userId}`)
+      .then((response) => {
+        setArticles(response.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError("خطأ في جلب المقالات");
+        setLoading(false);
+      });
+  }, [userId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -67,6 +66,29 @@ const [userId, setUserId] = useState("");
       [name]: value,
     }));
   };
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/users/profile", {
+          withCredentials: true,
+        });
+        setUser(res.data.user);
+        setUpdatedUser({
+          name: res.data.user.name,
+          email: res.data.user.email,
+          profilePicture: res.data.user.profilePicture,
+        });
+      } catch (error) {
+        toast.error(
+          error.response?.data?.message || "فشل في جلب بيانات المستخدم"
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUserProfile();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -145,19 +167,6 @@ const [userId, setUserId] = useState("");
     );
   }
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div
-          className="bg-[#383838] border border-[#51a31d] text-white px-4 py-3 rounded-lg relative"
-          role="alert"
-        >
-          <span className="block sm:inline">{error}</span>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="bg-[#f0f2f5] min-h-screen" dir="rtl">
       {/* رأس الصفحة مع الإحصائيات */}
@@ -165,7 +174,7 @@ const [userId, setUserId] = useState("");
         <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="flex flex-col md:flex-row items-center mb-6 md:mb-0">
-              {user?.profilePicture ? (
+              {/* {user?.profilePicture ? (
                 <img
                   src={user.profilePicture}
                   alt="الصورة الشخصية"
@@ -177,7 +186,7 @@ const [userId, setUserId] = useState("");
                     {user?.name?.charAt(0).toUpperCase() || "؟"}
                   </span>
                 </div>
-              )}
+              )} */}
               <div className="mt-4 md:mt-0 md:mr-4 text-center md:text-right">
                 <h1 className="text-2xl font-bold">{user?.name}</h1>
                 <p className="text-blue-100">{user?.email}</p>
@@ -230,7 +239,7 @@ const [userId, setUserId] = useState("");
 
       {/* المحتوى الرئيسي */}
       <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-       {updateSuccess && (
+        {updateSuccess && (
           <div
             className="bg-white border-r-4 border-[#51a31d] text-[#383838] px-4 py-3 rounded-lg shadow-md mb-6"
             role="alert"
@@ -268,6 +277,7 @@ const [userId, setUserId] = useState("");
                         البريد الإلكتروني
                       </label>
                       <input
+                        readOnly
                         type="email"
                         name="email"
                         value={updatedUser.email}
@@ -276,7 +286,7 @@ const [userId, setUserId] = useState("");
                         required
                       />
                     </div>
-                    <div>
+                    {/* <div>
                       <label className="text-sm text-gray-500 block mb-1">
                         رابط الصورة الشخصية
                       </label>
@@ -288,7 +298,7 @@ const [userId, setUserId] = useState("");
                         placeholder="https://example.com/image.jpg"
                         className="w-full p-2 border border-gray-300 rounded-md focus:border-[#7585ff] focus:ring focus:ring-[#7585ff] focus:ring-opacity-20"
                       />
-                    </div>
+                    </div> */}
                     <div className="flex justify-between">
                       <button
                         type="button"
@@ -425,7 +435,7 @@ const [userId, setUserId] = useState("");
                           : "bg-gray-100 text-gray-700"
                       }`}
                     >
-                      مسودة
+                      قيد الانتظار
                     </button>
                   </div>
                 </div>
