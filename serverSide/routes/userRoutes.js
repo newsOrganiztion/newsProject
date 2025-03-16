@@ -1,15 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { registerUser, loginUser ,googleLogin , getAllUsers} = require('../controllers/userController');
-
-router.post('/register', registerUser);
-router.post('/login', loginUser);
-router.post('/google-login', googleLogin);
-
-
+ const { getAllUsers,approveUser} = require('../controllers/userController');
 
 router.get('/users', getAllUsers);
-
+router.put('/users/approve/:userId',approveUser);
 
 const {
   registerUser,

@@ -46,6 +46,7 @@ const articleRoutes = require("./routes/articleRoutes");
 const cookieParser = require("cookie-parser");
 const journalistRoutes = require("./routes/journalistRoutes");
 const contactRoutes = require("./routes/contactRoutes");
+const admainRoutes = require("./routes/admainRoutes");
 
 const savedArticles = require("./routes/savedArticlesRoute");
 
@@ -74,7 +75,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/articles", articleRoutes);
 app.use("/api/artic", savedArticles);
 app.use("/uploads", express.static("uploads"));
-
+app.use("/api/article",admainRoutes)
 app.use("/api/journalist", journalistRoutes);
 app.use("/api/users", contactRoutes);
 

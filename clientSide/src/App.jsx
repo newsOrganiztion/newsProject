@@ -19,6 +19,8 @@ import {
   
 } from "./components";
 
+
+
 function App() {
   return (
     <GoogleOAuthProvider clientId="708338751810-vs4526i07didjadt2vhqgrgu1vnr3ib8.apps.googleusercontent.com">
@@ -33,7 +35,12 @@ function App() {
             <Route path="/category/*" element={<CategoryPages />} />
             <Route path="/article/:id" element={<ArticleDetailPage />} />
             <Route path="/article/submit" element={<ArticleCreationPage />} />
-         
+
+
+            <Route path="/AdminDash" element={<AdminDash />} />
+
+
+
             <Route path="/admin-dashboard" element={<AdminDash />} />
             <Route path="/register-publisher" element={<RegisterPublisher />} />
     

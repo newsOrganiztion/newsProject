@@ -53,6 +53,9 @@ exports.createArticle = async (req, res) => {
   }
 };
 
+
+
+
 // 📜 Fetch all articles
 exports.getAllArticles = async (req, res) => {
   try {
@@ -88,3 +91,7 @@ exports.getArticleById = async (req, res) => {
     res.status(500).json({ error: 'حدث خطأ أثناء جلب تفاصيل المقال', details: error.message });
   }
 };
+
+
+
+

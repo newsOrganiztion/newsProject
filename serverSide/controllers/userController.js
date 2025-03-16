@@ -109,17 +109,6 @@ exports.loginUser = async (req, res) => {
   }
 };
  
-exports.getAllUsers = async (req, res) => {
-  try {
-    const users = await User.find(); 
-  
-    res.status(200).json({ users});
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching users', error: error.message });
-  }
-};
-
-
 
 exports.getUserProfile = async (req, res) => {
   try {
@@ -200,5 +189,38 @@ exports.getUserFromToken = async (req, res) => {
   } catch (error) {
     console.error("Token verification error:", error.message);
     return res.status(401).json({ message: "Invalid or expired token" });
+  }
+};
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find(); 
+  
+    res.status(200).json({ users});
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching users', error: error.message });
+  }
+};
+
+
+exports.approveUser = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+  
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { status: 'approved', role: 'journalist' }, 
+      { new: true } 
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'المستخدم غير موجود' });
+    }
+
+    res.status(200).json({ message: 'تمت الموافقة على المستخدم بنجاح', user });
+  } catch (error) {
+    console.error('حدث خطأ أثناء الموافقة على المستخدم:', error);
+    res.status(500).json({ message: 'حدث خطأ أثناء الموافقة على المستخدم' });
   }
 };

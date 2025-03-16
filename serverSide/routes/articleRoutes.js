@@ -17,4 +17,8 @@ router.get("/all", articleController.getAllArticles);
 // Get details of one article
 router.get("/:id", articleController.getArticleById);
 
+
+
+
+
 module.exports = router;
