@@ -231,6 +231,7 @@ exports.getUserFromToken = async (req, res) => {
   }
 };
 
+
 exports.saveArticleBookmark = async (req, res) => {
   try {
     const { articleId } = req.body;
@@ -263,3 +264,4 @@ exports.saveArticleBookmark = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+

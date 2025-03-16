@@ -3,6 +3,7 @@ const router = express.Router();
 const articleController = require("../controllers/articleController");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
+const verifyToken = require("../Middlewares/authMiddleware");
 
 // Create a new article
 router.post(
@@ -16,5 +17,13 @@ router.get("/all", articleController.getAllArticles);
 
 // Get details of one article
 router.get("/:id", articleController.getArticleById);
+
+
+
+router.get("/foruser/:id", articleController.getArticles);
+
+
+
+
 
 module.exports = router;
