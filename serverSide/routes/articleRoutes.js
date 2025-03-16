@@ -16,5 +16,7 @@ router.get("/all", articleController.getAllArticles);
 
 // Get details of one article
 router.get("/:id", articleController.getArticleById);
+router.post("/:id/like", articleController.likeArticle);
+router.post("/:id/share", articleController.shareArticle);
 
 module.exports = router;

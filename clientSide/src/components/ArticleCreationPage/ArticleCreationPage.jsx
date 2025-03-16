@@ -1,3 +1,6 @@
+
+
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -17,8 +20,10 @@ const ArticleCreationPage = () => {
     paragraph3: '',
     paragraph4Title: '',
     paragraph4: '',
+    authorId: '', // إضافة حقل authorId
   });
-const [Id, setId] = useState('');
+
+  const [Id, setId] = useState('');  // لحفظ ID المستخدم
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,31 +37,28 @@ const [Id, setId] = useState('');
     }
   };
 
- useEffect(()=>{
+  useEffect(() => {
     const getUserId = async () => {
-      
       try {
         const res = await axios.get("http://localhost:5000/api/users/get-user", {
           withCredentials: true, // Important for sending cookies
         });
         setId(res.data.userId);
+        setFormData((prevData) => ({ ...prevData, authorId: res.data.userId })); // تعيين authorId
         console.log("✅ User ID received:", res.data.userId);
       } catch (error) {
         console.error("❌ Error fetching user:", error.response?.data || error.message);
       }
     };
-
     getUserId();
-  },[])
+  }, []);
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const formDataToSend = new FormData();
       for (let key in formData) {
         if (key === 'tags') {
-         
           formData.tags.forEach((tag, index) => {
             formDataToSend.append(`tags[${index}]`, tag); 
           });

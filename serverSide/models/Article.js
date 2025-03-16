@@ -6,7 +6,7 @@ const articleSchema = new Schema(
     title: { type: String, required: true },
     description: { type: String },
     author: { type: String, required: true },
-    // author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    authorId: { type: String },
     authorDescription: { type: String },
     featuredImage: { type: String },
     category: { type: String, enum: ["صحي", "سياسي", "زراعي"], required: true },
