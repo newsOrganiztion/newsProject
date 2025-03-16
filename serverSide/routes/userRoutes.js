@@ -12,6 +12,7 @@ const {
   logoutUser,
   getUserFromToken,
   saveArticleBookmark,
+  getUserRoleFromToken,
 } = require("../controllers/userController");
 
 const {
@@ -39,5 +40,6 @@ router.put(
 );
 router.post("/logout", logoutUser);
 router.get("/get-user", getUserFromToken);
+router.get("/get-role", getUserRoleFromToken);
 router.post("/save-article", verifyToken, saveArticleBookmark);
 module.exports = router;

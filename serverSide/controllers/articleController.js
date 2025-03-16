@@ -4,10 +4,19 @@ const Comment = require("../models/Comment");
 // 📝 إنشاء مقال جديد
 exports.createArticle = async (req, res) => {
   try {
-    const { 
-      title, author, authorDescription, category, tags, 
-      paragraph1, paragraph2, paragraph3Title, paragraph3, 
-      paragraph4Title, paragraph4, authorId 
+    const {
+      title,
+      author,
+      authorDescription,
+      category,
+      tags,
+      paragraph1,
+      paragraph2,
+      paragraph3Title,
+      paragraph3,
+      paragraph4Title,
+      paragraph4,
+      authorId,
     } = req.body;
 
     const featuredImage = req.file ? req.file.path : null;
@@ -19,7 +28,10 @@ exports.createArticle = async (req, res) => {
     // توليد وصف تلقائي من الفقرة الأولى
     let description = "";
     if (paragraph1) {
-      description = paragraph1.length > 200 ? paragraph1.substring(0, 200) + "..." : paragraph1;
+      description =
+        paragraph1.length > 200
+          ? paragraph1.substring(0, 200) + "..."
+          : paragraph1;
     }
 
     const newArticle = new Article({
@@ -42,20 +54,26 @@ exports.createArticle = async (req, res) => {
     await newArticle.save();
     res.status(201).json(newArticle);
   } catch (error) {
-    res.status(500).json({ error: "حدث خطأ أثناء إنشاء المقال", details: error.message });
+    res
+      .status(500)
+      .json({ error: "حدث خطأ أثناء إنشاء المقال", details: error.message });
   }
 };
 
 // 📜 جلب جميع المقالات
 exports.getAllArticles = async (req, res) => {
   try {
-    const articles = await Article.find()
-      .select("_id title description featuredImage author publishedDate category tags")
+    const articles = await Article.find({ status: "published" })
+      .select(
+        "_id title description featuredImage author publishedDate category tags"
+      )
       .populate("author", "name");
 
     res.status(200).json(articles);
   } catch (error) {
-    res.status(500).json({ error: "حدث خطأ أثناء جلب المقالات", details: error.message });
+    res
+      .status(500)
+      .json({ error: "حدث خطأ أثناء جلب المقالات", details: error.message });
   }
 };
 
@@ -65,13 +83,19 @@ exports.getArticleById = async (req, res) => {
     const articleId = req.params.id;
 
     // البحث عن المقال
-    const article = await Article.findById(articleId).populate("author", "name description");
+    const article = await Article.findById(articleId).populate(
+      "author",
+      "name description"
+    );
 
     if (!article) {
       return res.status(404).json({ error: "المقال غير موجود" });
     }
 
-    const comments = await Comment.find({ articleId: article._id, status: "approved" })
+    const comments = await Comment.find({
+      articleId: article._id,
+      status: "approved",
+    })
       .populate("userId", "name")
       .sort({ createdAt: -1 });
 
@@ -85,7 +109,10 @@ exports.getArticleById = async (req, res) => {
       commentsCount: comments.length, // 🔹 عدد التعليقات
     });
   } catch (error) {
-    res.status(500).json({ error: "حدث خطأ أثناء جلب تفاصيل المقال", details: error.message });
+    res.status(500).json({
+      error: "حدث خطأ أثناء جلب تفاصيل المقال",
+      details: error.message,
+    });
   }
 };
 exports.likeArticle = async (req, res) => {
@@ -100,7 +127,9 @@ exports.likeArticle = async (req, res) => {
 
     res.json({ likes: article.likes });
   } catch (error) {
-    res.status(500).json({ error: "حدث خطأ أثناء تسجيل الإعجاب", details: error.message });
+    res
+      .status(500)
+      .json({ error: "حدث خطأ أثناء تسجيل الإعجاب", details: error.message });
   }
 };
 
@@ -117,12 +146,11 @@ exports.shareArticle = async (req, res) => {
 
     res.json({ shares: article.shares });
   } catch (error) {
-    res.status(500).json({ error: "حدث خطأ أثناء مشاركة المقال", details: error.message });
+    res
+      .status(500)
+      .json({ error: "حدث خطأ أثناء مشاركة المقال", details: error.message });
   }
 };
-
-
-
 
 // exports.getArticles = async (req, res) => {
 //   const userId = req.params.id;
@@ -133,7 +161,6 @@ exports.shareArticle = async (req, res) => {
 //     res.status(500).json({ message: "Error fetching articles" });
 //   }
 // };
-
 
 exports.getArticles = async (req, res) => {
   try {
