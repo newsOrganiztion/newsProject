@@ -1,4 +1,4 @@
-const ContactMessage = require('../models/ContactMessage');
+const ContactMessage = require("../models/ContactMessage");
 
 // إرسال رسالة الاتصال
 const sendMessage = async (req, res) => {
@@ -14,10 +14,14 @@ const sendMessage = async (req, res) => {
     });
 
     await newMessage.save();
-    return res.status(201).json({ success: true, message: 'تم إرسال الرسالة بنجاح!' });
+    return res
+      .status(201)
+      .json({ success: true, message: "تم إرسال الرسالة بنجاح!" });
   } catch (error) {
-    console.error('Error sending message:', error);
-    return res.status(500).json({ success: false, message: 'حدث خطأ أثناء إرسال الرسالة.' });
+    console.error("Error sending message:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "حدث خطأ أثناء إرسال الرسالة." });
   }
 };
 

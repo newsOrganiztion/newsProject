@@ -281,9 +281,7 @@ const HeroSection = () => {
               />
               <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             </div> */}
-            <button className="bg-[#7585ff] text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-[#7585ff]/90 transition-colors">
-             اشترك الان
-            </button>
+
           </div>
         </div>
         
@@ -326,9 +324,9 @@ const HeroSection = () => {
                   </button>
                 </div>
               </div>
-              <button className="absolute top-4 right-4 bg-white/80 hover:bg-white text-[#383838] p-2 rounded-full transition-all">
+              {/* <button className="absolute top-4 right-4 bg-white/80 hover:bg-white text-[#383838] p-2 rounded-full transition-all">
                 <Bookmark size={16} />
-              </button>
+              </button> */}
             </div>
           </div>
           
@@ -356,9 +354,9 @@ const HeroSection = () => {
             
             {/* Newsletter Signup */}
             <div className="bg-[#7585ff]/10 rounded-xl p-6">
-              <h3 className="text-xl font-bold mb-2">Stay Informed</h3>
+              <h3 className="text-xl font-bold mb-2">ابق بالحدث</h3>
               <p className="text-sm text-gray-600 mb-4">
-                Get the latest news delivered directly to your inbox.
+               اشترك للحصول على الاخبار اول بأول على البريد الألكتروني الخاص بك
               </p>
               <input
                 type="email"
@@ -366,7 +364,7 @@ const HeroSection = () => {
                 className="w-full px-4 py-3 rounded-lg mb-3 border border-gray-300 focus:outline-none focus:border-[#7585ff]"
               />
               <button className="bg-[#7585ff] text-white w-full py-3 rounded-lg font-medium transition-all hover:bg-[#7585ff]/90">
-                Subscribe
+                اشتراك
               </button>
             </div>
           </div>
