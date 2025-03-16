@@ -597,7 +597,7 @@ const PolicySection = () => {
   return (
     <div className="max-w-6xl mx-auto py-10 px-4">
       <h2 className="text-center text-4xl font-extrabold text-[#383838] mb-8 flex items-center justify-center gap-3">
-        <Newspaper className="text-[#383838] w-8 h-8" /> Policy News
+        <Newspaper className="text-[#383838] w-8 h-8" /> أخبار في السياسة
       </h2>
 
       {/* Container for Articles and Sliders */}
@@ -686,7 +686,7 @@ featuredImage}
                 ))
               ) : (
                 <SwiperSlide className="p-6 bg-gray-100 rounded-lg text-center">
-                  <p>Loading latest news...</p>
+                  <p>جاري تحميل اخر الأخبار</p>
                 </SwiperSlide>
               )}
             </Swiper>

@@ -16,6 +16,7 @@ const {
   updateUserProfile,
   logoutUser,
   getUserFromToken,
+  saveArticleBookmark,
 } = require("../controllers/userController");
 
 const {
@@ -38,4 +39,5 @@ router.put(
 );
 router.post("/logout", logoutUser);
 router.get("/get-user", getUserFromToken);
+router.post("/save-article", verifyToken, saveArticleBookmark);
 module.exports = router;
