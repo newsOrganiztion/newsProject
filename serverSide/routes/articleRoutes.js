@@ -20,7 +20,7 @@ router.get("/:id", articleController.getArticleById);
 
 
 
-router.get("/", articleController.getArticles);
+router.get("/foruser/:id", articleController.getArticles);
 
 
 

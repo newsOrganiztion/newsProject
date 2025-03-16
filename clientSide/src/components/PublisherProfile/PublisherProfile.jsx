@@ -10,48 +10,55 @@ const PublisherProfile = () => {
   const [articles, setArticles] = useState([]);
   const [activeTab, setActiveTab] = useState("published");
   const [searchTerm, setSearchTerm] = useState("");
-
+const [updateSuccess, setUpdateSuccess] = useState("");
   const [updatedUser, setUpdatedUser] = useState({
     name: "",
     email: "",
     profilePicture: "",
   });
-  const [updateSuccess, setUpdateSuccess] = useState("");
+
+const [userId, setUserId] = useState("");
+
 
   useEffect(() => {
-    // جلب المقالات من الخادم
-    axios
-      .get("http://localhost:5000/api/articles")
-      .then((response) => {
-        setArticles(response.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError("خطأ في جلب المقالات");
-        setLoading(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    const fetchUserProfile = async () => {
+    const getUserId = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/users/profile", {
-          withCredentials: true,
-        });
-        setUser(res.data.user);
-        setUpdatedUser({
-          name: res.data.user.name,
-          email: res.data.user.email,
-          profilePicture: res.data.user.profilePicture,
-        });
+        const res = await axios.get(
+          "http://localhost:5000/api/users/get-user",
+          {
+            withCredentials: true, // Important for sending cookies
+          }
+        );
+
+        console.log("✅ User ID received:", res.data.userId);
+        setUserId(res.data.userId);
       } catch (error) {
-        setError(error.response?.data?.message || "فشل في جلب بيانات المستخدم");
-      } finally {
-        setLoading(false);
+        console.error(
+          "❌ Error fetching user:",
+          error.response?.data || error.message
+        );
       }
     };
-    fetchUserProfile();
+
+    getUserId();
   }, []);
+
+  // تعديل الـ useEffect الخاص بجلب المقالات ليعمل بعد تعيين userId
+ useEffect(() => {
+   if (!userId) return; // إذا كانت userId فارغة، لا تبدأ الطلب لجلب المقالات
+
+   console.log("🚀 Fetching articles for user ID:", userId);
+   axios
+     .get(`http://localhost:5000/api/articles/foruser/${userId}`)
+     .then((response) => {
+       setArticles(response.data);
+       setLoading(false);
+     })
+     .catch((err) => {
+       setError("خطأ في جلب المقالات");
+       setLoading(false);
+     });
+ }, [userId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -223,7 +230,7 @@ const PublisherProfile = () => {
 
       {/* المحتوى الرئيسي */}
       <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-        {updateSuccess && (
+       {updateSuccess && (
           <div
             className="bg-white border-r-4 border-[#51a31d] text-[#383838] px-4 py-3 rounded-lg shadow-md mb-6"
             role="alert"
@@ -430,7 +437,7 @@ const PublisherProfile = () => {
                     </div>
                   ) : (
                     filteredArticles.map((article) => (
-                       <Link
+                      <Link
                         to={`/article/${article._id}`} // Link to the article detail page
                         key={article._id}
                         className="bg-gray-50 p-4 rounded-lg shadow-md"
@@ -457,9 +464,8 @@ const PublisherProfile = () => {
                               {article.shares || 0} مشاركة
                             </span>
                           </div>
-                        </div> 
+                        </div>
                       </Link>
-                     
                     ))
                   )}
                 </div>
