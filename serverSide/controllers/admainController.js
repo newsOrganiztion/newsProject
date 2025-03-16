@@ -1,6 +1,7 @@
 const Article = require('../models/Article');
 const User = require("../models/User");
 const Comment = require("../models/Comment");
+const Analytics = require('../models/Analytics');
 
 exports.getAllArticles = async (req, res) => {
   try {
@@ -28,3 +29,5 @@ exports.updateArticleStatus = async (req, res) => {
       res.status(500).json({ error: "حدث خطأ أثناء تحديث حالة المقال", details: error.message });
     }
   };
+
+ 

@@ -6,6 +6,9 @@ router.get("/article",admainController.getAllArticles);
 
 router.patch("/:id/status", admainController.updateArticleStatus);
 
+router.get('/journalists', admainController.getJournalistsWithDetails);
+
+
 
 module.exports = router;
 

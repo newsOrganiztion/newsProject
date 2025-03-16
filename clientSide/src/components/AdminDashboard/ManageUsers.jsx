@@ -192,10 +192,10 @@ const ManageUsers = () => {
                     <div className="flex items-center gap-4">
                       <div className="relative">
                         <img
-                          src={user.profilePicture || 'https://via.placeholder.com/60'}
+                          src={user.profilePicture}
                           alt={user.name}
                           className="w-16 h-16 rounded-full border-4 border-white object-cover"
-                          onError={(e) => { e.target.src = 'https://via.placeholder.com/60'; }}
+                          onError={(e) => { e.target.src = 'https://placehold.co/60x60'; }}
                         />
                         <div className={`absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-white ${
                           user.isDeleted ? 'bg-red-500' : 'bg-green-500'

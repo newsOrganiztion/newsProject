@@ -7,19 +7,19 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { name: "Dashboard", label: "الرئيسية", icon: FaTachometerAlt, path: "/dashboard" },
-    { name: "ManageJournalists", label: "إدارة الصحفيين", icon: FaUserEdit, path: "/ManageJournalists" },
-    { name: "ManageUsers", label: "إدارة المستخدمين", icon: FaUsers, path: "/ManageUsers" },
-    { name: "ArticleManagement", label: "إدارة المقالات", icon: FaNewspaper, path: "/ArticleManagement" },
-    { name: "CommentsReports", label: "التعليقات والتبليغات", icon: FaComments, path: "/CommentsReports" },
-    { name: "Analytics", label: "تحليلات الموقع", icon: FaChartLine, path: "/Analytics" },
+    { name: "Dashboard", label: "الرئيسية", icon: FaTachometerAlt, path: "/admin-dashboard" }, // المسار الرئيسي
+    { name: "ManageJournalists", label: "إدارة الصحفيين", icon: FaUserEdit, path: "/admin-dashboard/manage-journalists" },
+    { name: "ManageUsers", label: "إدارة المستخدمين", icon: FaUsers, path: "/admin-dashboard/manage-users" },
+    { name: "ArticleManagement", label: "إدارة المقالات", icon: FaNewspaper, path: "/admin-dashboard/article-management" },
+    { name: "CommentsReports", label: "التعليقات والتبليغات", icon: FaComments, path: "/admin-dashboard/comments-reports" },
+    { name: "Analytics", label: "تحليلات الموقع", icon: FaChartLine, path: "/admin-dashboard/analytics" },
   ];
 
   return (
     <div className="w-64 h-screen bg-[#f9f9fb] text-gray-800 flex flex-col p-4 shadow-lg" dir="rtl">
       <div className="mb-6 flex flex-col items-center border-b border-gray-200 pb-4">
         <span className="text-xl font-bold text-[#51a31d]">اليقين</span>
-        <span className="text-sm text-gray-500">{adminName}</span>
+        {/* <span className="text-sm text-gray-500">{adminName}</span> */}
       </div>
       <nav className="flex-1">
         <ul className="space-y-2">

@@ -1,4 +1,7 @@
+// routes/userRoutes.js
 const express = require("express");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 const router = express.Router();
  const { getAllUsers,approveUser} = require('../controllers/userController');
 
@@ -14,14 +17,25 @@ const {
   logoutUser,
   getUserFromToken,
 } = require("../controllers/userController");
+
+const {
+  updateUserProfileWithProof,
+  uploadProfileProof,
+} = require("../controllers/RegisterPublisherController");
+
 const verifyToken = require("../Middlewares/authMiddleware");
 
-
+router.put("/profileProf",  verifyToken,  uploadProfileProof,  updateUserProfileWithProof);
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/google-login", googleLogin);
 router.get("/profile", verifyToken, getUserProfile);
-router.put("/profile", verifyToken, updateUserProfile);
-router.post('/logout', logoutUser);
+router.put(
+  "/profile",
+  verifyToken,
+  upload.single("profilePicture"),
+  updateUserProfile
+);
+router.post("/logout", logoutUser);
 router.get("/get-user", getUserFromToken);
 module.exports = router;
