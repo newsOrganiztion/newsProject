@@ -98,12 +98,15 @@ const CategoryPage = () => {
                   </div>
                   <p className="text-sm">{article.excerpt}</p>
                   <div className="flex flex-wrap gap-2 mt-3">
-                    {["#أخبار", "#رائج", "#صحة", "#اقتصاد", "#سياسة", "#زراعة"].map((tag, index) => (
-                      <span key={index} className="text-gray-500 text-xs bg-gray-100 px-2 py-1 rounded-full cursor-pointer hover:bg-[rgba(117,133,255,0.2)]">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+      {tags.map((tag, index) => (
+        <span 
+          key={index} 
+          className="text-gray-500 text-xs bg-gray-100 px-2 py-1 rounded-full cursor-pointer hover:bg-[rgba(117,133,255,0.2)]"
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
                   </Link>
               ))
             ) : (

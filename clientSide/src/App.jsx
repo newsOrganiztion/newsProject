@@ -15,7 +15,8 @@ import {
   PublisherProfile,
   About,
   Contact,
-  PaymentModal
+  PaymentModal,
+  Footer 
   
 } from "./components";
 
@@ -46,7 +47,9 @@ function App() {
             <Route path="/contact-us" element={<Contact />} />
             <Route path="/payment" element={<PaymentModal/>} />
           </Routes>
+          <Footer />
         </div>
+
       </Router>
     </GoogleOAuthProvider>
   );

@@ -1537,7 +1537,7 @@
 
 // export default ArticleCreationPage; 
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from "sweetalert2";
 
@@ -1561,7 +1561,48 @@ const ArticleCreationPage = () => {
     ],
   });
 
-  const handleChange = (e) => {
+  const [userId, setUserId] = useState(''); 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        // جلب الـ JWT من localStorage
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('لم يتم العثور على token');
+        }
+  
+        // إرسال طلب إلى الخادوم للحصول على بيانات المستخدم
+        const res = await axios.get('http://localhost:5000/api/users/profile', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+  
+        // تحديث حقل "المؤلف" تلقائيًا باسم المستخدم
+        setFormData((prevData) => ({
+          ...prevData,
+          author: res.data.user.name, // استخدام اسم المستخدم
+        }));
+  
+        // تحديث userId بشكل منفصل
+        setUserId(res.data.user._id);
+      } catch (error) {
+        console.error('فشل في جلب بيانات المستخدم:', error);
+        Swal.fire({
+          title: "⚠️ تنبيه!",
+          text: "فشل في جلب بيانات المستخدم. يرجى التحقق من تسجيل الدخول.",
+          icon: "warning",
+          confirmButtonText: "حسنًا",
+        });
+      }
+    };
+  
+    fetchUserProfile();
+  }, []);
+
+
+  const handleChange = (e) => { 
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -1583,7 +1624,7 @@ const ArticleCreationPage = () => {
     e.preventDefault();
   
     // تحقق من الحقول المطلوبة
-    if (!formData.title || !formData.category || !formData.paragraphs[0].content || !formData.paragraphs[1].content || !formData.author) {
+    if (!formData.title || !formData.category || !formData.paragraphs[0].content || !formData.paragraphs[1].content || !formData.author || !userId) {
       Swal.fire({
         title: "⚠️ تنبيه!",
         text: "يرجى تعبئة جميع الحقول المطلوبة: العنوان، التصنيف، الفقرة الأولى، الفقرة الثانية، واسم المؤلف.",
@@ -1598,26 +1639,26 @@ const ArticleCreationPage = () => {
         title: formData.title,
         description: formData.description,
         excerpt: formData.excerpt,
-        author: formData.author, // <-- يجب أن يكون ObjectId صالحًا إذا كنت تستخدم MongoDB
+        author: formData.userId, // اسم المؤلف
+       
         authorDescription: formData.authorDescription,
         featuredImage: formData.featuredImage,
         category: formData.category,
-        tags: formData.tags.split(','), // <-- تحويل الوسوم إلى مصفوفة
-        publishedDate: new Date(),
-        paragraph1: formData.paragraphs[0].content, // <-- إرسال paragraph1
-        paragraph2: formData.paragraphs[1].content, // <-- إرسال paragraph2
+        tags: formData.tags.split(','), // تحويل الوسوم إلى مصفوفة
+        paragraph1: formData.paragraphs[0].content,
+        paragraph2: formData.paragraphs[1].content,
         paragraph3Title: formData.paragraphs[2].title,
         paragraph3: formData.paragraphs[2].content,
         paragraph4Title: formData.paragraphs[3].title,
         paragraph4: formData.paragraphs[3].content,
         status: formData.status,
-        scheduledDate: formData.scheduledDate || null, // <-- إذا لم يتم تحديد تاريخ، يتم تعيينه إلى null
+        scheduledDate: formData.scheduledDate || null,
       };
   
       console.log("🚀 البيانات المرسلة إلى السيرفر:", articleData);
-      
+  
       const response = await axios.post('http://localhost:5000/api/articles/submit', articleData);
-      
+  
       console.log("✅ المقال تم إنشاؤه بنجاح:", response.data);
   
       // ✅ نافذة نجاح جميلة
@@ -1631,7 +1672,7 @@ const ArticleCreationPage = () => {
       });
   
     } catch (error) {
-      console.error("❌ خطأ أثناء إنشاء المقال:", error);
+      console.error("❌ خطأ أثناء إنشاء المقال:", error.response?.data || error.message);
   
       // ❌ نافذة خطأ
       Swal.fire({
@@ -1642,7 +1683,6 @@ const ArticleCreationPage = () => {
       });
     }
   };
-  
 
   return (
     <div className="max-w-6xl mx-auto p-4 font-sans">
@@ -1725,6 +1765,7 @@ const ArticleCreationPage = () => {
                 value={formData.author}
                 onChange={handleChange}
                 required
+                readOnly
               />
             </div>
             <div>

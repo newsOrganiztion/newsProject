@@ -4,11 +4,11 @@ const Article = require('../models/Article');
 exports.createArticle = async (req, res) => {
   try {
 
-    const { title, description, author, authorDescription, category, tags, paragraph1, paragraph2, paragraph3Title, paragraph3, paragraph4Title, paragraph4 } = req.body;
+    const { title, description, author,  userId, authorDescription, category, tags, paragraph1, paragraph2, paragraph3Title, paragraph3, paragraph4Title, paragraph4 } = req.body;
     const featuredImage = req.file ? req.file.path : null;
 
      
-     if (!title || !description || !author || !category || !paragraph1 || !paragraph2) {
+     if (!title || !category || !paragraph1 || !paragraph2 || !author || !userId) {
       return res.status(400).json({ error: 'بعض الحقول مفقودة' });
     }
 
@@ -31,6 +31,7 @@ exports.createArticle = async (req, res) => {
       title,
       description,
       author,
+      userId, // الـ userId بشكل منفصل
       authorDescription,
       featuredImage,
       category,
