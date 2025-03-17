@@ -135,107 +135,466 @@
 //     </Disclosure>
 //   );
 // }
-import React, { useState } from 'react';
-import { Search, Bell, Menu, User } from 'lucide-react';
-import { Link } from 'react-router-dom';
+// import React, { useState } from 'react';
+// import { Search, Bell, Menu, User } from 'lucide-react';
+// import { Link } from 'react-router-dom';
 
+
+// const navigation = [
+//   { name: 'الصفحة الرئيسية', href: '/', current: true },
+//   { name: 'عن يقين', href: '/about-us', current: false },
+//   { name: 'انشر مقال', href: '/article/submit', current: false },
+//   { name: 'المقالات ', href: '/category-pages', current: false },
+//   { name: 'تواصل معنا', href: '/contact-us', current: false },
+//   { name: 'تسجيل الدخول', href: '/auth', current: false },
+//   { name: 'انضم إلينا', href: '/register-publisher', current: false },
+//   { name: 'ملف الناشر', href: '/publisher-profile', current: false },
+// ];
+
+// function classNames(...classes) {
+//   return classes.filter(Boolean).join(' ');
+// }
+
+
+// const Example = () => {
+//   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+//   return (
+//     <div className="w-full  shadow-sm bg-white" dir='ltr'>
+//       {/* Top Navigation */}
+//       <div className="container mx-auto flex items-center justify-between px-4 py-2">
+//         {/* Logo */}
+//         {/* <div className="flex items-center">
+//           <div className="text-teal-500 font-bold text-2xl">يقين</div>
+//           <div className="text-gray-500 text-xs mr-1">الخبر ما هو</div>
+//         </div> */}
+
+//          {/* Login Button */}
+//          {navigation.map((item) => (
+//         item.name === 'تسجيل الدخول' && (
+//         <Link key={item.name} to={item.href}>
+//         <button className="bg-black text-white rounded-full px-5 py-3 mr-4 text-sm hover:bg-[#51a31d]">
+//         {item.name}
+//         </button>
+//         </Link>
+//   )
+// ))}
+//         {/* Logo */}
+//       <div className="flex items-center  ">
+//       <img src="https://media.discordapp.net/attachments/1326085515585257482/1350582243604693052/image.png?ex=67d7433b&is=67d5f1bb&hm=ec4d835d31ebf2ab7f63ef08a469e39815c24de2239d2ce1a2708b6bf475b16a&=&format=webp&quality=lossless&width=393&height=207" alt="شعار يقين" 
+//         className="h-30 w-50" />
+
+//           </div>
+
+        
+//         {/* Middle Buttons (only visible on mobile) */}
+//         <div className="md:hidden">
+//           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2">
+//             <Menu size={24} />
+//           </button>
+//         </div>
+        
+//         {/* Right Section */}
+//         <div className="flex items-center ">
+//           {/* Search and Bell Icons */}
+//           <div className="flex items-center">
+//             {/* <button className="p-2 hover:text-[#51a31d] ">
+//               <Search size={25} />
+//             </button> */}
+//             <Link to={'/BookmarkPage'}>
+//             <button className="p-2 hover:text-[#51a31d]">
+//               <Bell size={25} />
+//             </button>
+//             </Link>
+//             <button className="p-2 hover:text-[#51a31d]">
+//             <User size={25} /> {/* أيقونة ملف شخصي */}
+//            </button>
+//           </div>
+          
+         
+//         </div>
+//       </div>
+      
+//       {/* Bottom Navigation */}
+//       <div className="container mx-auto border-t border-gray-100">
+//         <div className="flex justify-center md:justify-center items-center text-l py-2">
+//           <a href="/contact-us" className="px-4 py-2 hover:text-[#51a31d]">تواصل معنا</a>
+//           <a href="/about-us" className="px-4 py-2 hover:text-[#51a31d]">عن يقين</a>
+//           <a href="/register-publisher" className="px-4 py-2 hover:text-[#51a31d]">انضم إلينا</a>
+//           <a href="/article/submit" className="px-4 py-2 hover:text-[#51a31d]">انشر مقال</a>  
+//           <a href="/category-pages" className="px-4 py-2 hover:text-[#51a31d]">المقالات</a>
+//           <a href="/" className="px-4 py-2 hover:text-[#51a31d]">الصفحة الرئيسية</a>
+//         </div>
+//       </div>
+      
+//       {/* Mobile Menu */}
+//       {isMenuOpen && (
+//         <div className="md:hidden bg-white w-full absolute z-10 shadow-md">
+//           <div className="flex flex-col">
+//             <a href="/" className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">الصفحة الرئيسية</a>
+//             <a href="#" className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">المقالات</a>
+//             <a href="#" className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">انشر مقال</a>
+//             <a href="#" className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">انضم إلينا</a>
+//             <a href="#" className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">عن يقين</a>
+//             <a href="/contact-us" className="px-4 py-3 hover:bg-gray-50">تواصل معنا</a>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default Example;
+
+//////////////////// final without protected routes
+
+    // import React, { useState } from 'react';
+    // import { Search, Bell, Menu, User } from 'lucide-react';
+    // import { Link } from 'react-router-dom';
+
+    // const navigation = [
+    //   { name: 'الصفحة الرئيسية', href: '/', current: true },
+    //   { name: 'عن يقين', href: '/about-us', current: false },
+    //   { name: 'انشر مقال', href: '/article/submit', current: false },
+    //   { name: 'المقالات ', href: '/category-pages', current: false },
+    //   { name: 'تواصل معنا', href: '/contact-us', current: false },
+    //   { name: 'تسجيل الدخول', href: '/auth', current: false },
+    //   { name: 'انضم إلينا', href: '/register-publisher', current: false },
+    //   { name: 'ملف الناشر', href: '/publisher-profile', current: false },
+    // ];
+
+    // function classNames(...classes) {
+    //   return classes.filter(Boolean).join(' ');
+    // }
+
+    // const Example = () => {
+    //   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    //   return (
+    //     <div className="w-full shadow-sm bg-white" dir='ltr'>
+    //       {/* Top Navigation */}
+    //       <div className="container mx-auto flex items-center justify-between px-4 py-2">
+    //         {/* Login Button */}
+    //         {navigation.map((item) => (
+    //           item.name === 'تسجيل الدخول' && (
+    //             <Link key={item.name} to={item.href}>
+    //               <button className="bg-black text-white rounded-full px-5 py-3 mr-4 text-sm hover:bg-[#51a31d]">
+    //                 {item.name}
+    //               </button>
+    //             </Link>
+    //           )
+    //         ))}
+            
+    //         {/* Logo */}
+    //         <div className="flex items-center">
+    //           <img 
+    //             src="https://media.discordapp.net/attachments/1326085515585257482/1350582243604693052/image.png?ex=67d7433b&is=67d5f1bb&hm=ec4d835d31ebf2ab7f63ef08a469e39815c24de2239d2ce1a2708b6bf475b16a&=&format=webp&quality=lossless&width=393&height=207" 
+    //             alt="شعار يقين" 
+    //             className="h-30 w-50" 
+    //           />
+    //         </div>
+
+    //         {/* Middle Buttons (only visible on mobile) */}
+    //         <div className="md:hidden">
+    //           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2">
+    //             <Menu size={24} />
+    //           </button>
+    //         </div>
+            
+    //         {/* Right Section */}
+    //         <div className="flex items-center">
+    //           {/* Icons */}
+    //           <div className="flex items-center">
+    //             <Link to="/BookmarkPage">
+    //               <button className="p-2 hover:text-[#51a31d]">
+    //                 <Bell size={25} />
+    //               </button>
+    //             </Link>
+    //             <button className="p-2 hover:text-[#51a31d]">
+    //               <User size={25} />
+    //             </button>
+    //           </div>
+    //         </div>
+    //       </div>
+          
+    //       {/* Bottom Navigation */}
+    //       <div className="container mx-auto border-t border-gray-100">
+    //         <div className="flex justify-center md:justify-center items-center text-l py-2">
+    //           <Link to="/contact-us" className="px-4 py-2 hover:text-[#51a31d]">تواصل معنا</Link>
+    //           <Link to="/about-us" className="px-4 py-2 hover:text-[#51a31d]">عن يقين</Link>
+    //           <Link to="/register-publisher" className="px-4 py-2 hover:text-[#51a31d]">انضم إلينا</Link>
+    //           <Link to="/article/submit" className="px-4 py-2 hover:text-[#51a31d]">انشر مقال</Link>
+    //           <Link to="/category-pages" className="px-4 py-2 hover:text-[#51a31d]">المقالات</Link>
+    //           <Link to="/" className="px-4 py-2 hover:text-[#51a31d]">الصفحة الرئيسية</Link>
+    //             <Link to="/publisher-profile" className="px-4 py-3 hover:bg-gray-50">ملف الناشر</Link>
+
+    //         </div>
+    //       </div>
+          
+    //       {/* Mobile Menu */}
+    //       {isMenuOpen && (
+    //         <div className="md:hidden bg-white w-full absolute z-10 shadow-md">
+    //           <div className="flex flex-col">
+    //             <Link to="/" className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">الصفحة الرئيسية</Link>
+    //             <Link to="/category-pages" className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">المقالات</Link>
+    //             <Link to="/article/submit" className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">انشر مقال</Link>
+    //             <Link to="/register-publisher" className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">انضم إلينا</Link>
+    //             <Link to="/about-us" className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">عن يقين</Link>
+    //             <Link to="/contact-us" className="px-4 py-3 hover:bg-gray-50">تواصل معنا</Link>
+    //             <Link to="/publisher-profile" className="px-4 py-3 hover:bg-gray-50">ملف الناشر</Link>
+    //           </div>
+    //         </div>
+    //       )}
+    //     </div>
+    //   );
+    // };
+
+    // export default Example;
+
+//     import React, { useState, useEffect } from 'react';
+// import { Search, Bell, Menu, User,Bookmark } from 'lucide-react';
+// import { Link } from 'react-router-dom';
+// import axios from 'axios';
+
+// const navigation = [
+//   { name: 'الصفحة الرئيسية', href: '/' },
+//   { name: 'عن يقين', href: '/about-us' },
+//   { name: 'المقالات ', href: '/category-pages' },
+//   { name: 'تسجيل الدخول', href: '/auth' },
+//   { name: 'تواصل معنا', href: '/contact-us' },
+//   { name: 'انضم إلينا', href: '/register-publisher', },
+//   { name: 'انشر مقال', href: '/article/submit', role: 'journalist' },
+//   { name: 'ملف الناشر', href: '/publisher-profile', role: 'journalist' },
+// ];
+// const navigations = [
+//   { name: 'الصفحة الرئيسية', href: '/' },
+//   { name: 'عن يقين', href: '/about-us' },
+//   { name: 'المقالات ', href: '/category-pages' },
+//   { name: 'تواصل معنا', href: '/contact-us' },
+//   { name: 'انضم إلينا', href: '/register-publisher', },
+//   { name: 'انشر مقال', href: '/article/submit', role: 'journalist' },
+//   { name: 'ملف الناشر', href: '/publisher-profile', role: 'journalist' },
+// ];
+// const Example = () => {
+//   const [isMenuOpen, setIsMenuOpen] = useState(false);
+//   const [userRole, setUserRole] = useState(null);
+
+//   // Fetch user role when component mounts
+//   useEffect(() => {
+//     const fetchUserRole = async () => {
+//       try {
+//         const response = await axios.get("http://localhost:5000/api/users/get-role", { withCredentials: true });
+//         setUserRole(response.data.role);
+//       } catch (error) {
+//         console.error("Error fetching user role:", error);
+//       }
+//     };
+//     fetchUserRole();
+//   }, []);
+
+//   console.log(userRole)
+//   return (
+    
+//     <div className="w-full shadow-sm bg-white" dir="ltr">
+//       {/* Top Navigation */}
+//       <div className="container mx-auto flex items-center justify-between px-4 py-2">
+//         {/* Login Button */}
+//         {navigation.map(
+//           (item) =>
+//             item.name === "تسجيل الدخول" && (
+//               <Link key={item.name} to={item.href}>
+//                 <button className="bg-black text-white rounded-full px-5 py-3 mr-4 text-sm hover:bg-[#51a31d]">
+//                   {item.name}
+//                 </button>
+//               </Link>
+//             )
+//         )}
+
+//         {/* Logo */}
+//         <div className="flex items-center">
+//           <img
+//             src="https://media.discordapp.net/attachments/1326085515585257482/1350582243604693052/image.png?ex=67d7433b&is=67d5f1bb&hm=ec4d835d31ebf2ab7f63ef08a469e39815c24de2239d2ce1a2708b6bf475b16a&=&format=webp&quality=lossless&width=393&height=207"
+//             alt="شعار يقين"
+//             className="h-30 w-50"
+//           />
+//         </div>
+
+//         {/* Middle Buttons (only visible on mobile) */}
+//         <div className="md:hidden">
+//           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2">
+//             <Menu size={24} />
+//           </button>
+//         </div>
+
+//         {/* Right Section */}
+//         <div className="flex items-center">
+//           {/* Icons */}
+//           <div className="flex items-center">
+//             <Link to="/BookmarkPage">
+//               <button className="p-2 hover:text-[#51a31d]">
+//                 <Bookmark size={25} />
+//               </button>
+//             </Link>
+//             <Link to={"/profile"}>
+//             <button className="p-2 hover:text-[#51a31d]">
+//               <User size={25} />
+//             </button>
+//             </Link>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Bottom Navigation */}
+//       <div className="container mx-auto border-t border-gray-100">
+//         <div className="flex justify-center md:justify-center items-center text-l py-2">
+//           {navigations.map(
+//             (item) =>
+//               (!item.role || userRole === "journalist") && (
+//                 <Link key={item.name} to={item.href} className="px-4 py-2 hover:text-[#51a31d]">
+//                   {item.name}
+//                 </Link>
+//               )
+//           )}
+//         </div>
+//       </div>
+
+//       {/* Mobile Menu */}
+//       {isMenuOpen && (
+//         <div className="md:hidden bg-white w-full absolute z-10 shadow-md">
+//           <div className="flex flex-col">
+//             {navigation.map(
+//               (item) =>
+//                 (!item.role || userRole === "journalist") && (
+//                   <Link key={item.name} to={item.href} className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+//                     {item.name}
+//                   </Link>
+//                 )
+//             )}
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default Example;
+
+
+import React, { useState, useEffect } from 'react';
+import { Search, Bell, Menu, User, Bookmark } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const navigation = [
-  { name: 'الصفحة الرئيسية', href: '/', current: true },
-  { name: 'عن يقين', href: '/about-us', current: false },
-  { name: 'انشر مقال', href: '/article/submit', current: false },
-  { name: 'المقالات ', href: '/category-pages', current: false },
-  { name: 'تواصل معنا', href: '/contact-us', current: false },
-  { name: 'تسجيل الدخول', href: '/auth', current: false },
-  { name: 'انضم إلينا', href: '/register-publisher', current: false },
+  { name: 'الصفحة الرئيسية', href: '/' },
+  { name: 'عن يقين', href: '/about-us' },
+  { name: 'المقالات ', href: '/category-pages' },
+  { name: 'تسجيل الدخول', href: '/auth' },
+  { name: 'تواصل معنا', href: '/contact-us' },
+  { name: 'انضم إلينا', href: '/register-publisher' },
+  { name: 'انشر مقال', href: '/article/submit', role: 'journalist' },
+  { name: 'ملف الناشر', href: '/publisher-profile', role: 'journalist' },
 ];
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
-
+const navigations = navigation.filter(item => item.name !== 'تسجيل الدخول');
 
 const Example = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [userRole, setUserRole] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/users/get-role", { withCredentials: true });
+        setUserRole(response.data.role);
+        setIsAuthenticated(true);
+      } catch (error) {
+        setIsAuthenticated(false);
+      }
+    };
+    fetchUserRole();
+  }, []);
 
   return (
-    <div className="w-full  shadow-sm bg-white" dir='ltr'>
+    <div className="w-full shadow-sm bg-white" dir="ltr">
       {/* Top Navigation */}
-      <div className="container mx-auto flex items-center justify-between px-4 py-2">
-        {/* Logo */}
-        {/* <div className="flex items-center">
-          <div className="text-teal-500 font-bold text-2xl">يقين</div>
-          <div className="text-gray-500 text-xs mr-1">الخبر ما هو</div>
-        </div> */}
-
-         {/* Login Button */}
-         {navigation.map((item) => (
-        item.name === 'تسجيل الدخول' && (
-        <Link key={item.name} to={item.href}>
-        <button className="bg-black text-white rounded-full px-5 py-3 mr-4 text-sm hover:bg-[#51a31d]">
-        {item.name}
-        </button>
-        </Link>
-  )
-))}
-        {/* Logo */}
-      <div className="flex items-center">
-      <img src="/img/يقين.png" alt="شعار يقين" 
-        className="h-22 w-35" />
-
-          </div>
-
-        
-        {/* Middle Buttons (only visible on mobile) */}
-        <div className="md:hidden">
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2">
-            <Menu size={24} />
-          </button>
+      <div className="container mx-auto flex items-center justify-between px-4 py-2 relative mt-10">
+        {/* Left Section (Login Button) */}
+        <div className="flex items-center">
+          {!isAuthenticated &&
+            navigation.map(
+              (item) =>
+                item.name === "تسجيل الدخول" && (
+                  <Link key={item.name} to={item.href}>
+                    <button className="bg-black text-white rounded-full px-5 py-3 mr-4 text-sm hover:bg-[#51a31d]">
+                      {item.name}
+                    </button>
+                  </Link>
+                )
+            )}
         </div>
-        
-        {/* Right Section */}
-        <div className="flex items-center ">
-          {/* Search and Bell Icons */}
-          <div className="flex items-center">
-            {/* <button className="p-2 hover:text-[#51a31d] ">
-              <Search size={25} />
-            </button> */}
-            <Link to={'/BookmarkPage'}>
-            <button className="p-2 hover:text-[#51a31d]">
-              <Bell size={25} />
+
+        {/* Logo (Centered) */}
+        <div className="absolute left-1/2 transform -translate-x-1/2">
+          <img
+            src="https://media.discordapp.net/attachments/1326085515585257482/1350582243604693052/image.png?ex=67d7433b&is=67d5f1bb&hm=ec4d835d31ebf2ab7f63ef08a469e39815c24de2239d2ce1a2708b6bf475b16a&=&format=webp&quality=lossless&width=393&height=207"
+            alt="شعار يقين"
+            className="h-30 w-50"
+          />
+        </div>
+
+        {/* Right Section (Icons and Mobile Menu) */}
+        <div className="flex items-center">
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2">
+              <Menu size={24} />
             </button>
-            </Link>
-            <button className="p-2 hover:text-[#51a31d]">
-            <User size={25} /> {/* أيقونة ملف شخصي */}
-           </button>
           </div>
-          
-         
+
+          {/* Icons */}
+          <div className="flex items-center">
+            <Link to="/BookmarkPage">
+              <button className="p-2 hover:text-[#51a31d]">
+                <Bookmark size={25} />
+              </button>
+            </Link>
+            <Link to="/profile">
+              <button className="p-2 hover:text-[#51a31d]">
+                <User size={25} />
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
-      
+
       {/* Bottom Navigation */}
-      <div className="container mx-auto border-t border-gray-100">
+      <div className="container mx-auto border-t border-gray-100 mt-10">
         <div className="flex justify-center md:justify-center items-center text-l py-2">
-          <a href="/contact-us" className="px-4 py-2 hover:text-[#51a31d]">تواصل معنا</a>
-          <a href="/about-us" className="px-4 py-2 hover:text-[#51a31d]">عن يقين</a>
-          <a href="/register-publisher" className="px-4 py-2 hover:text-[#51a31d]">انضم إلينا</a>
-          <a href="/article/submit" className="px-4 py-2 hover:text-[#51a31d]">انشر مقال</a>  
-          <a href="/category-pages" className="px-4 py-2 hover:text-[#51a31d]">المقالات</a>
-          <a href="/" className="px-4 py-2 hover:text-[#51a31d]">الصفحة الرئيسية</a>
+          {navigations.map(
+            (item) =>
+              (!item.role || userRole === "journalist") && (
+                <Link key={item.name} to={item.href} className="px-4 py-2 hover:text-[#51a31d]">
+                  {item.name}
+                </Link>
+              )
+          )}
         </div>
       </div>
-      
+
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-white w-full absolute z-10 shadow-md">
           <div className="flex flex-col">
-            <a href="/" className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">الصفحة الرئيسية</a>
-            <a href="#" className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">المقالات</a>
-            <a href="#" className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">انشر مقال</a>
-            <a href="#" className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">انضم إلينا</a>
-            <a href="#" className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">عن يقين</a>
-            <a href="/contact-us" className="px-4 py-3 hover:bg-gray-50">تواصل معنا</a>
+            {navigation.map(
+              (item) =>
+                (!item.role || userRole === "journalist") && (
+                  <Link key={item.name} to={item.href} className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    {item.name}
+                  </Link>
+                )
+            )}
           </div>
         </div>
       )}
