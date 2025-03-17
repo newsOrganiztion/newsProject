@@ -480,6 +480,130 @@
 // export default Example;
 
 
+// import React, { useState, useEffect } from 'react';
+// import { Search, Bell, Menu, User, Bookmark } from 'lucide-react';
+// import { Link } from 'react-router-dom';
+// import axios from 'axios';
+
+// const navigation = [
+//   { name: 'الصفحة الرئيسية', href: '/' },
+//   { name: 'عن يقين', href: '/about-us' },
+//   { name: 'المقالات ', href: '/category-pages' },
+//   { name: 'تسجيل الدخول', href: '/auth' },
+//   { name: 'تواصل معنا', href: '/contact-us' },
+//   { name: 'انضم إلينا', href: '/register-publisher' },
+//   { name: 'انشر مقال', href: '/article/submit', role: 'journalist' },
+//   { name: 'ملف الناشر', href: '/publisher-profile', role: 'journalist' },
+// ];
+
+// const navigations = navigation.filter(item => item.name !== 'تسجيل الدخول');
+
+// const Example = () => {
+//   const [isMenuOpen, setIsMenuOpen] = useState(false);
+//   const [userRole, setUserRole] = useState(null);
+//   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+//   useEffect(() => {
+//     const fetchUserRole = async () => {
+//       try {
+//         const response = await axios.get("http://localhost:5000/api/users/get-role", { withCredentials: true });
+//         setUserRole(response.data.role);
+//         setIsAuthenticated(true);
+//       } catch (error) {
+//         setIsAuthenticated(false);
+//       }
+//     };
+//     fetchUserRole();
+//   }, []);
+
+//   return (
+//     <div className="w-full shadow-sm bg-white" dir="ltr">
+//       {/* Top Navigation */}
+//       <div className="container mx-auto flex items-center justify-between px-4 py-2 relative mt-10">
+//         {/* Left Section (Login Button) */}
+//         <div className="flex items-center">
+//           {!isAuthenticated &&
+//             navigation.map(
+//               (item) =>
+//                 item.name === "تسجيل الدخول" && (
+//                   <Link key={item.name} to={item.href}>
+//                     <button className="bg-black text-white rounded-full px-5 py-3 mr-4 text-sm hover:bg-[#51a31d]">
+//                       {item.name}
+//                     </button>
+//                   </Link>
+//                 )
+//             )}
+//         </div>
+
+//         {/* Logo (Centered) */}
+//         <div className="absolute left-1/2 transform -translate-x-1/2">
+//           <img
+//             src="https://media.discordapp.net/attachments/1326085515585257482/1350582243604693052/image.png?ex=67d7433b&is=67d5f1bb&hm=ec4d835d31ebf2ab7f63ef08a469e39815c24de2239d2ce1a2708b6bf475b16a&=&format=webp&quality=lossless&width=393&height=207"
+//             alt="شعار يقين"
+//             className="h-30 w-50"
+//           />
+//         </div>
+
+//         {/* Right Section (Icons and Mobile Menu) */}
+//         <div className="flex items-center">
+//           {/* Mobile Menu Button */}
+//           <div className="md:hidden">
+//             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2">
+//               <Menu size={24} />
+//             </button>
+//           </div>
+
+//           {/* Icons */}
+//           <div className="flex items-center">
+//             <Link to="/BookmarkPage">
+//               <button className="p-2 hover:text-[#51a31d]">
+//                 <Bookmark size={25} />
+//               </button>
+//             </Link>
+//             <Link to="/profile">
+//               <button className="p-2 hover:text-[#51a31d]">
+//                 <User size={25} />
+//               </button>
+//             </Link>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Bottom Navigation */}
+//       <div className="container mx-auto border-t border-gray-100 mt-10">
+//         <div className="flex justify-center md:justify-center items-center text-l py-2">
+//           {navigations.map(
+//             (item) =>
+//               (!item.role || userRole === "journalist") && (
+//                 <Link key={item.name} to={item.href} className="px-4 py-2 hover:text-[#51a31d]">
+//                   {item.name}
+//                 </Link>
+//               )
+//           )}
+//         </div>
+//       </div>
+
+//       {/* Mobile Menu */}
+//       {isMenuOpen && (
+//         <div className="md:hidden bg-white w-full absolute z-10 shadow-md">
+//           <div className="flex flex-col">
+//             {navigation.map(
+//               (item) =>
+//                 (!item.role || userRole === "journalist") && (
+//                   <Link key={item.name} to={item.href} className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+//                     {item.name}
+//                   </Link>
+//                 )
+//             )}
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default Example;
+
 import React, { useState, useEffect } from 'react';
 import { Search, Bell, Menu, User, Bookmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -491,12 +615,10 @@ const navigation = [
   { name: 'المقالات ', href: '/category-pages' },
   { name: 'تسجيل الدخول', href: '/auth' },
   { name: 'تواصل معنا', href: '/contact-us' },
-  { name: 'انضم إلينا', href: '/register-publisher' },
+  { name: 'انضم إلينا', href: '/register-publisher', hideFor: 'journalist' },
   { name: 'انشر مقال', href: '/article/submit', role: 'journalist' },
   { name: 'ملف الناشر', href: '/publisher-profile', role: 'journalist' },
 ];
-
-const navigations = navigation.filter(item => item.name !== 'تسجيل الدخول');
 
 const Example = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -515,6 +637,11 @@ const Example = () => {
     };
     fetchUserRole();
   }, []);
+
+  // تصفية عناصر التنقل بناءً على دور المستخدم
+  const filteredNavigation = navigation.filter(item => 
+    (!item.hideFor || item.hideFor !== userRole) && item.name !== 'تسجيل الدخول'
+  );
 
   return (
     <div className="w-full shadow-sm bg-white" dir="ltr">
@@ -572,7 +699,7 @@ const Example = () => {
       {/* Bottom Navigation */}
       <div className="container mx-auto border-t border-gray-100 mt-10">
         <div className="flex justify-center md:justify-center items-center text-l py-2">
-          {navigations.map(
+          {filteredNavigation.map(
             (item) =>
               (!item.role || userRole === "journalist") && (
                 <Link key={item.name} to={item.href} className="px-4 py-2 hover:text-[#51a31d]">
@@ -587,7 +714,7 @@ const Example = () => {
       {isMenuOpen && (
         <div className="md:hidden bg-white w-full absolute z-10 shadow-md">
           <div className="flex flex-col">
-            {navigation.map(
+            {filteredNavigation.map(
               (item) =>
                 (!item.role || userRole === "journalist") && (
                   <Link key={item.name} to={item.href} className="px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
