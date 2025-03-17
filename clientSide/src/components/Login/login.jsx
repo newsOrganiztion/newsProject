@@ -8,6 +8,7 @@ const Login = ({ switchForm }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -35,12 +36,21 @@ const Login = ({ switchForm }) => {
   setLoading(true);
   setError("");
 
+  const body = { email: loginForm.email, password: loginForm.password };
+
+
   try {
     await axios.post("http://localhost:5000/api/users/login", formData, {
       withCredentials: true, // 🔥 Ensures cookies are stored
     });
 
-    window.location.href = "/profile"; // Redirect after login
+    if (loginForm.email === "admin@gmail.com") {
+      navigate("/AdminDash");
+    } else {
+      navigate("/");
+    }
+
+    window.location.href = "/"; // Redirect after login
   } catch (error) {
     setError(error.response?.data?.message || "فشل تسجيل الدخول");
   } finally {

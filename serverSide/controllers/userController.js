@@ -105,9 +105,13 @@ exports.loginUser = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
 
     res.cookie("authToken", token, {
       httpOnly: true,
@@ -120,6 +124,7 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+ 
 
 exports.getUserProfile = async (req, res) => {
   try {
@@ -228,5 +233,83 @@ exports.getUserFromToken = async (req, res) => {
     res.status(200).json({ userId: decoded.id });
   } catch (error) {
     res.status(401).json({ message: "Invalid or expired token" });
+  }
+};
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find(); 
+  
+    res.status(200).json({ users});
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching users', error: error.message });
+  }
+};
+
+
+exports.approveUser = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+  
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { status: 'approved', role: 'journalist' }, 
+      { new: true } 
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'المستخدم غير موجود' });
+    }
+
+    res.status(200).json({ message: 'تمت الموافقة على المستخدم بنجاح', user });
+  } catch (error) {
+    console.error('حدث خطأ أثناء الموافقة على المستخدم:', error);
+    res.status(500).json({ message: 'حدث خطأ أثناء الموافقة على المستخدم' });}}
+exports.getUserRoleFromToken = async (req, res) => {
+  try {
+    const token = req.cookies.authToken;
+
+    if (!token) {
+      return res.status(401).json({ message: "No token found" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    res.status(200).json({ userId: decoded.id, role: decoded.role });
+  } catch (error) {
+    res.status(401).json({ message: "Invalid or expired token" });
+  }
+};
+
+exports.saveArticleBookmark = async (req, res) => {
+  try {
+    const { articleId } = req.body;
+    const userId = req.user.id; // جلب معرف المستخدم من التوكن
+
+    if (!articleId) {
+      return res.status(400).json({ message: "Article ID is required" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // التحقق مما إذا كان المقال محفوظًا مسبقًا
+    if (user.savedArticles.includes(articleId)) {
+      return res.status(400).json({ message: "Article already saved" });
+    }
+
+    // إضافة المقال إلى قائمة المقالات المحفوظة
+    user.savedArticles.push(articleId);
+    await user.save();
+
+    res.status(200).json({
+      message: "Article saved successfully",
+      savedArticles: user.savedArticles,
+    });
+  } catch (error) {
+    console.error("Error saving article:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };

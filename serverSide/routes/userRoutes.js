@@ -3,6 +3,11 @@ const express = require("express");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 const router = express.Router();
+ const { getAllUsers,approveUser} = require('../controllers/userController');
+
+router.get('/users', getAllUsers);
+router.put('/users/approve/:userId',approveUser);
+
 const {
   registerUser,
   loginUser,
@@ -11,6 +16,8 @@ const {
   updateUserProfile,
   logoutUser,
   getUserFromToken,
+  saveArticleBookmark,
+  getUserRoleFromToken,
 } = require("../controllers/userController");
 
 const {
@@ -20,12 +27,7 @@ const {
 
 const verifyToken = require("../Middlewares/authMiddleware");
 
-router.put(
-  "/profileProf",
-  verifyToken,
-  uploadProfileProof,
-  updateUserProfileWithProof
-);
+router.put("/profileProf",  verifyToken,  uploadProfileProof,  updateUserProfileWithProof);
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/google-login", googleLogin);
@@ -38,4 +40,6 @@ router.put(
 );
 router.post("/logout", logoutUser);
 router.get("/get-user", getUserFromToken);
+router.get("/get-role", getUserRoleFromToken);
+router.post("/save-article", verifyToken, saveArticleBookmark);
 module.exports = router;

@@ -522,7 +522,7 @@ const BookmarkPage = () => {
   {/* Category tabs */}
   <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-8 mb-4">
     <div className="flex space-x-3 space-x-reverse pb-4 overflow-x-auto scrollbar-hide">
-      {categories.map((category) => (
+      {/* {categories.map((category) => (
         <button
           key={category.id}
           onClick={() => setActiveCategory(category.id)}
@@ -540,7 +540,7 @@ const BookmarkPage = () => {
             </span>
           )}
         </button>
-      ))}
+      ))} */}
     </div>
   </div>
   
@@ -661,13 +661,13 @@ const BookmarkPage = () => {
       {/* Actions */}
       <div className="flex justify-between items-center relative">
         {/* Read button - modernized */}
-        <button className="flex items-center text-[#7585ff] hover:text-white bg-[#7585ff]/10 hover:bg-[#7585ff] rounded-md px-3 py-1.5 text-sm transition-all duration-300 font-medium">
+        {/* <button className="flex items-center text-[#7585ff] hover:text-white bg-[#7585ff]/10 hover:bg-[#7585ff] rounded-md px-3 py-1.5 text-sm transition-all duration-300 font-medium">
           <BookOpen size={14} className="ml-1.5" />
           <span className="inline-block">قراءة المقال</span>
-        </button>
+        </button> */}
         
         {/* Remove button - modernized */}
-        <Tooltip text="إزالة الإشارة المرجعية">
+        {/* <Tooltip text="إزالة الإشارة المرجعية">
           <button 
             onClick={(e) => removeBookmark(bookmark._id, e)}
             className="flex items-center justify-center w-8 h-8 rounded-md bg-gray-100 text-[#383838]/60 hover:bg-red-100 hover:text-red-500 transition-all duration-300"
@@ -675,7 +675,7 @@ const BookmarkPage = () => {
           >
             <Trash2 size={14} />
           </button>
-        </Tooltip>
+        </Tooltip> */}
       </div>
     </div>
   </div>
