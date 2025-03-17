@@ -30,4 +30,62 @@ exports.updateArticleStatus = async (req, res) => {
     }
   };
 
+  exports.getJournalistsWithDetails = async (req, res) => {
+    try {
+     
+      const journalists = await User.find({ role: 'journalist' });
+  
+      const journalistsWithDetails = await Promise.all(journalists.map(async (journalist) => {
+        const articles = await Article.find({ authorId: journalist._id });
+        const articlesWithDetails = await Promise.all(articles.map(async (article) => {
+          const comments = await Comment.find({ articleId: article._id }).populate('userId', 'name profilePicture');
+          return {
+            ...article.toObject(),
+            comments,
+            likes: article.likes,
+            shares: article.shares,
+            views: article.views,
+          };
+        }));
+  
+        return {
+          ...journalist.toObject(),
+          articles: articlesWithDetails,
+        };
+      }));
+  
+      res.status(200).json(journalistsWithDetails);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching journalists details', error });
+    }
+  };
+
+
  
+exports.getAnalytics = async (req, res) => {
+  try {
+    const analyticsData = await Analytics.find().populate('articleId');
+    res.status(200).json(analyticsData);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+exports.addAnalytics = async (req, res) => {
+  const { articleId, views, shares, likes, commentsCount, trendingStatus } = req.body;
+  try {
+    const newAnalytics = new Analytics({
+      articleId,
+      views,
+      shares,
+      likes,
+      commentsCount,
+      trendingStatus
+    });
+    await newAnalytics.save();
+    res.status(201).json(newAnalytics);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

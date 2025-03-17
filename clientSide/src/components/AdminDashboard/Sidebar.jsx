@@ -6,14 +6,14 @@ const Sidebar = () => {
   const [active, setActive] = useState("Dashboard");
   const navigate = useNavigate();
 
-  const menuItems = [
-    { name: "Dashboard", label: "الرئيسية", icon: FaTachometerAlt, path: "/admin-dashboard" }, // المسار الرئيسي
-    { name: "ManageJournalists", label: "إدارة الصحفيين", icon: FaUserEdit, path: "/admin-dashboard/manage-journalists" },
-    { name: "ManageUsers", label: "إدارة المستخدمين", icon: FaUsers, path: "/admin-dashboard/manage-users" },
-    { name: "ArticleManagement", label: "إدارة المقالات", icon: FaNewspaper, path: "/admin-dashboard/article-management" },
-    { name: "CommentsReports", label: "التعليقات والتبليغات", icon: FaComments, path: "/admin-dashboard/comments-reports" },
-    { name: "Analytics", label: "تحليلات الموقع", icon: FaChartLine, path: "/admin-dashboard/analytics" },
-  ];
+ const menuItems = [
+  { name: "Dashboard", label: "الرئيسية", icon: FaTachometerAlt, path: "/admin" }, // المسار الرئيسي
+  { name: "ManageJournalists", label: "إدارة الصحفيين", icon: FaUserEdit, path: "/admin/manage-journalists" },
+  { name: "ManageUsers", label: "إدارة المستخدمين", icon: FaUsers, path: "/admin/manage-users" },
+  { name: "ArticleManagement", label: "إدارة المقالات", icon: FaNewspaper, path: "/admin/article-management" },
+  { name: "CommentsReports", label: "التعليقات والتبليغات", icon: FaComments, path: "/admin/comments-reports" },
+  { name: "Analytics", label: "تحليلات الموقع", icon: FaChartLine, path: "/admin/analytics" },
+];
 
   return (
     <div className="w-64 h-screen bg-[#f9f9fb] text-gray-800 flex flex-col p-4 shadow-lg" dir="rtl">

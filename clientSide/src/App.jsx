@@ -5,7 +5,7 @@ import {
   Home,
   Navbar,
   AuthContainer,
-  AdminDashboard, 
+  AdminDash,
   RegisterPublisher,
   ArticleCreationPage,
   ArticleDetailPage,
@@ -15,8 +15,11 @@ import {
   PublisherProfile,
   About,
   Contact,
-  PaymentModal,
+  PaymentModal
+  
 } from "./components";
+
+
 
 function App() {
   return (
@@ -26,26 +29,29 @@ function App() {
           <Navbar />
 
           <Routes>
-            {/* الصفحة الرئيسية */}
             <Route path="/" element={<Home />} />
-
-            {/* صفحات أخرى */}
             <Route path="/BookmarkPage" element={<BookmarkPage />} />
             <Route path="/auth/*" element={<AuthContainer />} />
             <Route path="/category/*" element={<CategoryPages />} />
             <Route path="/article/:id" element={<ArticleDetailPage />} />
             <Route path="/article/submit" element={<ArticleCreationPage />} />
+
+
+            <Route path="/AdminDash" element={<AdminDash />} />
+
+
+{/* 
+            <Route path="/admin-dashboard" element={<AdminDash />} /> */}
             <Route path="/register-publisher" element={<RegisterPublisher />} />
+    
             <Route path="/article-detail" element={<ArticleDetailPage />} />
+
             <Route path="/category-pages" element={<CategoryPages />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/publisher-profile" element={<PublisherProfile />} />
             <Route path="/about-us" element={<About />} />
             <Route path="/contact-us" element={<Contact />} />
-            <Route path="/payment" element={<PaymentModal />} />
-
-            {/* لوحة التحكم (Admin Dashboard) */}
-            <Route path="/admin-dashboard/*" element={<AdminDashboard />} />
+            <Route path="/payment" element={<PaymentModal/>} />
           </Routes>
         </div>
       </Router>
