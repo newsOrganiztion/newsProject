@@ -28,9 +28,11 @@ const fetchComments = async () => {
   try {
     const response = await axios.get(`http://localhost:5000/api/comments/${id}`);
 
-   
-    setComments(response.data); 
-    setCommentsCount(response.data.length); 
+    
+    const approvedComments = response.data;
+
+    setComments(approvedComments);
+    setCommentsCount(approvedComments.length);
   } catch (error) {
     console.error("❌ Error fetching comments:", error);
   }
@@ -85,7 +87,7 @@ const handleCommentSubmit = async (e) => {
         content: comment,
       });
 
-      alert("تم إرسال تعليقك وهو قيد المراجعة.");
+      alert("تم إرسال تعليقك.");
       setComment(""); 
 
       fetchComments(); 
