@@ -1,128 +1,170 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
-import { Autoplay } from "swiper/modules";
-import { Newspaper, User } from "lucide-react";
-import{ useEffect, useState } from "react";
+import "swiper/css/navigation";
+import { Autoplay, Navigation } from "swiper/modules";
 import axios from "axios";
 
-
-const newsSlides = [
-  {
-    title: "The Unchecked Authority of Greg Abbott",
-    description:
-      "The Texas governor is an unlikely MAGA crusader, but he has turned the Lone Star State into ground zero for President Trump’s radical mass-deportation plans.",
-    image: "https://source.unsplash.com/1200x600/?politics",
-    author: "Jonathan Blitzer",
-  },
-  {
-    title: "The Future of AI in Journalism",
-    description:
-      "AI is rapidly transforming journalism, raising questions about ethics, accuracy, and the future of human reporters.",
-    image: "https://source.unsplash.com/1200x600/?technology",
-    author: "Sarah Johnson",
-  },
-];
-
-const articles = [
-  {
-    title: "'Eephus' Is as Surprising as the Baseball Pitch It's Named For",
-    description:
-      "In Carson Lund’s stylistically innovative directorial debut, two amateur teams say farewell to a beloved field—but will their game yield a result?",
-    image: "https://source.unsplash.com/400x400/?baseball",
-    author: "Richard Brody",
-  },
-  {
-    title: "How 'Severance' Makes a Fetish of the Office",
-    description:
-      "In its second season, the show continues to indict the corporate workplace while secretly longing for it.",
-    image: "https://source.unsplash.com/400x400/?office",
-    author: "Katy Waldman",
-  },
-  {
-    title: "The Resounding Silences of 'On Becoming a Guinea Fowl'",
-    description:
-      "In Rungano Nyoni’s drama, a death in a middle-class Zambian family unearths a history of sexual violence.",
-    image: "https://source.unsplash.com/400x400/?movie",
-    author: "Justin Chang",
-  },
-];
-
 const ArgSection = () => {
+  const [newsSlide, setNewsSlide] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    const[newsSlide,setnewsSlide]=useState([]);
-  useEffect(()=>{
-    
-    async function getNewsSlide(){
-      
-      const response=await axios.get("http://localhost:5000/api/home-articles/arg");
-      console.log(response.data.data);
-  setnewsSlide(response.data.data)
-  
+  useEffect(() => {
+    async function getNewsSlide() {
+      try {
+        const response = await axios.get("http://localhost:5000/api/home-articles/arg");
+        setNewsSlide(response.data.data || []);
+      } catch (err) {
+        console.error("Error fetching news data:", err);
+        setError("حدث خطأ أثناء جلب البيانات.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    getNewsSlide();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center py-8">جارٍ التحميل...</div>;
   }
 
-getNewsSlide();
+  if (error) {
+    return <div className="text-center text-red-500 py-8">{error}</div>;
+  }
 
-},[])
-  
   return (
-    <>
-    
-      <div className="max-w-6xl mx-auto py-10 px-4">
-        <h2 className="text-center text-4xl font-extrabold text-[#383838] mb-8 flex items-center justify-center gap-3">
-          <Newspaper className="text-[#383838] w-8 h-8" /> اخبار بالزراعة
-        </h2>
-        
-        {/* Slideshow */}
-        <Swiper
-          modules={[Autoplay]}
-          autoplay={{ delay: 5000, disableOnInteraction: false }}
-          loop
-          className="w-full h-[500px] rounded-lg overflow-hidden shadow-2xl"
-        >
-          {newsSlide.map((slide, index) => (
-            <SwiperSlide key={index} className="relative">
-              <div
-                className="w-full h-full bg-cover bg-center flex flex-col justify-center items-center text-center p-10 text-white"
-                style={{ backgroundImage: `url(https://images.unsplash.com/photo-1731964877414-217cdc9b5b37?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)` }}
-              >
-                <div className="bg-black bg-opacity-60 p-6 rounded-lg max-w-2xl">
-                  <h3 className="text-3xl font-bold">{slide.title}</h3>
-                  <p className="mt-4 text-lg leading-relaxed">{slide.description}</p>
-                  <span className="mt-6 text-sm flex items-center gap-2 justify-center">
-                    <User className="w-5 h-5" /> {slide.author}
-                  </span>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+    <section className="bg-white rounded-lg shadow-sm my-8 pb-6">
+      <div className="text-[#383838] px-6 pt-6">
+        {/* Section Header */}
+        <div className="flex items-center mb-6">
+          <div className="h-6 w-1.5 bg-[#51a31d] rounded-full mr-3"></div>
+          <h2 className="text-2xl font-bold text-black">أخبار في الزراعة :</h2>
+        </div>
 
-        {/* Articles */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-12">
-          {newsSlide.map((article, index) => (
-            <div
-              key={index}
-              className="border rounded-lg shadow-xl p-5 transition-all hover:scale-105 bg-[#f9f9fb] hover:shadow-2xl flex flex-col items-center text-center overflow-hidden"
-            >
-              <img
-                src="https://images.unsplash.com/photo-1731964877414-217cdc9b5b37?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt={article.title}
-                className="w-full h-52 object-cover rounded-lg shadow-md"
-              />
-              <div className="p-5 flex flex-col flex-grow">
-                <h4 className="font-extrabold text-xl text-[#383838]">{article.title}</h4>
-                <p className="text-md mt-3 text-gray-700 flex-grow leading-relaxed">{article.description}</p>
-                <span className="text-sm text-gray-500 mt-4 flex items-center gap-2 justify-center">
-                  <User className="w-5 h-5" /> {article.author}
-                </span>
-              </div>
+        {/* Swiper Slider */}
+        <div className="relative py-4">
+          <Swiper
+            modules={[Navigation, Autoplay]}
+            navigation={{
+              nextEl: '.swiper-button-next-arg',
+              prevEl: '.swiper-button-prev-arg',
+            }}
+            autoplay={{ delay: 4000, disableOnInteraction: false }}
+            loop={true}
+            slidesPerView={1}
+            className="w-full rounded-lg overflow-hidden"
+          >
+            {newsSlide.length > 0 ? (
+              newsSlide.map((slide) => (
+                <SwiperSlide key={slide.id}>
+                  <div className="relative h-[400px] overflow-hidden">
+                    <div
+                      className="absolute inset-0 bg-center bg-cover"
+                      style={{
+                        backgroundImage: `url('https://img.freepik.com/free-photo/side-view-hands-with-gloves-holding-soil-plant_23-2148814116.jpg?ga=GA1.1.2031020980.1734978984&semt=ais_hybrid')`,
+                      }}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-green-900/60 to-transparent"></div>
+                    </div>
+
+                    <div className="absolute bottom-0 left-0 p-8 text-white w-full">
+                      <div className="flex items-center mb-2">
+                        <span className="bg-black text-white text-xs font-bold uppercase px-3 py-1 ml-5 rounded">
+                          NEWS
+                        </span>
+                        <div className="flex items-center">
+                          <span className="text-xs opacity-80">
+                            {new Date(slide.publishedDate).toLocaleDateString("ar-SA", {
+                              month: "long",
+                              day: "numeric",
+                              year: "numeric",
+                            })}
+                          </span>
+                          <span className="mx-2 text-gray-400">•</span>
+                          <span className="text-xs opacity-80">{slide.author}</span>
+                        </div>
+                      </div>
+
+                      <h2 className="text-3xl font-bold mb-2">{slide.title}</h2>
+                      <p className="text-lg opacity-80 line-clamp-2">{slide.description}</p>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))
+            ) : (
+              <div className="text-center py-8">لا توجد أخبار متاحة حالياً.</div>
+            )}
+
+            {/* Custom Navigation Arrows */}
+            <div className="swiper-button-prev-arg absolute top-1/2 -translate-y-1/2 left-4 z-10 !text-white w-10 h-10 rounded-full flex items-center justify-center bg-black/30 hover:bg-black/50 transition-all">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
             </div>
-          ))}
+            <div className="swiper-button-next-arg absolute top-1/2 -translate-y-1/2 right-4 z-10 !text-white w-10 h-10 rounded-full flex items-center justify-center bg-black/30 hover:bg-black/50 transition-all">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </div>
+          </Swiper>
+        </div>
+
+        {/* Articles Section */}
+        <div className="mt-10">
+          <div className="flex items-center mb-6">
+            <div className="h-6 w-1.5 bg-[#51a31d] rounded-full mr-3"></div>
+            <h2 className="text-2xl font-bold text-black">تعرف على أهم المقالات لدينا :</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
+            {newsSlide.length > 0 ? (
+              newsSlide.slice(0, 4).map((article, index) => (
+                <div key={index} className="transform hover:-translate-y-1 transition-all duration-300">
+                  <div className="flex flex-col bg-white rounded-lg shadow-md overflow-hidden h-full">
+                    <div className="overflow-hidden relative">
+                      {article.featuredImage && (
+                        <img
+                          src={`http://localhost:5000/${article.featuredImage}`}
+                          alt={article.title}
+                          className="w-full h-48 object-cover transition-transform duration-700 hover:scale-105"
+                        />
+                      )}
+                    </div>
+                    <div className="p-4 flex flex-col flex-grow">
+                      <h2 className="text-lg font-bold text-[#383838] mb-2 hover:text-[#51a31d] transition-colors duration-300 line-clamp-2">
+                        {article.title}
+                      </h2>
+                      <div className="text-xs text-gray-500 mb-3 flex items-center">
+                        <span>بواسطة {article.author}</span>
+                      </div>
+                      <p className="text-sm text-gray-600 line-clamp-3">{article.description}</p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="text-center col-span-full py-8">لا توجد مقالات متاحة حالياً.</div>
+            )}
+          </div>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 

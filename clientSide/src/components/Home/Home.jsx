@@ -8,17 +8,19 @@ import HeroSection from "./HeroSection";
 import HealthSection from "./HealthSection";
 import PolicySection from "./PolicySection";
 import ArgSection from "./ArgSection";
-
+import VideoSlider from "./VideoSlider";
 
 const Home = () => {
   return (
-    <>
-      <HeroSection />
-      <HealthSection/>
-      <PolicySection/>
-      <ArgSection/>
-    
-    </>
+    <div className="bg-gray-50 min-h-screen">
+      <div className="container mx-auto px-4 py-6">
+        <HeroSection />
+        <HealthSection />
+        <PolicySection />
+        <ArgSection />
+        <VideoSlider />
+      </div>
+    </div>
   );
 };
 

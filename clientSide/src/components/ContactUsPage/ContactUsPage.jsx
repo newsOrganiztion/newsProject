@@ -1,14 +1,39 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import Cookies from "js-cookie";
+import { FaPhone } from "react-icons/fa"; // Font Awesome
+import { MdEmail } from "react-icons/md"; // Material Design
+import { FiMapPin } from "react-icons/fi"; // Feather Icons
+import { BsTwitter, BsFacebook, BsLinkedin } from "react-icons/bs"; // Bootstrap Icons
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI("AIzaSyAOqUTs0LtSzF7vfO7M3u7qDUFPKq39Bng");
 
 const Contact = () => {
   const token = Cookies.get("authToken");
   const [userId, setUserId] = useState(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+    subject: "",
+  });
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    { role: "system", content: "مرحبًا! كيف يمكنني مساعدتك اليوم؟" },
+  ]);
+  const [input, setInput] = useState("");
+  const [submitStatus, setSubmitStatus] = useState(null);
+  const [activeTab, setActiveTab] = useState("form");
 
+  // معلومات الاتصال
+  const contactInfo = [
+    { icon: <FaPhone size={24} />, title: "رقم الهاتف", value: "0798837302" },
+    { icon: <MdEmail size={24} />, title: "البريد الإلكتروني", value: "yaqeen@gmail.com" },
+    { icon: <FiMapPin size={24} />, title: "العنوان", value: "عمان , الأردن" },
+  ];
+
+  // Fetch user info
   useEffect(() => {
     if (token) {
       axios
@@ -23,30 +48,6 @@ const Contact = () => {
         });
     }
   }, [token]);
-
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-    subject: "",
-  });
-
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    { role: "system", content: "مرحبًا! كيف يمكنني مساعدتك اليوم؟" },
-  ]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [submitStatus, setSubmitStatus] = useState(null);
-  const [activeTab, setActiveTab] = useState("form");
-
-  // معلومات الاتصال
-  const contactInfo = [
-    { icon: "📞", title: "رقم الهاتف", value: "0798837302" },
-    { icon: "📧", title: "البريد الإلكتروني", value: "yaqeen@gmail.com" },
-    { icon: "📍", title: "العنوان", value: "عمان , الأردن" },
-  ];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -108,8 +109,8 @@ const Contact = () => {
 
   return (
     <div className="bg-[#f9f9fb] min-h-screen font-sans" dir="rtl">
-      {/* Header with gradient */}
-      <div className="w-full bg-gradient-to-r from-[#51a31d] to-[#7585ff] py-10 text-white">
+      {/* Hero Section with Black Background */}
+      <div className="w-full bg-black py-10 text-white">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-bold text-center">تواصل معنا</h1>
           <p className="text-center mt-2 opacity-90">
@@ -123,7 +124,7 @@ const Contact = () => {
           {/* Contact Info Section */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <div className="bg-gradient-to-r from-[#51a31d] to-[#7585ff] py-6 px-4 text-white">
+              <div className="bg-[#51a31d] py-6 px-4 text-white">
                 <h2 className="text-xl font-bold">معلومات الاتصال</h2>
                 <p className="mt-2 opacity-75 text-sm">
                   يمكنك التواصل معنا عبر التالي:
@@ -153,19 +154,19 @@ const Contact = () => {
                     onClick={() => handleRedirect("https://twitter.com")}
                     className="h-10 w-10 rounded-full bg-[#1DA1F2] text-white flex items-center justify-center hover:bg-[#51a31d] transition duration-300"
                   >
-                    <span>X</span>
+                    <BsTwitter size={20} />
                   </button>
                   <button
                     onClick={() => handleRedirect("https://facebook.com")}
                     className="h-10 w-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:bg-[#51a31d] transition duration-300"
                   >
-                    <span>f</span>
+                    <BsFacebook size={20} />
                   </button>
                   <button
                     onClick={() => handleRedirect("https://linkedin.com")}
                     className="h-10 w-10 rounded-full bg-[#0A66C2] text-white flex items-center justify-center hover:bg-[#51a31d] transition duration-300"
                   >
-                    <span>in</span>
+                    <BsLinkedin size={20} />
                   </button>
                 </div>
               </div>
@@ -180,7 +181,7 @@ const Contact = () => {
                   onClick={() => setActiveTab("form")}
                   className={`flex-1 py-4 text-center font-semibold transition duration-300 ${
                     activeTab === "form"
-                      ? "bg-gradient-to-r from-[#51a31d] to-[#7585ff] text-white"
+                      ? "bg-[#51a31d] text-white"
                       : "text-gray-600 hover:bg-gray-100"
                   }`}
                 >
@@ -190,7 +191,7 @@ const Contact = () => {
                   onClick={() => setActiveTab("map")}
                   className={`flex-1 py-4 text-center font-semibold transition duration-300 ${
                     activeTab === "map"
-                      ? "bg-gradient-to-r from-[#51a31d] to-[#7585ff] text-white"
+                      ? "bg-[#51a31d] text-white"
                       : "text-gray-600 hover:bg-gray-100"
                   }`}
                 >
@@ -236,7 +237,7 @@ const Contact = () => {
                         placeholder="أدخل موضوع الرسالة"
                         value={formData.subject}
                         onChange={handleChange}
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#7585ff] text-gray-700"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#51a31d] text-gray-700"
                         required
                       />
                     </div>
@@ -250,13 +251,13 @@ const Contact = () => {
                         placeholder="اكتب رسالتك هنا..."
                         value={formData.message}
                         onChange={handleChange}
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#7585ff] text-gray-700"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#51a31d] text-gray-700"
                         required
                       ></textarea>
                     </div>
                     <button
                       type="submit"
-                      className="w-full py-3 px-6 bg-gradient-to-r from-[#51a31d] to-[#7585ff] text-white rounded-lg font-bold hover:opacity-90 transition duration-300 flex items-center justify-center"
+                      className="w-full py-3 px-6 bg-black text-white rounded-lg font-bold hover:opacity-90 transition duration-300 flex items-center justify-center"
                       disabled={submitStatus === "loading"}
                     >
                       {submitStatus === "loading" ? (
@@ -312,7 +313,7 @@ const Contact = () => {
       {/* Chatbot Button */}
       <div
         onClick={() => setIsChatOpen(!isChatOpen)}
-        className="fixed bottom-6 left-6 bg-gradient-to-r from-[#51a31d] to-[#7585ff] p-4 rounded-full shadow-lg cursor-pointer transition duration-300 hover:opacity-90 z-40 animate-bounce"
+        className="fixed bottom-6 left-6 bg-[#51a31d] p-4 rounded-full shadow-lg cursor-pointer transition duration-300 hover:opacity-90 z-40 animate-bounce"
       >
         <span className="text-white text-2xl">💬</span>
       </div>
@@ -320,7 +321,7 @@ const Contact = () => {
       {/* Chatbot Box */}
       {isChatOpen && (
         <div className="fixed bottom-24 left-6 w-80 md:w-96 bg-white rounded-lg shadow-2xl z-50 overflow-hidden transform transition-transform duration-300 ease-in-out">
-          <div className="bg-gradient-to-r from-[#51a31d] to-[#7585ff] py-3 px-4 flex justify-between items-center">
+          <div className="bg-[#51a31d] py-3 px-4 flex justify-between items-center">
             <button
               onClick={() => setIsChatOpen(false)}
               className="text-white hover:text-gray-200 transition"
@@ -349,7 +350,7 @@ const Contact = () => {
                 key={index}
                 className={`p-3 my-2 rounded-lg max-w-4/5 ${
                   msg.role === "user"
-                    ? "bg-gradient-to-r from-[#51a31d] to-[#7585ff] text-white mr-auto ml-0"
+                    ? "bg-[#51a31d] text-white mr-auto ml-0"
                     : "bg-gray-200 ml-auto mr-0"
                 }`}
                 style={{ maxWidth: "75%" }}
@@ -362,14 +363,14 @@ const Contact = () => {
             <div className="flex">
               <input
                 type="text"
-                className="flex-grow p-2 border rounded-r-lg border-gray-300 focus:outline-none focus:border-[#7585ff]"
+                className="flex-grow p-2 border rounded-r-lg border-gray-300 focus:outline-none focus:border-[#51a31d]"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="اكتب رسالتك هنا..."
               />
               <button
                 type="submit"
-                className="bg-gradient-to-r from-[#51a31d] to-[#7585ff] text-white p-2 rounded-l-lg"
+                className="bg-[#51a31d] text-white p-2 rounded-l-lg"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

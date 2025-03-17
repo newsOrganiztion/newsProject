@@ -40,7 +40,7 @@ const Login = ({ switchForm }) => {
       withCredentials: true, // 🔥 Ensures cookies are stored
     });
 
-    window.location.href = "/profile"; // Redirect after login
+    window.location.href = "/"; // Redirect after login
   } catch (error) {
     setError(error.response?.data?.message || "فشل تسجيل الدخول");
   } finally {
