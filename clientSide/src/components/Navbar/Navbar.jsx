@@ -485,15 +485,17 @@ import { Search, Bell, Menu, User, Bookmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+
+
 const navigation = [
-  { name: 'الصفحة الرئيسية', href: '/' },
-  { name: 'عن يقين', href: '/about-us' },
-  { name: 'المقالات ', href: '/category-pages' },
-  { name: 'تسجيل الدخول', href: '/auth' },
-  { name: 'تواصل معنا', href: '/contact-us' },
-  { name: 'انضم إلينا', href: '/register-publisher' },
-  { name: 'انشر مقال', href: '/article/submit', role: 'journalist' },
   { name: 'ملف الناشر', href: '/publisher-profile', role: 'journalist' },
+  { name: 'انشر مقال', href: '/article/submit', role: 'journalist' },
+  { name: 'انضم إلينا', href: '/register-publisher' },
+  { name: 'تواصل معنا', href: '/contact-us' },
+  { name: 'تسجيل الدخول', href: '/auth' },
+  { name: 'المقالات ', href: '/category-pages' },
+  { name: 'عن يقين', href: '/about-us' },
+  { name: 'الصفحة الرئيسية', href: '/' },
 ];
 
 const navigations = navigation.filter(item => item.name !== 'تسجيل الدخول');
