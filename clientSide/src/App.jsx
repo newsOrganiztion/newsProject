@@ -52,7 +52,13 @@ function App() {
             <Route path="/category/*" element={<CategoryPages />} />
             <Route path="/article/:id" element={<ArticleDetailPage />} />
             <Route path="/article/submit" element={<ArticleCreationPage />} />
-            <Route path="/admin-dashboard" element={<AdminDash />} />
+
+
+            <Route path="/AdminDash" element={<AdminDash />} />
+
+
+{/* 
+            <Route path="/admin-dashboard" element={<AdminDash />} /> */}
             <Route path="/register-publisher" element={<RegisterPublisher />} />
             <Route path="/article-detail" element={<ArticleDetailPage />} />
             <Route path="/category-pages" element={<CategoryPages />} />
