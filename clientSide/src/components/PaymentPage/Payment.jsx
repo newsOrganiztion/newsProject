@@ -127,16 +127,16 @@
 import React, { useState } from 'react';
 import Swal from "sweetalert2";
 
-const PaymentModal = () => {
+const PaymentModal = ({ email, onClose }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [formData, setFormData] = useState({
     name:'',
-    email: '',
+    email: email || "",
     cardNumber: '',
     expiryDate: '',
     cvc: '',
     zipCode: '',
-    country: ' '
+    country: 'الأردن '
   });
 
   const handleSubmit = async (e) => {
@@ -236,18 +236,10 @@ const PaymentModal = () => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" dir="rtl">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
-        {/* زر الإغلاق */}
-        <div className="flex justify-start">
-          <button 
-            onClick={() => setIsOpen(false)}
-            className="text-gray-500 hover:text-gray-700"
-          >
-            {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg> */}
-          </button>
+      {/* زر الإغلاق */}
+      <div className="flex justify-start">
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">✖</button>
         </div>
-        
         <h2 className="text-2xl font-medium text-gray-700 mb-6">معلومات الدفع</h2>
         
         <form onSubmit={handleSubmit}>
@@ -268,6 +260,7 @@ const PaymentModal = () => {
                 className="w-full pr-10 pl-3 py-2 border-b border-gray-300 focus:outline-none focus:border-blue-500 text-right" 
                 placeholder="email@example.com"
                 required
+                readOnly // ✅ يمنع التعديل عليه
               />
             </div>
           </div>

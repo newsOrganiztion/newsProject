@@ -9,6 +9,8 @@ const contactRoutes = require("./routes/contactRoutes");
 const admainRoutes = require("./routes/admainRoutes");
 const savedArticles = require("./routes/savedArticlesRoute");
 const homeArticles = require("./routes/HomeRoutes");
+const commentRoutes = require("./routes/commentRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 
 
 dotenv.config();
@@ -37,8 +39,12 @@ app.use("/api/artic", savedArticles);
 app.use("/uploads", express.static("uploads"));
 app.use("/api/article",admainRoutes)
 // app.use("/api/journalist", journalistRoutes);
+
+app.use('/api', paymentRoutes);
+
 app.use("/api/users", contactRoutes);
 app.use("/api/home-articles", homeArticles);
+app.use("/api/comments", commentRoutes);
 
 
 const PORT = process.env.PORT || 5000;

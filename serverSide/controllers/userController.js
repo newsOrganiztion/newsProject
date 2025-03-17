@@ -105,9 +105,13 @@ exports.loginUser = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
 
     res.cookie("authToken", token, {
       httpOnly: true,
@@ -261,7 +265,19 @@ exports.approveUser = async (req, res) => {
     res.status(200).json({ message: 'تمت الموافقة على المستخدم بنجاح', user });
   } catch (error) {
     console.error('حدث خطأ أثناء الموافقة على المستخدم:', error);
-    res.status(500).json({ message: 'حدث خطأ أثناء الموافقة على المستخدم' });
+    res.status(500).json({ message: 'حدث خطأ أثناء الموافقة على المستخدم' });}}
+exports.getUserRoleFromToken = async (req, res) => {
+  try {
+    const token = req.cookies.authToken;
+
+    if (!token) {
+      return res.status(401).json({ message: "No token found" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    res.status(200).json({ userId: decoded.id, role: decoded.role });
+  } catch (error) {
+    res.status(401).json({ message: "Invalid or expired token" });
   }
 };
 
@@ -297,4 +313,3 @@ exports.saveArticleBookmark = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-

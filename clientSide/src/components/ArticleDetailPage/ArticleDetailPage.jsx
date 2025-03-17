@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import PaymentComponent from "../PaymentPage/Payment";
+
 
 export default function ArticleDetailPage() {
   const { id } = useParams(); 
@@ -9,69 +11,129 @@ export default function ArticleDetailPage() {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [email, setEmail] = useState("");
+  const [showPayment, setShowPayment] = useState(false); 
   const [likeCount, setLikeCount] = useState(42);
   const [liked, setLiked] = useState(false);
-
   const [shareCount, setShareCount] = useState(14);
   const [commentsCount, setCommentsCount] = useState(8);
+  const [userId, setUserId] = useState(null); // State to store userId
 
   useEffect(() => {
-    const fetchArticle = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/api/articles/${id}`);
-        setArticle(response.data); 
-        setLoading(false); 
-        
-        // Mock comments data
-        setComments([
-          { id: 1, author: "سارة أحمد", content: "مقال رائع، شكراً على المعلومات القيمة!", date: "منذ 3 ساعات" },
-          { id: 2, author: "خالد محمود", content: "أتفق مع الكاتب في العديد من النقاط المذكورة. أتمنى المزيد من المقالات المشابهة.", date: "منذ 5 ساعات" },
-          { id: 3, author: "ليلى عبدالله", content: "هل هناك مصادر إضافية يمكن الرجوع إليها للاستزادة؟", date: "منذ يوم واحد" }
-        ]);
-        setCommentsCount(8);
-      } catch (error) {
-        console.error("Error fetching article:", error);
-        setLoading(false); 
-      }
-    };
+    fetchComments(); 
+    fetchArticle(); 
+    getUserId();   
+}, [id]);
 
-    fetchArticle();
-  }, [id]); 
 
-  const handleCommentSubmit = (e) => {
+const fetchComments = async () => {
+  try {
+    const response = await axios.get(`http://localhost:5000/api/comments/${id}`);
+
+    
+    const approvedComments = response.data.filter(comment => comment.status === "approved");
+
+    setComments(approvedComments);
+    setCommentsCount(approvedComments.length);
+  } catch (error) {
+    console.error("❌ Error fetching comments:", error);
+  }
+};
+
+
+const fetchArticle = async () => {
+  try {
+    const articleResponse = await axios.get(`http://localhost:5000/api/articles/${id}`);
+    setArticle(articleResponse.data);
+    setLikeCount(articleResponse.data.likes || 0);
+    setShareCount(articleResponse.data.shares || 0);
+  } catch (error) {
+    console.error("❌ Error fetching article:", error);
+  } finally {
+    setLoading(false); 
+  }
+};
+
+
+const getUserId = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/api/users/get-user", {
+      withCredentials: true, 
+    });
+
+    if (res.data?.userId) {
+      console.log("✅ User ID received:", res.data.userId);
+      setUserId(res.data.userId);
+      setEmail(res.data.email); 
+    } else {
+      console.log("⚠ No user ID found (user might not be logged in)");
+    }
+  } catch (error) {
+    console.warn("❌ Error fetching user (probably not logged in):", error.response?.data || error.message);
+  }
+};
+
+
+const handleCommentSubmit = async (e) => {
     e.preventDefault();
     if (!comment.trim()) return;
-    
-    const newComment = {
-      id: comments.length + 1,
-      author: "أنت",
-      content: comment,
-      date: "الآن"
-    };
-    
-    setComments([newComment, ...comments]);
-    setComment("");
-    setCommentsCount(commentsCount + 1);
-  };
 
-  const handleLike = () => {
-    if (liked) {
-      setLikeCount(likeCount - 1);
-    } else {
-      setLikeCount(likeCount + 1);
+    try {
+      if (!userId) {
+        console.error("User ID is not available.");
+        return;
+      }
+
+      await axios.post(`http://localhost:5000/api/comments/${id}`, {
+        userId: userId, 
+        content: comment,
+      });
+
+      alert("تم إرسال تعليقك وهو قيد المراجعة.");
+      setComment(""); 
+
+      fetchComments(); 
+
+    } catch (error) {
+      console.error("❌ خطأ أثناء إضافة التعليق:", error.response ? error.response.data : error.message);
     }
-    setLiked(!liked);
+};
+
+  const handleLike = async () => {
+    if (liked) return;
+
+    try {
+      const response = await axios.post(`http://localhost:5000/api/articles/${id}/like`);
+      if (response.data.likes !== undefined) {
+        setLikeCount(response.data.likes);
+      }
+      setLiked(true);
+    } catch (error) {
+      console.error("خطأ أثناء تسجيل الإعجاب:", error);
+    }
   };
 
-  const handleShare = () => {
-    setShareCount(shareCount + 1);
-    // Here you would typically implement the sharing functionality
-    alert("تم نسخ رابط المقال!");
+  // 🟢 Fix: Define `handleShare`
+  const handleShare = async () => {
+    try {
+      const response = await axios.post(`http://localhost:5000/api/articles/${id}/share`);
+      if (response.data.shares !== undefined) {
+        setShareCount(response.data.shares);
+      }
+
+      const articleUrl = `https://www.yoursite.com/articles/${id}`;
+      const emailSubject = "تحقق من هذا المقال الرائع!";
+      const emailBody = `أود أن أشارك معك هذا المقال: ${articleUrl}`;
+      const emailUrl = `mailto:?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+      
+      window.open(emailUrl, "_self");
+    } catch (error) {
+      console.error("خطأ أثناء مشاركة المقال:", error);
+    }
   };
 
+  // 🟢 Fix: Define `handleSubscribe`
   const handleSubscribe = (e) => {
     e.preventDefault();
-    // Here you would typically implement the subscription functionality
     alert(`تم الاشتراك بنجاح باستخدام البريد الإلكتروني: ${email}`);
     setEmail("");
   };
@@ -83,7 +145,6 @@ export default function ArticleDetailPage() {
   if (!article) {
     return <div className="text-center p-10 text-red-500 text-xl">المقال غير موجود</div>;
   }
-
   return (
     <div className="container mx-auto p-4 max-w-4xl" dir="rtl">
       {/* Category bar */}
@@ -258,12 +319,12 @@ export default function ArticleDetailPage() {
               className="flex-1 border-2 border-gray-300 rounded-full px-4 py-2 text-right bg-white"
               required
             />
-            <button 
-              type="submit" 
-              className="bg-black text-white font-semibold px-6 py-2 rounded-full  hover:bg-gray-800 transition-colors"
-            >
-              اشترك الآن
-            </button>
+           <button 
+          className="bg-black text-white font-semibold px-6 py-2 rounded-full mt-4 hover:bg-gray-800 transition-colors"
+          onClick={() => setShowPayment(true)} // ✅ فتح الـ Popup عند الضغط
+        >
+          اشترك الآن
+        </button>
           </form>
           
           <p className="text-xs text-gray-500 mt-3 text-right">
@@ -273,8 +334,18 @@ export default function ArticleDetailPage() {
           <div className="mt-2 text-xs text-gray-500 text-right">
             محمي بواسطة reCAPTCHA
           </div>
+
+             {/* ✅ مكون الدفع - يظهر فقط عندما تكون `showPayment = true` */}
+      {showPayment && (
+        <PaymentComponent 
+          email={email} // ✅ تمرير البريد الإلكتروني للمكون
+          onClose={() => setShowPayment(false)} // ✅ إغلاق الـ Popup عند الانتهاء
+        />
+      )}
+
         </div>
       </div>
+      
 
       {/* Comment Form Section */}
       <div className="mb-10">
@@ -306,22 +377,24 @@ export default function ArticleDetailPage() {
         </h3>
         
         {comments.length > 0 ? (
-          <div className="space-y-6">
-            {comments.map((comment) => (
-              <div key={comment.id} className="border-b border-gray-100 pb-6">
-                <div className="flex items-start mb-2">
-                  <div className="bg-blue-100 text-blue-800 font-bold rounded-full w-10 h-10 flex items-center justify-center ml-3">
-                    {comment.author.charAt(0)}
-                  </div>
-                  <div>
-                    <h4 className="font-bold">{comment.author}</h4>
-                    <p className="text-gray-500 text-sm">{comment.date}</p>
-                  </div>
-                </div>
-                <p className="text-gray-700 mr-13">{comment.content}</p>
-              </div>
-            ))}
-          </div>
+        <div className="space-y-6">
+     {comments.map((comment) => (
+  <div key={comment._id} className="border-b border-gray-100 pb-6">
+    <div className="flex items-start mb-2">
+      <div className="bg-blue-100 text-blue-800 font-bold rounded-full w-10 h-10 flex items-center justify-center ml-3">
+        {comment.userId?.name ? comment.userId.name.charAt(0) : "?"}
+      </div>
+      <div>
+        <h4 className="font-bold">{comment.userId?.name || "مجهول"}</h4>
+        <p className="text-gray-500 text-sm">
+          {new Date(comment.createdAt).toLocaleDateString()}
+        </p>
+      </div>
+    </div>
+    <p className="text-gray-700 mr-13">{comment.content}</p>
+  </div>
+))}
+      </div>
         ) : (
           <p className="text-gray-500 text-center py-6">لا توجد تعليقات حتى الآن. كن أول من يعلق!</p>
         )}
