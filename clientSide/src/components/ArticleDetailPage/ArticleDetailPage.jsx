@@ -134,7 +134,7 @@ const handleCommentSubmit = async (e) => {
   // 🟢 Fix: Define `handleSubscribe`
   const handleSubscribe = (e) => {
     e.preventDefault();
-    alert(`تم الاشتراك بنجاح باستخدام البريد الإلكتروني: ${email}`);
+    alert(`تم ارسال طلبك للاشتراك : ${email}`);
     setEmail("");
   };
 

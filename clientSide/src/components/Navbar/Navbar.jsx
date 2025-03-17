@@ -609,15 +609,17 @@ import { Search, Bell, Menu, User, Bookmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+
+
 const navigation = [
-  { name: 'الصفحة الرئيسية', href: '/' },
-  { name: 'عن يقين', href: '/about-us' },
-  { name: 'المقالات ', href: '/category-pages' },
-  { name: 'تسجيل الدخول', href: '/auth' },
-  { name: 'تواصل معنا', href: '/contact-us' },
-  { name: 'انضم إلينا', href: '/register-publisher', hideFor: 'journalist' },
-  { name: 'انشر مقال', href: '/article/submit', role: 'journalist' },
   { name: 'ملف الناشر', href: '/publisher-profile', role: 'journalist' },
+  { name: 'انشر مقال', href: '/article/submit', role: 'journalist' },
+  { name: 'انضم إلينا', href: '/register-publisher', hideFor: 'journalist' },
+  { name: 'تواصل معنا', href: '/contact-us' },
+  { name: 'تسجيل الدخول', href: '/auth' },
+  { name: 'المقالات ', href: '/category-pages' },
+  { name: 'عن يقين', href: '/about-us' },
+  { name: 'الصفحة الرئيسية', href: '/' },
 ];
 
 const Example = () => {
@@ -665,7 +667,7 @@ const Example = () => {
         {/* Logo (Centered) */}
         <div className="absolute left-1/2 transform -translate-x-1/2">
           <img
-            src="https://media.discordapp.net/attachments/1326085515585257482/1350582243604693052/image.png?ex=67d7433b&is=67d5f1bb&hm=ec4d835d31ebf2ab7f63ef08a469e39815c24de2239d2ce1a2708b6bf475b16a&=&format=webp&quality=lossless&width=393&height=207"
+            src="..\public\img\يقين.png"
             alt="شعار يقين"
             className="h-30 w-50"
           />
