@@ -8,6 +8,7 @@ const RegisterPublisher = () => {
   const [loading, setLoading] = useState(true);
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
+  const[updatedUser,setUpdatedUser]=useState([])
 
 
 useEffect(() => {
@@ -16,6 +17,7 @@ useEffect(() => {
       const res = await axios.get("http://localhost:5000/api/users/profile", {
         withCredentials: true,
       });
+      console.log(res.data.user)
       setUser(res.data.user);
       setUpdatedUser({
         name: res.data.user.name,
@@ -23,6 +25,7 @@ useEffect(() => {
         profilePicture: res.data.user.profilePicture,
       });
     } catch (error) {
+       console.error("Fetch Error:", error); // طباعة الخطأ لفهمه
       toast.error(
         error.response?.data?.message || "فشل في جلب بيانات المستخدم"
       );
