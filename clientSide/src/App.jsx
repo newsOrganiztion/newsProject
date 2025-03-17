@@ -54,7 +54,7 @@ function App() {
             <Route path="/article/submit" element={<ArticleCreationPage />} />
 
 
-            <Route path="/AdminDash" element={<AdminDash />} />
+            <Route path="/admin-dashboard/*" element={<AdminDash />} />
 
 
 {/* 
