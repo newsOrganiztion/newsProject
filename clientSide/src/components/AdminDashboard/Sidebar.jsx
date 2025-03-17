@@ -7,12 +7,12 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
  const menuItems = [
-  { name: "Dashboard", label: "الرئيسية", icon: FaTachometerAlt, path: "/admin" }, // المسار الرئيسي
-  { name: "ManageJournalists", label: "إدارة الصحفيين", icon: FaUserEdit, path: "/admin/manage-journalists" },
-  { name: "ManageUsers", label: "إدارة المستخدمين", icon: FaUsers, path: "/admin/manage-users" },
-  { name: "ArticleManagement", label: "إدارة المقالات", icon: FaNewspaper, path: "/admin/article-management" },
-  { name: "CommentsReports", label: "التعليقات والتبليغات", icon: FaComments, path: "/admin/comments-reports" },
-  { name: "Analytics", label: "تحليلات الموقع", icon: FaChartLine, path: "/admin/analytics" },
+  { name: "Dashboard", label: "الرئيسية", icon: FaTachometerAlt, path: "/admin-dashboard" }, // المسار الرئيسي
+  { name: "ManageJournalists", label: "إدارة الصحفيين", icon: FaUserEdit, path: "/admin-dashboard/manage-journalists" },
+  { name: "ManageUsers", label: "إدارة المستخدمين", icon: FaUsers, path: "/admin-dashboard/manage-users" },
+  { name: "ArticleManagement", label: "إدارة المقالات", icon: FaNewspaper, path: "/admin-dashboard/article-management" },
+  { name: "CommentsReports", label: "التعليقات والتبليغات", icon: FaComments, path: "/admin-dashboard/comments-reports" },
+  { name: "Analytics", label: "تحليلات الموقع", icon: FaChartLine, path: "/admin-dashboard/analytics" },
 ];
 
   return (

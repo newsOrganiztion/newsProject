@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { motion } from 'framer-motion';
 import axios from 'axios';
@@ -8,13 +8,13 @@ const Login = ({ switchForm }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
+  
   // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   setError('');
+    //   e.preventDefault();
+    //   setLoading(true);
+    //   setError('');
     
-  //   try {
+    //   try {
   //     const res = await axios.post(
   //       'http://localhost:5000/api/users/login', 
   //       formData, 
@@ -25,22 +25,50 @@ const Login = ({ switchForm }) => {
   //   } catch (error) {
   //     setError(error.response?.data?.message || 'فشل تسجيل الدخول');
   //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+    //     setLoading(false);
+    //   }
+    // };
+    const [userRole, setUserRole] = useState(null);
+
+    
+       const fetchUserRole = async () => {
+         try {
+           const response = await axios.get("http://localhost:5000/api/users/get-role", { withCredentials: true });
+           console.log(response.data.role);
+           setUserRole(response.data.role);
+        
+         } catch (error) {
+           console.error("error fetching user role");
+         }
+       };
+       
+     
+
+
+
+
 
 
   const handleSubmit = async (e) => {
   e.preventDefault();
   setLoading(true);
   setError("");
-
+  
   try {
     await axios.post("http://localhost:5000/api/users/login", formData, {
       withCredentials: true, // 🔥 Ensures cookies are stored
     });
+    fetchUserRole();
 
-    window.location.href = "/"; // Redirect after login
+    console.log(userRole);
+    if(formData.email==="Admin@gmail.com"){
+    window.location.href = "/admin-dashboard"; // Redirect after login
+
+    }
+    else{
+
+      window.location.href = "/"; // Redirect after login
+    }
   } catch (error) {
     setError(error.response?.data?.message || "فشل تسجيل الدخول");
   } finally {
@@ -56,7 +84,7 @@ const Login = ({ switchForm }) => {
         token: credentialResponse.credential
       });
       localStorage.setItem('token', res.data.token);
-      window.location.href = '/dashboard';
+      window.location.href = '/';
     } catch (error) {
       setError(error.response?.data?.message || 'فشل تسجيل الدخول باستخدام جوجل');
     } finally {
