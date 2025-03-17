@@ -9,23 +9,30 @@ const RegisterPublisher = () => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
 
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/api/users/profile", {
-          withCredentials: true,
-        });
-        setUser(res.data.user);
-      } catch (error) {
-        toast.error(
-          error.response?.data?.message || "فشل في جلب بيانات المستخدم"
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUserProfile();
-  }, []);
+
+useEffect(() => {
+  const fetchUserProfile = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/users/profile", {
+        withCredentials: true,
+      });
+      setUser(res.data.user);
+      setUpdatedUser({
+        name: res.data.user.name,
+        email: res.data.user.email,
+        profilePicture: res.data.user.profilePicture,
+      });
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "فشل في جلب بيانات المستخدم"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchUserProfile();
+}, []);
+
 
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
