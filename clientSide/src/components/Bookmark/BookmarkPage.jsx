@@ -584,7 +584,7 @@ const BookmarkPage = () => {
       z-10
     `}>
       <img 
-        src=""
+        src={``}
         alt={bookmark.title} 
         className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       />

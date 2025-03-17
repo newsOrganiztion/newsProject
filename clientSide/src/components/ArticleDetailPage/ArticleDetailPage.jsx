@@ -30,7 +30,7 @@ const fetchComments = async () => {
     const response = await axios.get(`http://localhost:5000/api/comments/${id}`);
 
     
-    const approvedComments = response.data.filter(comment => comment.status === "approved");
+    const approvedComments = response.data;
 
     setComments(approvedComments);
     setCommentsCount(approvedComments.length);
@@ -88,7 +88,7 @@ const handleCommentSubmit = async (e) => {
         content: comment,
       });
 
-      alert("تم إرسال تعليقك وهو قيد المراجعة.");
+      alert("تم إرسال تعليقك.");
       setComment(""); 
 
       fetchComments(); 
