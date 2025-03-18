@@ -47,10 +47,10 @@ const PolicySection = () => {
     <section className="bg-white rounded-lg shadow-sm my-8 pb-6">
       <div className="text-[#383838] px-6 pt-6">
         {/* Section Header */}
-        <div className="flex items-center mb-6">
-          <div className="h-6 w-1.5 bg-[#51a31d] rounded-full mr-3"></div>
-          <h2 className="text-2xl font-bold text-black">أخبار في السياسة :</h2>
-        </div>
+        <div className="flex items-center mb-6" style={{ gap: '10px' }}>
+    <div className="h-6 w-1.5 bg-[#51a31d] rounded-full"></div>
+    <h2 className="text-2xl font-bold text-black">أخبار في السياسة :</h2>
+</div>
 
         {/* Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -66,7 +66,7 @@ const PolicySection = () => {
                 />
 
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-red-800 via-red-700/70 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-red-800 via-red-700/30 to-transparent"></div>
 
                 <div className="absolute bottom-0 right-0 left-0 p-6 text-white">
                   <h2 className="text-xl font-bold leading-tight mb-3">{newsSlide[0]?.title || "لا عنوان"}</h2>

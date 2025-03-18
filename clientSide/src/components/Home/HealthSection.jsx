@@ -38,7 +38,7 @@ const HealthSection = () => {
     <section className="bg-white rounded-lg shadow-sm my-8 pb-6">
       <div className="text-[#383838] px-6 pt-6">
         {/* Section Header */}
-        <div className="flex items-center mb-4">
+        <div className="flex items-center mb-6" style={{ gap: '10px' }}>
           <div className="h-6 w-1.5 bg-[#51a31d] rounded-full mr-3"></div>
           <h2 className="text-2xl font-bold text-black">أخبار في الصحة :</h2>
         </div>
@@ -127,7 +127,7 @@ const HealthSection = () => {
 
         {/* Articles Section */}
         <div className="mt-10">
-          <div className="flex items-center mb-6">
+        <div className="flex items-center mb-6" style={{ gap: '10px' }}>
             <div className="h-6 w-1.5 bg-[#51a31d] rounded-full mr-3"></div>
             <h2 className="text-2xl font-bold text-black">تعرف على أهم المقالات لدينا :</h2>
           </div>

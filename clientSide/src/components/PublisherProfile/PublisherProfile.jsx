@@ -170,7 +170,7 @@ const PublisherProfile = () => {
   return (
     <div className="bg-[#f0f2f5] min-h-screen" dir="rtl">
       {/* رأس الصفحة مع الإحصائيات */}
-      <div className="bg-gradient-to-r from-[#51a31d] via-[#61b12d] to-[#7585ff] text-white shadow-md">
+      <div className="bg-[#51a31d] text-white shadow-md">
         <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="flex flex-col md:flex-row items-center mb-6 md:mb-0">
@@ -383,7 +383,7 @@ const PublisherProfile = () => {
                 <div className="pt-4">
                   <button
                     onClick={handleLogout}
-                    className="w-full bg-[#383838] hover:bg-[#2d2d2d] text-white px-4 py-2 rounded-lg transition-colors"
+                    className="w-full bg-black hover:bg-[#2d2d2d] text-white px-4 py-2 rounded-lg transition-colors"
                   >
                     تسجيل الخروج
                   </button>
