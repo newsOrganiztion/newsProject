@@ -17,7 +17,7 @@ exports.addComment = async (req, res) => {
       content,
       status: "pending",
     });
-
+    
     await newComment.save();
 
     res.status(201).json({ message: "تم إرسال تعليقك وهو قيد المراجعة." });

@@ -122,7 +122,7 @@ const Profile = () => {
       <div className="max-w-4xl mx-auto">
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
           {/* Header Section */}
-          <div className="bg-gradient-to-r from-green-500 to-blue-500 px-6 py-8">
+          <div className="bg-[#51a31d] px-6 py-8">
             <div className="flex flex-col md:flex-row items-center">
               {user.profilePicture ? (
                 <img
@@ -149,7 +149,7 @@ const Profile = () => {
               <div className="mt-4 md:mt-0">
                 <button
                   onClick={handleLogout}
-                  className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors"
+                  className="bg-black hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors"
                 >
                   تسجيل الخروج
                 </button>
@@ -166,7 +166,7 @@ const Profile = () => {
                 </h2>
                 <button
                   onClick={() => setIsEditing(!isEditing)}
-                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded-lg transition-colors text-sm"
+                  className="bg-black hover:bg-green-600 text-white px-4 py-1 rounded-lg transition-colors text-sm"
                 >
                   {isEditing ? "إلغاء" : "تعديل المعلومات"}
                 </button>
