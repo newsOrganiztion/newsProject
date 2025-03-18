@@ -99,7 +99,7 @@ exports.getArticleById = async (req, res) => {
       .populate("userId", "name")
       .sort({ createdAt: -1 });
 
-    // زيادة عدد المشاهدات
+   
     article.views += 1;
     await article.save();
 
@@ -152,15 +152,7 @@ exports.shareArticle = async (req, res) => {
   }
 };
 
-// exports.getArticles = async (req, res) => {
-//   const userId = req.params.id;
-//   try {
-//     const articles = await Article.find(userId); //userid
-//     res.json(articles);
-//   } catch (err) {
-//     res.status(500).json({ message: "Error fetching articles" });
-//   }
-// };
+
 
 
 exports.getArticles = async (req, res) => {

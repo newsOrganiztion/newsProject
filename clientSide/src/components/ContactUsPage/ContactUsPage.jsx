@@ -6,6 +6,7 @@ import { MdEmail } from "react-icons/md"; // Material Design
 import { FiMapPin } from "react-icons/fi"; // Feather Icons
 import { BsTwitter, BsFacebook, BsLinkedin } from "react-icons/bs"; // Bootstrap Icons
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { Helmet } from "react-helmet";
 
 const genAI = new GoogleGenerativeAI("AIzaSyAOqUTs0LtSzF7vfO7M3u7qDUFPKq39Bng");
 
@@ -29,7 +30,11 @@ const Contact = () => {
   // معلومات الاتصال
   const contactInfo = [
     { icon: <FaPhone size={24} />, title: "رقم الهاتف", value: "0798837302" },
-    { icon: <MdEmail size={24} />, title: "البريد الإلكتروني", value: "yaqeen@gmail.com" },
+    {
+      icon: <MdEmail size={24} />,
+      title: "البريد الإلكتروني",
+      value: "yaqeen@gmail.com",
+    },
     { icon: <FiMapPin size={24} />, title: "العنوان", value: "عمان , الأردن" },
   ];
 
@@ -109,6 +114,25 @@ const Contact = () => {
 
   return (
     <div className="bg-[#f9f9fb] min-h-screen font-sans" dir="rtl">
+      <Helmet>
+        <title>تواصل معنا</title>
+        <meta
+          name="description"
+          content="تواصل معنا عبر البريد الإلكتروني، الهاتف أو عبر نموذج الاتصال المباشر. نحن هنا للإجابة على استفساراتك."
+        />
+        <meta
+          name="keywords"
+          content="تواصل معنا, نموذج الاتصال, دعم العملاء, البريد الإلكتروني, الهاتف, الأردن"
+        />
+        <meta property="og:title" content="تواصل معنا" />
+        <meta
+          property="og:description"
+          content="تواصل معنا عبر البريد الإلكتروني، الهاتف أو عبر نموذج الاتصال المباشر. نحن هنا للإجابة على استفساراتك."
+        />
+        <meta property="og:image" content="url_to_image.jpg" />{" "}
+        {/* يمكنك إضافة رابط الصورة هنا */}
+      </Helmet>
+
       {/* Hero Section with Black Background */}
       <div className="w-full bg-black py-10 text-white">
         <div className="container mx-auto px-4">
