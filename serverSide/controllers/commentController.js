@@ -17,7 +17,7 @@ exports.addComment = async (req, res) => {
       content,
       status: "pending",
     });
-
+    
     await newComment.save();
 
     res.status(201).json({ message: "تم إرسال تعليقك وهو قيد المراجعة." });
@@ -27,7 +27,6 @@ exports.addComment = async (req, res) => {
       .json({ error: "حدث خطأ أثناء إضافة التعليق", details: error.message });
   }
 };
-
 exports.getCommentsByArticle = async (req, res) => {
   try {
     const articleId = req.params.articleId;
@@ -36,7 +35,7 @@ exports.getCommentsByArticle = async (req, res) => {
       .populate("userId", "name")
       .sort({ createdAt: -1 });
 
-    console.log("📢 Comments fetched:", comments); // ✅ تحقق من البيانات
+    console.log("📢 Comments fetched:", comments); 
     res.status(200).json(comments);
   } catch (error) {
     res

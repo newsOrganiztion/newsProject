@@ -158,7 +158,7 @@ useEffect(() => {
                   {/* Description Field */}
                   <div className="bg-[#f9f9fb] p-4 rounded-lg shadow-md mb-4">
                     <label className="text-sm text-gray-500 block mb-1">
-                      الشرح
+                      معلومات الطلب
                     </label>
                     <textarea
                       name="description"
@@ -166,14 +166,14 @@ useEffect(() => {
                       onChange={handleDescriptionChange}
                       rows="4"
                       className="w-full p-2 border border-[#51a31d] rounded-md bg-[#f9f9fb] focus:outline-none focus:border-[#51a31d]"
-                      placeholder="أدخل الشرح هنا..."
+                      placeholder="أدخل معلوماتك هنا..."
                     />
                   </div>
 
                   {/* Image Upload Field */}
                   <div className="bg-[#f9f9fb] p-4 rounded-lg shadow-md mb-4">
                     <label className="text-sm text-gray-500 block mb-1">
-                      إرفاق صورة
+                       ارفق صورة اثبات شخصي
                     </label>
                     <input
                       type="file"

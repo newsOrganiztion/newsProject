@@ -99,7 +99,7 @@ exports.getArticleById = async (req, res) => {
       .populate("userId", "name")
       .sort({ createdAt: -1 });
 
-    // زيادة عدد المشاهدات
+   
     article.views += 1;
     await article.save();
 
@@ -152,21 +152,13 @@ exports.shareArticle = async (req, res) => {
   }
 };
 
-// exports.getArticles = async (req, res) => {
-//   const userId = req.params.id;
-//   try {
-//     const articles = await Article.find(userId); //userid
-//     res.json(articles);
-//   } catch (err) {
-//     res.status(500).json({ message: "Error fetching articles" });
-//   }
-// };
+
 
 exports.getArticles = async (req, res) => {
   try {
-    const { id } = req.params; // جلب الـ userId من params
-    console.log("Fetching articles for user ID:", id); // إضافة سجل للتأكد من ID
-    const articles = await Article.find({ authorId: id }); // البحث عن المقالات التي تحتوي على الـ userId
+    const { id } = req.params; 
+    console.log("Fetching articles for user ID:", id); 
+    const articles = await Article.find({ authorId: id });
     if (!articles || articles.length === 0) {
       return res.status(404).send("No articles found for this user");
     }
@@ -176,3 +168,14 @@ exports.getArticles = async (req, res) => {
     res.status(500).send("An error occurred while fetching articles");
   }
 };
+
+
+// exports.getArticles = async (req, res) => {
+//   const userId = req.params.id;
+//   try {
+//     const articles = await Article.find(userId); //userid
+//     res.json(articles);
+//   } catch (err) {
+//     res.status(500).json({ message: "Error fetching articles" });
+//   }
+// };

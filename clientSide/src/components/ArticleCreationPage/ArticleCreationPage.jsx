@@ -1,8 +1,7 @@
-
-
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify'; // استيراد مكتبة toast
+import 'react-toastify/dist/ReactToastify.css'; // استيراد ملفات الأنماط الخاصة بالـ toast
 
 const ArticleCreationPage = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +21,6 @@ const ArticleCreationPage = () => {
     paragraph4: '',
     authorId: '', // إضافة حقل authorId
   });
-
   const [Id, setId] = useState('');  // لحفظ ID المستخدم
 
   const handleChange = (e) => {
@@ -72,10 +70,10 @@ const ArticleCreationPage = () => {
         },
       });
       console.log(response.data);
-      alert('تم إنشاء المقال بنجاح!');
+      toast.success('تم إنشاء المقال بنجاح!'); // استبدال alert بـ toast
     } catch (error) {
       console.error(error);
-      alert('حدث خطأ أثناء إنشاء المقال.');
+      toast.error('حدث خطأ أثناء إنشاء المقال.'); // استبدال alert بـ toast
     }
   };
 
@@ -86,14 +84,12 @@ const ArticleCreationPage = () => {
         <h1 className="text-2xl font-bold text-[#51a31d]">إنشاء مقال جديد</h1>
         <p className="text-sm text-gray-600 mb-6">يرجى ملء البيانات التالية لإنشاء مقال جديد</p>
       </div>
-
       {/* Form Card */}
       <div className="border rounded-lg p-8 shadow-sm">
         <div className="text-center mb-6">
           <h2 className="text-xl font-bold text-[#51a31d]">معلومات المقال</h2>
           <p className="text-sm text-gray-600">املأ التفاصيل التالية لإنشاء مقال جديد</p>
         </div>
-
         <form className="space-y-6" onSubmit={handleSubmit}>
           {/* First Row - Title and Category */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -125,7 +121,6 @@ const ArticleCreationPage = () => {
               </select>
             </div>
           </div>
-
           {/* Second Row - Description and Tags */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -150,7 +145,6 @@ const ArticleCreationPage = () => {
               />
             </div>
           </div>
-
           {/* Third Row - Author Name and Author Description */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -176,7 +170,6 @@ const ArticleCreationPage = () => {
               />
             </div>
           </div>
-
           {/* Fourth Row - Featured Image and Publication Date */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -199,12 +192,10 @@ const ArticleCreationPage = () => {
               />
             </div>
           </div>
-
           {/* Paragraphs Section */}
           <div className="pt-2">
             <h3 className="text-right text-gray-500">فقرات المقال</h3>
           </div>
-
           {/* Paragraph 1 and Paragraph 2 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -230,7 +221,6 @@ const ArticleCreationPage = () => {
               />
             </div>
           </div>
-
           {/* Paragraph 3 Title and Paragraph 3 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -255,7 +245,6 @@ const ArticleCreationPage = () => {
               />
             </div>
           </div>
-
           {/* Paragraph 4 Title and Paragraph 4 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -280,7 +269,6 @@ const ArticleCreationPage = () => {
               />
             </div>
           </div>
-
           {/* Submit Button */}
           <div className="flex justify-center mt-6">
             <button
@@ -292,6 +280,18 @@ const ArticleCreationPage = () => {
           </div>
         </form>
       </div>
+      {/* إضافة مكون ToastContainer */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true} // لدعم اللغة العربية
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

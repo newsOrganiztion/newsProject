@@ -63,7 +63,7 @@ const Example = () => {
           <img
             src="..\public\img\يقين.png"
             alt="شعار يقين"
-            className="h-30 w-50"
+            className="h-25 w-50"
           />
         </div>
 
