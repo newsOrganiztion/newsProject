@@ -78,7 +78,7 @@ const Register = ({ switchForm }) => {
           <input
             id="name"
             type="text"
-            placeholder="محمد أحمد"
+            placeholder="Enter your name "
             className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#7585ff] focus:border-[#7585ff] transition-all text-right"
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
