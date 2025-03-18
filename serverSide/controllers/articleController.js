@@ -162,15 +162,34 @@ exports.shareArticle = async (req, res) => {
 //   }
 // };
 
+
 exports.getArticles = async (req, res) => {
   try {
-    const { id } = req.params; // جلب الـ userId من params
-    console.log("Fetching articles for user ID:", id); // إضافة سجل للتأكد من ID
-    const articles = await Article.find({ authorId: id }); // البحث عن المقالات التي تحتوي على الـ userId
+    const { id } = req.params; // Get userId from params
+    const { page = 1, limit = 6 } = req.query; // Get pagination parameters (default to page 1 and limit 10)
+
+    console.log("Fetching articles for user ID:", id); // Log for debugging
+
+    // Find articles for the given user, applying pagination
+    const articles = await Article.find({ authorId: id }) // Filter articles by authorId
+      .skip((page - 1) * limit) // Skip articles for the previous pages
+      .limit(Number(limit)) // Limit the number of articles per page
+      .sort({ createdAt: -1 }); // Optionally sort articles by creation date (newest first)
+
+    // Get total count of articles for this user
+    const totalArticles = await Article.countDocuments({ authorId: id });
+
     if (!articles || articles.length === 0) {
       return res.status(404).send("No articles found for this user");
     }
-    res.status(200).json(articles);
+
+    // Return articles with pagination info
+    res.status(200).json({
+      articles,
+      currentPage: page,
+      totalPages: Math.ceil(totalArticles / limit), // Calculate total pages
+      totalArticles,
+    });
   } catch (error) {
     console.error("Database error:", error);
     res.status(500).send("An error occurred while fetching articles");
