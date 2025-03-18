@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { 
   Search, 
   Clock, 
@@ -7,9 +7,68 @@ import {
   ChevronRight,
   AlertCircle
 } from "lucide-react";
+import axios from "axios";
 
 const HeroSection = () => {
+    const [breakingNews, setBreakingNews] = useState([]);
 
+// useEffect(() => {
+//   const fetchBreakingNews = async () => {
+//     try {
+//       const response = await axios.get(
+//         "https://api.rss2json.com/v1/api.json?rss_url=https://www.aljazeera.net/aljazeerarss&format=utf8",
+//         {
+//           headers: {
+//             "Content-Type": "application/json; charset=utf-8",
+//           },
+//           responseType: "json",
+//         }
+//       );
+
+//       const newsData = response.data.items.map(article => 
+//         decodeURIComponent(escape(article.title)) // 🛠 إصلاح الترميز
+//       );
+//       setBreakingNews(newsData);
+//     } catch (error) {
+//       console.error("❌ خطأ في جلب الأخبار:", error);
+//     }
+//   };
+
+//   fetchBreakingNews();
+// }, []);
+
+
+
+useEffect(() => {
+  const fetchBreakingNews = async () => {
+    try {
+      const response = await axios.get(
+        "https://api.rss2json.com/v1/api.json?rss_url=https://www.aljazeera.net/aljazeerarss",
+        {
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          responseType: "json",
+        }
+      );
+
+      // ✅ معالجة النص بطريقة آمنة لتجنب مشاكل الترميز
+      const newsData = response.data.items.map(article => {
+        try {
+          return decodeURIComponent(article.title); // ✅ فك الترميز إن كان ممكنًا
+        } catch (e) {
+          return article.title; // ❌ إذا فشل فك الترميز، نعيد العنوان كما هو
+        }
+      });
+
+      setBreakingNews(newsData);
+    } catch (error) {
+      console.error("❌ خطأ في جلب الأخبار:", error);
+    }
+  };
+
+  fetchBreakingNews();
+}, []);
 
   const articles = [
     {
@@ -50,20 +109,20 @@ const HeroSection = () => {
   ];
 
   
-  const breakingNews = [
-    "قرب الوصول الى اتفاق وقف اطلاق النار بين غزة واسرائيل",
-    "اوكرنيا بدأت بالخضوع لروسيا",
-    "ظهور انواع جديدة من النباتات في جزر القرم",
-    "  الأردنيون يقفون يدًا واحدة ضد العدوان ويدعمون الحق الفلسطيني",
-    "الأردنيون يقفون يدًا واحدة ضد العدوان ويدعمون الحق الفلسطيني",
+  // const breakingNews = [
+  //   "قرب الوصول الى اتفاق وقف اطلاق النار بين غزة واسرائيل",
+  //   "اوكرنيا بدأت بالخضوع لروسيا",
+  //   "ظهور انواع جديدة من النباتات في جزر القرم",
+  //   "  الأردنيون يقفون يدًا واحدة ضد العدوان ويدعمون الحق الفلسطيني",
+  //   "الأردنيون يقفون يدًا واحدة ضد العدوان ويدعمون الحق الفلسطيني",
    
-  ];
+  // ];
   
   // Trending topics
   return (
     <div className=" text-[#383838] ">
       {/* ✅ شريط الأخبار العاجلة */}
-      <div className="bg-black text-white py-2 px-4 overflow-hidden">
+      {/* <div className="bg-black text-white py-2 px-4 overflow-hidden">
         <div className="flex items-center max-w-6xl mx-auto">
           <div className="flex items-center bg-[#51a31d] px-3 py-1 rounded-full mr-4">
             <AlertCircle size={14} className="mr-1" />
@@ -74,6 +133,26 @@ const HeroSection = () => {
               {breakingNews.map((news, index) => (
                 <span key={index} className="mx-4 text-sm inline-block">{news}</span>
               ))}
+            </div>
+          </div>
+        </div>
+      </div> */}
+
+         <div className="bg-black text-white py-2 px-4 overflow-hidden">
+        <div className="flex items-center max-w-6xl mx-auto">
+          <div className="flex items-center bg-[#51a31d] px-3 py-1 rounded-full mr-4">
+            <AlertCircle size={14} className="mr-1" />
+            <span className="text-sm font-bold">BREAKING</span>
+          </div>
+          <div className="overflow-hidden relative w-full">
+            <div className="whitespace-nowrap animate-marquee">
+              {breakingNews.length > 0 ? (
+                breakingNews.map((news, index) => (
+                  <span key={index} className="mx-4 text-sm inline-block">{news}</span>
+                ))
+              ) : (
+                <span className="text-sm">جارٍ تحميل الأخبار العاجلة...</span>
+              )}
             </div>
           </div>
         </div>
@@ -132,14 +211,14 @@ const HeroSection = () => {
     
       
       {/* ✅ كود تحريك الأخبار العاجلة */}
-      <style>{`
+       <style>{`
         @keyframes marquee {
           from { transform: translateX(100%); }
           to { transform: translateX(-100%); }
         }
         .animate-marquee {
           display: inline-block;
-          animation: marquee 40s linear infinite;
+          animation: marquee 80s linear infinite;
         }
       `}</style>
     </div>

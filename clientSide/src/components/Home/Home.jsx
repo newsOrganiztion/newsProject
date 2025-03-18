@@ -10,6 +10,8 @@ import PolicySection from "./PolicySection";
 import ArgSection from "./ArgSection";
 import VideoSlider from "./VideoSlider";
 
+import AlJazeeraLive from "./AljazeraLive";
+
 const Home = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -17,8 +19,11 @@ const Home = () => {
         <HeroSection />
         <HealthSection />
         <PolicySection />
+        <AlJazeeraLive />
         <ArgSection />
         <VideoSlider />
+    
+
       </div>
     </div>
   );
