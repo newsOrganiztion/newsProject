@@ -13,13 +13,23 @@ const CategoryPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState({});
+
+  
+
   useEffect(() => {
     const fetchArticles = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/articles/all"
+          "http://localhost:5000/api/articles/all",
+          {
+            params: { page: currentPage, limit: 10 }, // Pagination Parameters
+          }
         );
-        setArticles(response.data);
+        setArticles(response.data.data);
+        setPagination(response.data.pagination);
         setLoading(false);
       } catch (error) {
         console.error("خطأ في جلب البيانات:", error);
@@ -46,7 +56,11 @@ const CategoryPage = () => {
 
     fetchArticles();
     getUserId();
-  }, []);
+  }, [currentPage, activeCategory, searchTerm]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   const handleBookmark = async (articleId) => {
     if (!id) {
@@ -93,6 +107,7 @@ const CategoryPage = () => {
   );
 
   const categories = ["الكل", "سياسي", "صحي", "زراعي"];
+  
 
   return (
     <>
@@ -285,6 +300,43 @@ const CategoryPage = () => {
           )}
         </div>
       )}
+
+ {/* Pagination Controls */}
+<div className="container mx-auto px-4 py-4 flex justify-center items-center space-x-2">
+  <button
+    disabled={currentPage === 1}
+    onClick={() => handlePageChange(currentPage - 1)}
+    className="px-3 py-2 bg-gray-200 text-gray-700 rounded disabled:bg-gray-100 disabled:text-gray-400"
+  >
+    &lt; {/* Previous Button */}
+  </button>
+
+  {/* Pages */}
+  {Array.from({ length: pagination.totalPages }, (_, index) => (
+    <button
+      key={index + 1}
+      onClick={() => handlePageChange(index + 1)}
+      className={`px-3 py-2 text-sm font-medium rounded-full ${
+        currentPage === index + 1
+          ? "bg-[#51a31d] text-white"
+          : "bg-gray-200 text-gray-700 hover:bg-green-200"
+      }`}
+    >
+      {index + 1}
+    </button>
+  ))}
+
+  {/* Next Button */}
+  <button
+    disabled={currentPage === pagination.totalPages}
+    onClick={() => handlePageChange(currentPage + 1)}
+    className="px-3 py-2 bg-gray-200 text-black rounded disabled:bg-gray-100 disabled:text-gray-400"
+  >
+    &gt; {/* Next Button */}
+  </button>
+</div>
+
+
     </>
   );
 };

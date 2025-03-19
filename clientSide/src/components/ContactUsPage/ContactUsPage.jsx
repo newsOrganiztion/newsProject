@@ -4,7 +4,8 @@ import Cookies from "js-cookie";
 import { FaPhone } from "react-icons/fa"; // Font Awesome
 import { MdEmail } from "react-icons/md"; // Material Design
 import { FiMapPin } from "react-icons/fi"; // Feather Icons
-import { BsTwitter, BsFacebook, BsLinkedin } from "react-icons/bs"; // Bootstrap Icons
+import { Facebook, Linkedin, X } from "lucide-react";
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Helmet } from "react-helmet";
 
@@ -178,19 +179,19 @@ const Contact = () => {
                     onClick={() => handleRedirect("https://twitter.com")}
                     className="h-10 w-10 rounded-full bg-[#1DA1F2] text-white flex items-center justify-center hover:bg-[#51a31d] transition duration-300"
                   >
-                    <BsTwitter size={20} />
+                    <X size={20} />
                   </button>
                   <button
                     onClick={() => handleRedirect("https://facebook.com")}
                     className="h-10 w-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:bg-[#51a31d] transition duration-300"
                   >
-                    <BsFacebook size={20} />
+                    <Facebook size={20} />
                   </button>
                   <button
                     onClick={() => handleRedirect("https://linkedin.com")}
                     className="h-10 w-10 rounded-full bg-[#0A66C2] text-white flex items-center justify-center hover:bg-[#51a31d] transition duration-300"
                   >
-                    <BsLinkedin size={20} />
+                    <Linkedin size={20} />
                   </button>
                 </div>
               </div>
