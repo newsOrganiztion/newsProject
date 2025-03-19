@@ -4,6 +4,8 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify"; // استيراد مكتبة toast
 import "react-toastify/dist/ReactToastify.css"; // استيراد ملفات الأنماط الخاصة بالـ toast
 import PaymentComponent from "../PaymentPage/Payment";
+import Swal from 'sweetalert2';
+
 
 export default function ArticleDetailPage() {
   const { id } = useParams();
@@ -78,12 +80,12 @@ export default function ArticleDetailPage() {
         userId: userId,
         content: comment,
       });
-      toast.success("تم إرسال تعليقك."); // استبدال alert بـ toast
+      toast.success("تم إرسال تعليقك."); 
       setComment("");
       fetchComments();
     } catch (error) {
       console.error("❌ خطأ أثناء إضافة التعليق:", error.response ? error.response.data : error.message);
-      toast.error("حدث خطأ أثناء إضافة التعليق."); // استبدال alert بـ toast
+      toast.error("حدث خطأ أثناء إضافة التعليق."); 
     }
   };
 
@@ -112,19 +114,13 @@ export default function ArticleDetailPage() {
           "_blank"
         );
         break;
-      case "twitter":
-        window.open(
-          `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,
-          "_blank"
-        );
-        break;
       case "linkedin":
         window.open(
           `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}&summary=${encodeURIComponent(text)}`,
           "_blank"
         );
         break;
-      default:
+        default:
         break;
     }
 
@@ -140,7 +136,7 @@ export default function ArticleDetailPage() {
 
   const handleSubscribe = (e) => {
     e.preventDefault();
-    toast.success(`ارجوا اكمال عملية الدفع لارسال طلب الاشتراك: ${email}`); // استبدال alert بـ toast
+    toast.success(`ارجوا اكمال عملية الدفع لارسال طلب الاشتراك: ${email}`); 
     setEmail("");
   };
 
@@ -150,6 +146,46 @@ export default function ArticleDetailPage() {
   if (!article) {
     return <div className="text-center p-10 text-red-500 text-xl">المقال غير موجود</div>;
   }
+
+
+  const handleReportComment = async (commentId) => {
+  
+    const { value: reason } = await Swal.fire({
+      title: 'أدخل سبب البلاغ',
+      input: 'textarea',
+      inputLabel: 'سبب البلاغ',
+      inputPlaceholder: 'اكتب سبب البلاغ هنا...',
+      showCancelButton: true,
+      inputValidator: (value) => {
+        if (!value) {
+          return 'يجب إدخال سبب البلاغ';
+        }
+      }
+    });
+  
+  
+    if (!reason) {
+      return; 
+    }
+  
+    try {
+ 
+      const response = await axios.post(
+        `http://localhost:5000/api/comments/report/${commentId}`,
+        { reason }
+      );
+      
+      
+      if (response.status === 200) {
+        toast.success("تم إرسال البلاغ بنجاح. سيتم مراجعته من قبل المسؤول.");
+        fetchComments(); 
+      }
+    } catch (error) {
+      
+      toast.error("حدث خطأ أثناء الإبلاغ عن التعليق.");
+      console.log(error);
+    }
+  };
 
   return (
     <div className="container mx-auto p-4 max-w-4xl" dir="rtl">
@@ -316,25 +352,7 @@ export default function ArticleDetailPage() {
               />
             </svg>
           </button>
-          <button
-            onClick={() => handleShare('twitter')}
-            className="flex items-center text-gray-600 hover:text-blue-600"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
-              />
-            </svg>
-          </button>
+
           <button
             onClick={() => handleShare('linkedin')}
             className="flex items-center text-gray-600 hover:text-blue-600"
@@ -460,28 +478,37 @@ export default function ArticleDetailPage() {
           <span>التعليقات</span>
           <span className="bg-gray-200 text-gray-700 rounded-full px-3 py-1 text-sm mr-2">{comments.length}</span>
         </h3>
-        {comments.length > 0 ? (
-          <div className="space-y-6">
-            {comments.map((comment) => (
-              <div key={comment._id} className="border-b border-gray-100 pb-6">
-                <div className="flex items-start mb-2">
-                  <div className="bg-blue-100 text-blue-800 font-bold rounded-full w-10 h-10 flex items-center justify-center ml-3">
-                    {comment.userId?.name ? comment.userId.name.charAt(0) : "?"}
-                  </div>
-                  <div>
-                    <h4 className="font-bold">{comment.userId?.name || "مجهول"}</h4>
-                    <p className="text-gray-500 text-sm">
-                      {new Date(comment.createdAt).toLocaleDateString()}
-                    </p>
-                  </div>
-                </div>
-                <p className="text-gray-700 mr-13">{comment.content}</p>
-              </div>
-            ))}
+       
+  {comments.length > 0 ? (
+  <div className="space-y-6">
+    {comments.map((comment) => (
+      <div key={comment._id} className="border-b border-gray-100 pb-6">
+        <div className="flex items-start mb-2">
+          <div className="bg-blue-100 text-blue-800 font-bold rounded-full w-10 h-10 flex items-center justify-center ml-3">
+            {comment.userId?.name ? comment.userId.name.charAt(0) : "?"}
           </div>
-        ) : (
-          <p className="text-gray-500 text-center py-6">لا توجد تعليقات حتى الآن. كن أول من يعلق!</p>
-        )}
+          <div>
+            <h4 className="font-bold">{comment.userId?.name || "مجهول"}</h4>
+            <p className="text-gray-500 text-sm">
+              {new Date(comment.createdAt).toLocaleDateString()}
+            </p>
+          </div>
+        </div>
+        <p className="text-gray-700 mr-13">{comment.content}</p>
+        {/* لا نعرض النص هنا بعد الآن */}
+        <button
+          onClick={() => handleReportComment(comment._id)}
+          className="text-red-600 hover:text-red-800 text-sm mt-2"
+        >
+          الإبلاغ عن التعليق
+        </button>
+      </div>
+    ))}
+  </div>
+) : (
+  <p className="text-gray-500 text-center py-6">لا توجد تعليقات حتى الآن. كن أول من يعلق!</p>
+)}
+
       </div>
 
       {/* إضافة مكون ToastContainer */}

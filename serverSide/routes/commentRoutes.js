@@ -15,4 +15,6 @@ router.delete("/:commentId", commentController.deleteComment);
 // ✅ الموافقة على تعليق
 router.put("/:commentId/approve", commentController.approveComment);
 
+router.post('/report/:commentId', commentController.reportComment);
+
 module.exports = router;

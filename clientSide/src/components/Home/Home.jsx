@@ -10,7 +10,6 @@ import PolicySection from "./PolicySection";
 import ArgSection from "./ArgSection";
 import VideoSlider from "./VideoSlider";
 
-import AlJazeeraLive from "./AljazeraLive";
 import { Helmet } from "react-helmet";
 const Home = () => {
   return (
@@ -27,11 +26,9 @@ const Home = () => {
         <HeroSection />
         <HealthSection />
         <PolicySection />
-        <AlJazeeraLive />
         <ArgSection />
         <VideoSlider />
     
-
       </div>
     </div>
   );
