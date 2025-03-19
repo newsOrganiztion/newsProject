@@ -266,7 +266,10 @@ exports.approveUser = async (req, res) => {
   } catch (error) {
     console.error('حدث خطأ أثناء الموافقة على المستخدم:', error);
     res.status(500).json({ message: 'حدث خطأ أثناء الموافقة على المستخدم' });}}
-exports.getUserRoleFromToken = async (req, res) => {
+
+
+    
+    exports.getUserRoleFromToken = async (req, res) => {
   try {
     const token = req.cookies.authToken;
 

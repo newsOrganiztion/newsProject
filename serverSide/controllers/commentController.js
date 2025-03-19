@@ -85,3 +85,24 @@ exports.approveComment = async (req, res) => {
       });
   }
 };
+
+exports.reportComment = async (req, res) => {
+  try {
+    const { reason } = req.body; 
+    const comment = await Comment.findById(req.params.commentId);
+    
+    if (!comment) {
+      return res.status(404).json({ message: "التعليق غير موجود" });
+    }
+
+   
+    comment.reported = true;
+    comment.status = 'pending';  
+    await comment.save();
+
+    res.status(200).json({ message: "تم إرسال البلاغ بنجاح، سيتم مراجعته من قبل المسؤول." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "حدث خطأ ما أثناء الإبلاغ" });
+  }
+};
