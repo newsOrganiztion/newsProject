@@ -5,6 +5,7 @@ const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 const verifyToken = require("../Middlewares/authMiddleware");
 
+
 // Create a new article
 router.post(
   "/submit",
@@ -19,6 +20,7 @@ router.get("/all", articleController.getAllArticles);
 router.get("/:id", articleController.getArticleById);
 router.post("/:id/like", articleController.likeArticle);
 router.post("/:id/share", articleController.shareArticle);
+
 
 
 

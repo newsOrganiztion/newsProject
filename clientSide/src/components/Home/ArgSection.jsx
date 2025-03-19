@@ -5,6 +5,8 @@ import "swiper/css/autoplay";
 import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
 import axios from "axios";
+import AlJazeeraLive from "./AljazeraLive";
+import { Helmet } from "react-helmet";
 
 const ArgSection = () => {
   const [newsSlide, setNewsSlide] = useState([]);
@@ -35,6 +37,7 @@ const ArgSection = () => {
   }
 
   return (
+    <>
     <section className="bg-white rounded-lg shadow-sm my-8 pb-6">
       <div className="text-[#383838] px-6 pt-6">
         {/* Section Header */}
@@ -165,6 +168,20 @@ const ArgSection = () => {
         </div>
       </div>
     </section>
+
+     {/* Live streaming Section  */}
+<section className="bg-white rounded-lg shadow-sm my-8 pb-6">
+      <div className="text-[#383838] px-6 pt-6">
+        {/* Section Header */}
+        <div className="flex items-center mb-6" style={{ gap: '10px' }}>
+          <div className="h-6 w-1.5 bg-[#51a31d] rounded-full mr-3"></div>
+          <h2 className="text-2xl font-bold text-black">شاهد ايضا :</h2>
+        </div>
+
+       <AlJazeeraLive />
+      </div>
+    </section>
+    </>
   );
 };
 
