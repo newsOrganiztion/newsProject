@@ -6,12 +6,12 @@ const Analytics = require('../models/Analytics');
 //Articles
 exports.getAllArticles = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1; // الصفحة الحالية (افتراضيًا 1)
-    const perPage = 4; // عدد المقالات في كل صفحة
-    const skip = (page - 1) * perPage; // حساب عدد العناصر التي يجب تخطيها
+    const page = parseInt(req.query.page) || 1; 
+    const perPage = 4; 
+    const skip = (page - 1) * perPage;
 
-    const articles = await Article.find().skip(skip).limit(perPage); // جلب 4 مقالات
-    const totalArticles = await Article.countDocuments(); // إجمالي عدد المقالات
+    const articles = await Article.find().skip(skip).limit(perPage);
+    const totalArticles = await Article.countDocuments();
 
     res.status(200).json({
       articles,

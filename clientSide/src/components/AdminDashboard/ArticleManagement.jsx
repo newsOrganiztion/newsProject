@@ -10,9 +10,8 @@ const ArticleManagement = () => {
   const [loading, setLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null); // لتحديد المقالة المفتوحة
-  const [currentPage, setCurrentPage] = useState(1); // الصفحة الحالية
-  const [totalPages, setTotalPages] = useState(1); // إجمالي عدد الصفحات
-
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [totalPages, setTotalPages] = useState(1); 
   useEffect(() => {
     fetchArticles(currentPage);
   }, [currentPage]);
