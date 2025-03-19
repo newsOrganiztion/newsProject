@@ -238,14 +238,24 @@ exports.getUserFromToken = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find(); 
-  
-    res.status(200).json({ users});
+    const page = parseInt(req.query.page) || 1;
+    const perPage = 6; 
+    const skip = (page - 1) * perPage; 
+
+    const users = await User.find().skip(skip).limit(perPage); 
+    const totalUser = await User.countDocuments(); 
+    const totalPages = Math.ceil(totalUser / perPage);
+
+    res.status(200).json({
+      users, // المستخدمين في الصفحة الحالية
+      totalUser, // إجمالي عدد المستخدمين
+      totalPages, // عدد الصفحات الإجمالي
+      currentPage: page, // الصفحة الحالية
+    });
   } catch (error) {
     res.status(500).json({ message: 'Error fetching users', error: error.message });
   }
 };
-
 
 exports.approveUser = async (req, res) => {
   const { userId } = req.params;

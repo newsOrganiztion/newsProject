@@ -3,6 +3,7 @@
     "@google/generative-ai": "^0.24.0",
     "@headlessui/react": "^2.2.0",
     "lucide-react": "^0.482.0",
+    "react-helmet": "^6.1.0",
     "sweetalert2": "^11.17.2"
   }
 }

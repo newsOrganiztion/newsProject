@@ -9,44 +9,47 @@ const JournalistsList = () => {
   const [expandedArticles, setExpandedArticles] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
   const [articleFilter, setArticleFilter] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1); // الصفحة الحالية
+  const [totalPages, setTotalPages] = useState(1); // إجمالي عدد الصفحات
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/article/journalists');
-        setJournalists(response.data);
-        setFilteredJournalists(response.data);
-        
-        // Initialize expanded state
-        const initialExpandedState = {};
-        response.data.forEach(journalist => {
-          initialExpandedState[journalist._id] = false;
-        });
-        setExpandedArticles(initialExpandedState);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+    fetchData(currentPage);
+  }, [currentPage]);
 
-    fetchData();
-  }, []);
+  const fetchData = async (page = 1) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/article/journalists?page=${page}`);
+      setJournalists(response.data.journalists); // تحديث الصحفيين
+      setFilteredJournalists(response.data.journalists); // تحديث الصحفيين المفلترة
+      setTotalPages(response.data.totalPages); // تحديث عدد الصفحات
 
-  // Apply filters and search whenever the inputs change
+      // تهيئة حالة التوسيع
+      const initialExpandedState = {};
+      response.data.journalists.forEach(journalist => {
+        initialExpandedState[journalist._id] = false;
+      });
+      setExpandedArticles(initialExpandedState);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // تطبيق الفلترة والبحث عند تغيير المدخلات
   useEffect(() => {
     let results = journalists;
-    
-    // Apply search filter
+
+    // تطبيق فلترة البحث
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
-      results = results.filter(journalist => 
-        journalist.name.toLowerCase().includes(term) || 
+      results = results.filter(journalist =>
+        journalist.name.toLowerCase().includes(term) ||
         journalist.email.toLowerCase().includes(term)
       );
     }
-    
-    // Apply article count filter
+
+    // تطبيق فلترة عدد المقالات
     if (articleFilter !== 'all') {
       if (articleFilter === 'noArticles') {
         results = results.filter(journalist => journalist.articles.length === 0);
@@ -56,7 +59,7 @@ const JournalistsList = () => {
         results = results.filter(journalist => journalist.articles.length > 5);
       }
     }
-    
+
     setFilteredJournalists(results);
   }, [searchTerm, articleFilter, journalists]);
 
@@ -68,14 +71,8 @@ const JournalistsList = () => {
   };
 
   const handleDeleteAccount = (journalistId) => {
-    // Here you would add the logic to delete the account
     console.log(`Delete account with ID: ${journalistId}`);
-    // Example implementation:
-    // axios.delete(`http://localhost:5000/api/journalists/${journalistId}`)
-    //   .then(() => {
-    //     setJournalists(journalists.filter(j => j._id !== journalistId));
-    //   })
-    //   .catch(err => setError(err.message));
+    // يمكنك إضافة منطق حذف الحساب هنا
   };
 
   const handleSearchChange = (e) => {
@@ -97,7 +94,7 @@ const JournalistsList = () => {
   return (
     <div className="p-4" style={{ backgroundColor: '#f9f9fb' }}>
       <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-center bg-white rounded-lg py-4 sm:py-5 shadow-lg hover:shadow-xl transition-all duration-300 border-b-4 border-[#51a31d]" style={{ color: '#51a31d', textShadow: '1px 1px 3px rgba(0,0,0,0.15)' }}>إدارة الصحفيين</h1>
-      
+
       {/* Search and Filter Section */}
       <div className="mb-6 p-4 bg-white rounded-lg shadow-md max-w-2xl mx-auto">
         <div className="flex flex-col sm:flex-row gap-4">
@@ -113,7 +110,7 @@ const JournalistsList = () => {
               style={{ direction: 'rtl' }}
             />
           </div>
-          
+
           <div className="flex-1">
             <label htmlFor="filter" className="block text-sm font-medium mb-1" style={{ color: '#7585ff' }}>فلتر المقالات:</label>
             <select
@@ -131,20 +128,20 @@ const JournalistsList = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Results counter */}
       <div className="text-center mb-4 font-semibold" style={{ color: '#7585ff' }}>
         تم العثور على {filteredJournalists.length} صحفي
       </div>
-      
+
       <div className="flex flex-col items-center">
         {filteredJournalists.length === 0 ? (
           <div className="text-center py-8 text-gray-500">لا توجد نتائج مطابقة</div>
         ) : (
           filteredJournalists.map((journalist, index) => (
-            <div 
-              key={journalist._id} 
-              className="mb-6 p-4 border rounded-lg shadow-md w-full max-w-2xl hover:shadow-lg transition-shadow duration-300" 
+            <div
+              key={journalist._id}
+              className="mb-6 p-4 border rounded-lg shadow-md w-full max-w-2xl hover:shadow-lg transition-shadow duration-300"
               style={{ backgroundColor: 'white', borderRight: '4px solid #51a31d' }}
             >
               <div className="flex justify-between items-center">
@@ -152,21 +149,21 @@ const JournalistsList = () => {
                   <span className="mr-2 font-bold" style={{ color: '#7585ff' }}>{index + 1}. </span>
                   {journalist.name}
                 </h2>
-                <button 
-                  className="px-3 py-1 rounded-md text-white text-sm" 
+                <button
+                  className="px-3 py-1 rounded-md text-white text-sm"
                   style={{ backgroundColor: '#ff5757' }}
                   onClick={() => handleDeleteAccount(journalist._id)}
                 >
                   حذف الحساب
                 </button>
               </div>
-              
+
               <p className="text-gray-600 text-sm">{journalist.email}</p>
               <div className="flex justify-between items-center mt-2">
                 <h3 className="text-md sm:text-lg font-medium" style={{ color: '#51a31d' }}>المقالات:</h3>
                 <span className="text-sm text-gray-500">عدد المقالات: {journalist.articles.length}</span>
               </div>
-              
+
               {/* Display first article or all articles if expanded */}
               {journalist.articles.length > 0 ? (
                 journalist.articles.slice(0, expandedArticles[journalist._id] ? journalist.articles.length : 1).map((article) => (
@@ -192,12 +189,12 @@ const JournalistsList = () => {
               ) : (
                 <p className="text-sm text-gray-500 mt-2">لا توجد مقالات</p>
               )}
-              
+
               {/* Show "Read More" button if there are more articles */}
               {journalist.articles.length > 1 && (
                 <div className="mt-2">
-                  <button 
-                    className="px-3 py-1 rounded-md text-white text-xs sm:text-sm" 
+                  <button
+                    className="px-3 py-1 rounded-md text-white text-xs sm:text-sm"
                     style={{ backgroundColor: '#7585ff' }}
                     onClick={() => toggleArticles(journalist._id)}
                   >
@@ -208,6 +205,23 @@ const JournalistsList = () => {
             </div>
           ))
         )}
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center mt-8">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i + 1}
+            onClick={() => setCurrentPage(i + 1)}
+            className={`mx-1 px-4 py-2 border rounded ${
+              currentPage === i + 1
+                ? "bg-blue-500 text-white"
+                : "bg-white text-blue-500"
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
       </div>
     </div>
   );
