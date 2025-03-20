@@ -151,7 +151,7 @@ exports.likeArticle = async (req, res) => {
   }
 };
 
-// 🔄 مشاركة مقال
+
 exports.shareArticle = async (req, res) => {
   try {
     const article = await Article.findById(req.params.id);
@@ -169,9 +169,6 @@ exports.shareArticle = async (req, res) => {
       .json({ error: "حدث خطأ أثناء مشاركة المقال", details: error.message });
   }
 };
-
-
-
 
 exports.getArticles = async (req, res) => {
   try {
