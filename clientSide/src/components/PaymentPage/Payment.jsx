@@ -365,7 +365,7 @@ const PaymentModal = ({ email, onClose }) => {
             </div>
           </div>
           
-          <button type="submit" className="w-full bg-teal-500 hover:bg-teal-600 text-white font-medium py-3 px-4 rounded transition duration-200">
+          <button type="submit" className="w-full bg-[#51a31d] hover:bg-black text-white font-medium py-3 px-4 rounded transition duration-200">
             دفع  
           </button>
           

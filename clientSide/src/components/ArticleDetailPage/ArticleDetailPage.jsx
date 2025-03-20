@@ -6,7 +6,6 @@ import "react-toastify/dist/ReactToastify.css"; // استيراد ملفات ا�
 import PaymentComponent from "../PaymentPage/Payment";
 import Swal from 'sweetalert2';
 
-
 export default function ArticleDetailPage() {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
@@ -147,9 +146,7 @@ export default function ArticleDetailPage() {
     return <div className="text-center p-10 text-red-500 text-xl">المقال غير موجود</div>;
   }
 
-
   const handleReportComment = async (commentId) => {
-  
     const { value: reason } = await Swal.fire({
       title: 'أدخل سبب البلاغ',
       input: 'textarea',
@@ -162,26 +159,24 @@ export default function ArticleDetailPage() {
         }
       }
     });
-  
-  
+
     if (!reason) {
-      return; 
+      return;
     }
-  
+
     try {
- 
       const response = await axios.post(
         `http://localhost:5000/api/comments/report/${commentId}`,
         { reason }
       );
-      
-      
+
       if (response.status === 200) {
         toast.success("تم إرسال البلاغ بنجاح. سيتم مراجعته من قبل المسؤول.");
-        fetchComments(); 
+
+        // إزالة التعليق من القائمة
+        setComments((prevComments) => prevComments.filter(comment => comment._id !== commentId));
       }
     } catch (error) {
-      
       toast.error("حدث خطأ أثناء الإبلاغ عن التعليق.");
       console.log(error);
     }
