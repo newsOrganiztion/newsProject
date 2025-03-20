@@ -1,13 +1,24 @@
+
 const Article = require('../models/Article');
 const User = require("../models/User");
 const Comment = require("../models/Comment");
 const Analytics = require('../models/Analytics');
-
+//Articles
 exports.getAllArticles = async (req, res) => {
   try {
-    const articles = await Article.find();
-    console.log(articles);
-    res.status(200).json(articles);
+    const page = parseInt(req.query.page) || 1; 
+    const perPage = 4; 
+    const skip = (page - 1) * perPage;
+
+    const articles = await Article.find().skip(skip).limit(perPage);
+    const totalArticles = await Article.countDocuments();
+
+    res.status(200).json({
+      articles,
+      totalArticles,
+      totalPages: Math.ceil(totalArticles / perPage), // إجمالي عدد الصفحات
+      currentPage: page,
+    });
   } catch (error) {
     res.status(500).json({ error: 'حدث خطأ أثناء جلب المقالات', details: error.message });
   }
@@ -29,36 +40,45 @@ exports.updateArticleStatus = async (req, res) => {
       res.status(500).json({ error: "حدث خطأ أثناء تحديث حالة المقال", details: error.message });
     }
   };
+//Journalists
+exports.getJournalistsWithDetails = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1; 
+    const perPage = 4; 
+    const skip = (page - 1) * perPage; 
 
-  exports.getJournalistsWithDetails = async (req, res) => {
-    try {
-     
-      const journalists = await User.find({ role: 'journalist' });
-  
-      const journalistsWithDetails = await Promise.all(journalists.map(async (journalist) => {
-        const articles = await Article.find({ authorId: journalist._id });
-        const articlesWithDetails = await Promise.all(articles.map(async (article) => {
-          const comments = await Comment.find({ articleId: article._id }).populate('userId', 'name profilePicture');
-          return {
-            ...article.toObject(),
-            comments,
-            likes: article.likes,
-            shares: article.shares,
-            views: article.views,
-          };
-        }));
-  
+    const journalists = await User.find({ role: 'journalist' }).skip(skip).limit(perPage);
+    const totalJournalists = await User.countDocuments({ role: 'journalist' });
+
+    const journalistsWithDetails = await Promise.all(journalists.map(async (journalist) => {
+      const articles = await Article.find({ authorId: journalist._id });
+      const articlesWithDetails = await Promise.all(articles.map(async (article) => {
+        const comments = await Comment.find({ articleId: article._id }).populate('userId', 'name profilePicture');
         return {
-          ...journalist.toObject(),
-          articles: articlesWithDetails,
+          ...article.toObject(),
+          comments,
+          likes: article.likes,
+          shares: article.shares,
+          views: article.views,
         };
       }));
-  
-      res.status(200).json(journalistsWithDetails);
-    } catch (error) {
-      res.status(500).json({ message: 'Error fetching journalists details', error });
-    }
-  };
+
+      return {
+        ...journalist.toObject(),
+        articles: articlesWithDetails,
+      };
+    }));
+
+    res.status(200).json({
+      journalists: journalistsWithDetails,
+      totalJournalists,
+      totalPages: Math.ceil(totalJournalists / perPage), 
+      currentPage: page,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching journalists details', error });
+  }
+};
 
 
  
@@ -89,3 +109,5 @@ exports.addAnalytics = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
