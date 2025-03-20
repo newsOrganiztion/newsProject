@@ -10,7 +10,7 @@ router.post("/:articleId", commentController.addComment);
 router.get("/:articleId", commentController.getCommentsByArticle);
 
 // ❌ حذف تعليق معين
-router.delete("/:commentId", commentController.deleteComment);
+// router.delete("/:commentId", commentController.deleteComment);
 
 // ✅ الموافقة على تعليق
 router.put("/:commentId/approve", commentController.approveComment);

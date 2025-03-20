@@ -44,22 +44,22 @@ exports.getCommentsByArticle = async (req, res) => {
   }
 };
 
-exports.deleteComment = async (req, res) => {
-  try {
-    const commentId = req.params.commentId;
+// exports.deleteComment = async (req, res) => {
+//   try {
+//     const commentId = req.params.commentId;
 
-    const comment = await Comment.findByIdAndDelete(commentId);
-    if (!comment) {
-      return res.status(404).json({ error: "التعليق غير موجود" });
-    }
+//     const comment = await Comment.findByIdAndDelete(commentId);
+//     if (!comment) {
+//       return res.status(404).json({ error: "التعليق غير موجود" });
+//     }
 
-    res.status(200).json({ message: "تم حذف التعليق بنجاح" });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: "حدث خطأ أثناء حذف التعليق", details: error.message });
-  }
-};
+//     res.status(200).json({ message: "تم حذف التعليق بنجاح" });
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ error: "حدث خطأ أثناء حذف التعليق", details: error.message });
+//   }
+// };
 
 exports.approveComment = async (req, res) => {
   try {
@@ -110,9 +110,9 @@ exports.reportComment = async (req, res) => {
 exports.getReportedComments = async (req, res) => {
   try {
     const reportedComments = await Comment.find({ reported: true })
-      .populate("userId", "name") // جلب اسم المستخدم
-      .populate("articleId", "title") // جلب عنوان المقال
-      .sort({ createdAt: -1 }); // ترتيب التعليقات من الأحدث إلى الأقدم
+      .populate("userId", "name") 
+      .populate("articleId", "title") 
+      .sort({ createdAt: -1 }); 
 
     res.status(200).json(reportedComments);
   } catch (error) {
@@ -128,15 +128,15 @@ exports.updateCommentStatus = async (req, res) => {
     const { commentId } = req.params;
     const { status } = req.body; 
 
-    // التحقق من وجود التعليق
+   
     const comment = await Comment.findById(commentId);
     if (!comment) {
       return res.status(404).json({ error: "التعليق غير موجود" });
     }
 
-    // تحديث حالة التعليق
+   
     comment.status = status;
-    comment.reported = false; // إزالة حالة الإبلاغ بعد تغيير الحالة
+    comment.reported = false; 
     await comment.save();
 
     res.status(200).json({ message: `تم تحديث حالة التعليق إلى ${status}`, comment });
