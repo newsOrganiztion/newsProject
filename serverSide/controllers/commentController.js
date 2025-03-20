@@ -106,3 +106,44 @@ exports.reportComment = async (req, res) => {
     res.status(500).json({ message: "حدث خطأ ما أثناء الإبلاغ" });
   }
 };
+
+exports.getReportedComments = async (req, res) => {
+  try {
+    const reportedComments = await Comment.find({ reported: true })
+      .populate("userId", "name") // جلب اسم المستخدم
+      .populate("articleId", "title") // جلب عنوان المقال
+      .sort({ createdAt: -1 }); // ترتيب التعليقات من الأحدث إلى الأقدم
+
+    res.status(200).json(reportedComments);
+  } catch (error) {
+    res.status(500).json({
+      error: "حدث خطأ أثناء جلب التعليقات المبلغ عنها",
+      details: error.message,
+    });
+  }
+};
+
+exports.updateCommentStatus = async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const { status } = req.body; 
+
+    // التحقق من وجود التعليق
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({ error: "التعليق غير موجود" });
+    }
+
+    // تحديث حالة التعليق
+    comment.status = status;
+    comment.reported = false; // إزالة حالة الإبلاغ بعد تغيير الحالة
+    await comment.save();
+
+    res.status(200).json({ message: `تم تحديث حالة التعليق إلى ${status}`, comment });
+  } catch (error) {
+    res.status(500).json({
+      error: "حدث خطأ أثناء تحديث حالة التعليق",
+      details: error.message,
+    });
+  }
+};

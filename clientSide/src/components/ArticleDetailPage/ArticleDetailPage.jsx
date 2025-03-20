@@ -149,7 +149,6 @@ export default function ArticleDetailPage() {
 
 
   const handleReportComment = async (commentId) => {
-  
     const { value: reason } = await Swal.fire({
       title: 'أدخل سبب البلاغ',
       input: 'textarea',
@@ -163,25 +162,23 @@ export default function ArticleDetailPage() {
       }
     });
   
-  
     if (!reason) {
-      return; 
+      return;
     }
   
     try {
- 
       const response = await axios.post(
         `http://localhost:5000/api/comments/report/${commentId}`,
         { reason }
       );
-      
-      
+  
       if (response.status === 200) {
         toast.success("تم إرسال البلاغ بنجاح. سيتم مراجعته من قبل المسؤول.");
-        fetchComments(); 
+        
+        // Update comments in the interface by removing the reported comment
+        setComments((prevComments) => prevComments.filter(comment => comment._id !== commentId));
       }
     } catch (error) {
-      
       toast.error("حدث خطأ أثناء الإبلاغ عن التعليق.");
       console.log(error);
     }
