@@ -111,6 +111,22 @@ const CategoryPage = () => {
 
   return (
     <>
+
+    {/* Hero Section */}
+    <div className="relative w-full h-100 flex items-center text-white">
+        <video className="absolute inset-0 w-full h-full object-cover" autoPlay loop muted playsInline>
+          <source src="https://videos.pexels.com/video-files/6271585/6271585-sd_960_506_25fps.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0" style={{ background: "rgba(40, 36, 41, 0.7)" }}></div>
+        <div className="relative z-10 max-w-4xl ml-auto px-10 lg:px-20 text-right" style={{ marginTop: "150px" }}>
+          <h1 className="text-lg md:text-xl font-bold">
+            اقرأ أهم وأبرز الأخبار والتقارير العربية والعالمية في الشأن السياسي والزراعي والصحي والمزيد حصرياً عبر موقعنا الإلكتروني{" "}
+            <span className="text-[#51a31d]">يقين .</span>
+          </h1>
+        </div>
+      </div>
+      <div className="w-full h-1 bg-[#51a31d]"></div>
+
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center py-4 md:py-8">
