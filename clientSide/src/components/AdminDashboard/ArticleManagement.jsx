@@ -10,17 +10,19 @@ const ArticleManagement = () => {
   const [loading, setLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null); // لتحديد المقالة المفتوحة
-
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [totalPages, setTotalPages] = useState(1); 
   useEffect(() => {
-    fetchArticles();
-  }, []);
+    fetchArticles(currentPage);
+  }, [currentPage]);
 
-  const fetchArticles = async () => {
+  const fetchArticles = async (page = 1) => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/article/article"
+        `http://localhost:5000/api/article/article?page=${page}`
       );
-      setArticles(response.data);
+      setArticles(response.data.articles); // تحديث المقالات
+      setTotalPages(response.data.totalPages); // تحديث عدد الصفحات
       setLoading(false);
     } catch (error) {
       console.error("خطأ في جلب البيانات:", error);
@@ -49,7 +51,7 @@ const ArticleManagement = () => {
           },
         }
       );
-      fetchArticles();
+      fetchArticles(currentPage);
     } catch (error) {
       console.error("خطأ في تحديث الحالة:", error);
     }
@@ -156,7 +158,7 @@ const ArticleManagement = () => {
                       <td className="px-4 py-3">
                         <div
                           className="text-sm text-gray-700 font-medium cursor-pointer"
-                          onClick={() => setSelectedArticle(article)} // استدعاء الدالة اللي بتفتح البوب أب
+                          onClick={() => setSelectedArticle(article)}
                         >
                           {article.title}
                         </div>
@@ -173,19 +175,17 @@ const ArticleManagement = () => {
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-600">
-                        {new Date(article.publishedDate).toLocaleDateString(
-                          "ar-EG"
-                        )}
+                        {new Date(article.publishedDate).toLocaleDateString("ar-EG")}
                       </td>
                       <td className="px-4 py-3">
                         <span
-                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-white ${
                             article.status === "published"
                               ? "bg-[#51a31d]"
                               : article.status === "pending approval"
                               ? "bg-[#e4a11b]"
                               : "bg-[#d94e5c]"
-                          } text-white`}
+                          }`}
                         >
                           {article.status === "published"
                             ? "منشور"
@@ -198,18 +198,14 @@ const ArticleManagement = () => {
                         <div className="flex space-x-2 justify-end">
                           <button
                             className="p-2 text-[#51a31d] hover:bg-[#e7f7e1] rounded-full transition-colors duration-200"
-                            onClick={() =>
-                              updateArticleStatus(article._id, "published")
-                            }
+                            onClick={() => updateArticleStatus(article._id, "published")}
                             title="نشر المقال"
                           >
                             <FaCheck className="w-5 h-5" />
                           </button>
                           <button
-                            className="p-2 text-[#d94e5c] hover:bg-[#fbeaec] rounded-full transition-colors duration-200 mr-2"
-                            onClick={() =>
-                              updateArticleStatus(article._id, "draft")
-                            }
+                            className="p-2 text-[#d94e5c] hover:bg-[#fbeaec] rounded-full transition-colors duration-200"
+                            onClick={() => updateArticleStatus(article._id, "draft")}
                             title="تحويل إلى مسودة"
                           >
                             <FaTimes className="w-5 h-5" />
@@ -271,13 +267,13 @@ const ArticleManagement = () => {
                     </span>
 
                     <span
-                      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-white ${
                         article.status === "published"
                           ? "bg-[#51a31d]"
                           : article.status === "pending approval"
                           ? "bg-[#e4a11b]"
                           : "bg-[#d94e5c]"
-                      } text-white`}
+                      }`}
                     >
                       {article.status === "published"
                         ? "منشور"
@@ -304,6 +300,24 @@ const ArticleManagement = () => {
           </div>
         )}
       </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center mt-8">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i + 1}
+            onClick={() => setCurrentPage(i + 1)}
+            className={`mx-1 px-4 py-2 border rounded ${
+              currentPage === i + 1
+                ? "bg-blue-500 text-white"
+                : "bg-white text-blue-500"
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
+      </div>
+
       {selectedArticle && (
         <ArticlePopup
           isOpen={true}

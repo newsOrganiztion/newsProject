@@ -32,8 +32,7 @@ const AdminDashboard = () => {
 const DashboardHome = () => {
   return (
     <div>
-      <h1>مرحبًا بك في لوحة التحكم</h1>
-      <p>اختر قسمًا من القائمة الجانبية لبدء العمل.</p>
+    <Analytics/>
     </div>
   );
 };
