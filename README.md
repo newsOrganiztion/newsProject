@@ -1,7 +1,7 @@
-# NewsPRG Project
+# YaqeenNews Project
 
 ## Overview
-**NewsPRG** is a dynamic news platform designed to provide real-time updates, engaging articles, and interactive features for readers and journalists. It allows users to explore news articles across various categories and allows journalists to create, publish, and manage content. The platform also enables users to like, comment, share, and bookmark articles for a personalized news experience.
+**YaqeenNews** is a dynamic news platform dedicated to general news, designed to provide real-time updates, engaging articles, and interactive features for readers and journalists. The platform allows users to browse news articles across various categories, and journalists to create, publish, and manage content. The platform also allows users to like, comment, share, and favorite articles for a personalized news experience.
 
 **Key Features**:
 - **User Authentication**: Secure user login and registration system with JWT authentication.
