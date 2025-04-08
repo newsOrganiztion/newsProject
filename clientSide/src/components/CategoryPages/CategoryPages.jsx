@@ -281,7 +281,7 @@ const CategoryPage = () => {
                       article.tags.map((tag, index) => (
                         <span
                           key={index}
-                          className="text-gray-500 text-xs bg-gray-100 px-2 py-1 rounded-full cursor-pointer hover:bg-[rgba(117,133,255,0.2)]"
+                          className="text-gray-800 text-xs bg-gray-100 px-2 py-1 rounded-full cursor-pointer hover:bg-[rgba(117,133,255,0.2)]"
                         >
                           #{tag}
                         </span>
@@ -318,41 +318,26 @@ const CategoryPage = () => {
       )}
 
  {/* Pagination Controls */}
-<div className="container mx-auto px-4 py-4 flex justify-center items-center space-x-2">
-  <button
-    disabled={currentPage === 1}
-    onClick={() => handlePageChange(currentPage - 1)}
-    className="px-3 py-2 bg-gray-200 text-gray-700 rounded disabled:bg-gray-100 disabled:text-gray-400"
-  >
-    &lt; {/* Previous Button */}
-  </button>
-
-  {/* Pages */}
-  {Array.from({ length: pagination.totalPages }, (_, index) => (
-    <button
-      key={index + 1}
-      onClick={() => handlePageChange(index + 1)}
-      className={`px-3 py-2 text-sm font-medium rounded-full ${
-        currentPage === index + 1
-          ? "bg-[#51a31d] text-white"
-          : "bg-gray-200 text-gray-700 hover:bg-green-200"
-      }`}
-    >
-      {index + 1}
-    </button>
-  ))}
-
-  {/* Next Button */}
-  <button
-    disabled={currentPage === pagination.totalPages}
-    onClick={() => handlePageChange(currentPage + 1)}
-    className="px-3 py-2 bg-gray-200 text-black rounded disabled:bg-gray-100 disabled:text-gray-400"
-  >
-    &gt; {/* Next Button */}
-  </button>
-</div>
-
-
+ <div className="flex justify-center">
+        <nav className="bg-gray-200 rounded-full px-8 mb-5">
+          <ul className="flex text-gray-600 gap-4 font-medium py-2">
+            {Array.from({ length: pagination.totalPages }, (_, index) => (
+              <li key={index + 1}>
+                <button
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`rounded-full px-4 py-2 transition duration-300 ease-in-out ${
+                    currentPage === index + 1
+                      ? "bg-[rgba(117,133,255,0.2)] text-gray-600"
+                      : "hover:bg-[rgba(117,133,255,0.2)] hover:text-gray-600"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
     </>
   );
 };

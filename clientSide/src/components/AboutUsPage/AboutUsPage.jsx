@@ -48,33 +48,42 @@ const AboutUsPage= () => {
 
 
 
-
+    // <div className="relative w-full h-115 bg-gray-100">
+    //     {/* Background Image */}
+    //     <div className="absolute inset-0 bg-cover bg-center opacity-80" 
+    //          style={{backgroundImage: "url('https://images.pexels.com/photos/2479946/pexels-photo-2479946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')"}}></div>
+        
+    //     {/* Overlay */}
+    //     <div className="absolute inset-0 bg-black opacity-40"></div>
+        
+    //     {/* Content */}
+    //     <div className="relative p-8 flex flex-col justify-center h-full text-white mr-10">
+    //       <h1 className="text-5xl   text-[#5D8736]  mb-4"> يقين</h1>
+    //       <p className="text-3xl max-w-md">
+          
+    //       الأخبار العاجلة لحظة بلحظة.. من المصدر إلى شاشتك
+    //       </p>
+          
+    //       {/* Navigation */}
+          
+    //     </div>
+    //   </div>
 
 
   ];
   return (
     <div className="flex flex-col min-h-screen font-sans" dir="rtl">
       {/* Hero Section with Banner Image */}
-      <div className="relative w-full h-115 bg-gray-100">
-        {/* Background Image */}
-        <div className="absolute inset-0 bg-cover bg-center opacity-80" 
-             style={{backgroundImage: "url('https://images.pexels.com/photos/2479946/pexels-photo-2479946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')"}}></div>
-        
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black opacity-40"></div>
-        
-        {/* Content */}
-        <div className="relative p-8 flex flex-col justify-center h-full text-white mr-10">
-          <h1 className="text-5xl   text-[#5D8736]  mb-4"> يقين</h1>
-          <p className="text-3xl max-w-md">
-          
-          الأخبار العاجلة لحظة بلحظة.. من المصدر إلى شاشتك
-          </p>
-          
-          {/* Navigation */}
-          
+      <div className="relative w-full h-100 flex items-center text-white">
+        <video className="absolute inset-0 w-full h-full object-cover" autoPlay loop muted playsInline>
+          <source src="https://videos.pexels.com/video-files/29325396/12641526_640_360_25fps.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0" style={{ background: "rgba(40, 36, 41, 0.7)" }}></div>
+        <div className="relative z-10 max-w-4xl ml-auto px-10 lg:px-20 text-right" style={{ marginTop: "150px" }}>
+        <h1 className="text-lg md:text-xl font-bold"> نقدم لكم رؤية شاملة وموثوقة للأخبار والتقارير مع التحليل العميق والموضوعية التي تميزنا في عالم الصحافة الرقمية{" "} <span className="text-[#51a31d]">يقين.</span> </h1>
         </div>
       </div>
+      <div className="w-full h-1 bg-[#51a31d]"></div>
       
       {/* Main Content Section */}
       <div className="bg-gray-50 py-12 px-4">
