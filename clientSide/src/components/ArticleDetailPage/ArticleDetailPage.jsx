@@ -168,27 +168,26 @@ export default function ArticleDetailPage() {
         }
       }
     });
-
+  
     if (!reason) {
       return;
     }
-
+  
     try {
       const response = await axios.post(
         `http://localhost:5000/api/comments/report/${commentId}`,
         { reason }
       );
-
+  
       if (response.status === 200) {
         toast.success("تم إرسال البلاغ بنجاح. سيتم مراجعته من قبل المسؤول.");
-        setComments((prevComments) => prevComments.filter(comment => comment._id !== commentId));
+        // لا نقوم بإزالة التعليق من الواجهة الأمامية هنا
       }
     } catch (error) {
       toast.error("حدث خطأ أثناء الإبلاغ عن التعليق.");
       console.log(error);
     }
   };
-
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8" dir="rtl">
       {/* Breadcrumb */}

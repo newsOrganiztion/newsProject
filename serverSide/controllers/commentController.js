@@ -20,17 +20,16 @@ exports.addComment = async (req, res) => {
       articleId,
       userId,
       content,
-      status: "pending",
+      status: "approved", // تغيير من "pending" إلى "approved"
     });
 
     await newComment.save();
-    res.status(201).json({ message: "تم إرسال تعليقك وهو قيد المراجعة." });
+    res.status(201).json({ message: "تم إضافة تعليقك بنجاح." }); // تعديل رسالة النجاح
   } catch (error) {
     console.error("خطأ أثناء إضافة التعليق:", error);
     res.status(500).json({ error: "حدث خطأ أثناء إضافة التعليق", details: error.message });
   }
 };
-
 // 📜 جلب التعليقات الخاصة بمقال معين
 exports.getCommentsByArticle = async (req, res) => {
   try {
@@ -68,14 +67,25 @@ exports.deleteComment = async (req, res) => {
 exports.approveComment = async (req, res) => {
   try {
     const { commentId } = req.params;
-    const { status } = req.body; // نأخذ الحالة من الجسم (Body)
+    const { status } = req.body;
 
-    const comment = await Comment.findByIdAndUpdate(commentId, { status }, { new: true });
-    if (!comment) {
-      return res.status(404).json({ error: "التعليق غير موجود" });
+    if (status === "rejected") {
+      // إذا تم رفض التعليق (موافقة على البلاغ) نقوم بحذفه
+      await Comment.findByIdAndDelete(commentId);
+      return res.status(200).json({ message: "تم حذف التعليق بنجاح" });
+    } else {
+      // إذا تمت الموافقة على التعليق (رفض البلاغ) نزيل حالة الإبلاغ
+      const comment = await Comment.findByIdAndUpdate(commentId, {
+        reported: false,
+        reportReason: null,
+        status: "approved"
+      }, { new: true });
+      
+      if (!comment) {
+        return res.status(404).json({ error: "التعليق غير موجود" });
+      }
+      return res.status(200).json(comment);
     }
-
-    res.status(200).json(comment);
   } catch (error) {
     console.error("خطأ أثناء الموافقة على التعليق:", error);
     res.status(500).json({ error: "حدث خطأ أثناء الموافقة على التعليق", details: error.message });
@@ -91,20 +101,19 @@ exports.reportComment = async (req, res) => {
     const comment = await Comment.findByIdAndUpdate(commentId, {
       reported: true,
       reportReason: reason,
-      status: "pending" // تحديث الحالة إلى "pending"
+      // لا نغير الحالة هنا
     }, { new: true });
 
     if (!comment) {
       return res.status(404).json({ error: "التعليق غير موجود" });
     }
 
-    res.status(200).json({ message: "تم الإبلاغ عن التعليق", comment });
+    res.status(200).json({ message: "تم الإبلاغ عن التعليق وسيتم مراجعته", comment });
   } catch (error) {
     console.error("خطأ أثناء الإبلاغ عن التعليق:", error);
     res.status(500).json({ error: "حدث خطأ أثناء الإبلاغ عن التعليق", details: error.message });
   }
 };
-
 // 🚨 جلب التعليقات المبلغ عنها
 exports.getReportedComments = async (req, res) => {
   try {
@@ -119,7 +128,6 @@ exports.getReportedComments = async (req, res) => {
     res.status(500).json({ error: "حدث خطأ أثناء جلب التعليقات المبلغ عنها", details: error.message });
   }
 };
-
 // 🟠 جلب التعليقات المعلقة
 exports.getPendingComments = async (req, res) => {
   try {
