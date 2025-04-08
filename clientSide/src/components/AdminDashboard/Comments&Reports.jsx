@@ -41,30 +41,33 @@ const AdminComments = () => {
     fetchAllComments();
   }, []);
 
+  
   // تحديث حالة التعليق (موافقة أو رفض)
-  const handleUpdateStatus = async (commentId, status) => {
-    const confirmMessage = status === "approved" 
-      ? "هل أنت متأكد من الموافقة على هذا التعليق؟" 
-      : "هل أنت متأكد من رفض هذا التعليق؟";
+// تحديث حالة التعليق (موافقة أو رفض)
+const handleUpdateStatus = async (commentId, status) => {
+  const confirmMessage = status === "approved" 
+    ? "هل أنت متأكد من رفض هذا البلاغ والاحتفاظ بالتعليق؟" 
+    : "هل أنت متأكد من قبول البلاغ وحذف هذا التعليق؟";
 
-    if (window.confirm(confirmMessage)) {
-      setUpdating(true);
-      try {
-        await axios.put(`http://localhost:5000/api/comments/approve/${commentId}`, { status });
+  if (window.confirm(confirmMessage)) {
+    setUpdating(true);
+    try {
+      await axios.put(`http://localhost:5000/api/comments/approve/${commentId}`, { status });
 
-        // تحديث القوائم بعد تغيير الحالة
-        setPendingComments((prev) => prev.filter((comment) => comment._id !== commentId));
-        setReportedComments((prev) => prev.filter((comment) => comment._id !== commentId));
+      // تحديث قائمة التعليقات المبلغ عنها
+      setReportedComments((prev) => prev.filter((comment) => comment._id !== commentId));
 
-        alert(`تم ${status === "approved" ? "الموافقة" : "الرفض"} على التعليق بنجاح`);
-      } catch (error) {
-        console.error('حدث خطأ أثناء تحديث حالة التعليق', error);
-        alert('حدث خطأ أثناء تحديث حالة التعليق');
-      } finally {
-        setUpdating(false);
-      }
+      alert(status === "approved" 
+        ? "تم رفض البلاغ والاحتفاظ بالتعليق" 
+        : "تم قبول البلاغ وحذف التعليق");
+    } catch (error) {
+      console.error('حدث خطأ أثناء تحديث حالة التعليق', error);
+      alert('حدث خطأ أثناء تحديث حالة التعليق');
+    } finally {
+      setUpdating(false);
     }
-  };
+  }
+};
 
   if (loading) {
     return (
@@ -167,17 +170,17 @@ const AdminComments = () => {
                   <div className="flex justify-end space-x-0 space-x-reverse space-y-0 mt-4 rtl">
                     <button
                       onClick={() => handleUpdateStatus(comment._id, "rejected")}
-                      className="bg-[#383838] text-white px-5 py-2 rounded-r-lg transition duration-300 hover:bg-red-600 ml-1"
+                      className="bg-[#51a31d] text-white px-5 py-2 rounded-r-lg transition duration-300 hover:bg-green-600"
                       disabled={updating}
                     >
-                      {updating ? 'جاري التحديث...' : 'رفض'}
+                      {updating ? 'جاري التحديث...' : 'الموافقة'}
                     </button>
                     <button
                       onClick={() => handleUpdateStatus(comment._id, "approved")}
-                      className="bg-[#51a31d] text-white px-5 py-2 rounded-l-lg transition duration-300 hover:bg-green-600"
+                      className="bg-[#383838] text-white px-5 py-2 rounded-l-lg transition duration-300 hover:bg-red-600 ml-1"
                       disabled={updating}
                     >
-                      {updating ? 'جاري التحديث...' : 'موافقة'}
+                      {updating ? 'جاري التحديث...' : 'الرفض'}
                     </button>
                   </div>
                 </div>
