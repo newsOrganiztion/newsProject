@@ -10,6 +10,7 @@
 - **Interactive Features**: Readers can like, comment, and share articles.
 - **Multimedia Support**: Integration of images, videos, and embedded social media posts (Twitter, Instagram, etc.).
 - **Search and Filtering**: Advanced search functionality based on categories, keywords, and trending topics.
+- **Live News Updates**: Get breaking news in real time.
 
 ## Project Design
 You can find the project design and wireframes for this platform in **Figma**:
