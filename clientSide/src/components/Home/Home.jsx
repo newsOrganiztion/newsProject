@@ -8,7 +8,10 @@ import HeroSection from "./HeroSection";
 import HealthSection from "./HealthSection";
 import PolicySection from "./PolicySection";
 import ArgSection from "./ArgSection";
-import VideoSlider from "./VideoSlider";
+import LiveNewsSlider from "./LiveNewsSlider";
+
+
+
 
 import { Helmet } from "react-helmet";
 const Home = () => {
@@ -27,7 +30,8 @@ const Home = () => {
         <HealthSection />
         <PolicySection />
         <ArgSection />
-        <VideoSlider />
+        <LiveNewsSlider />
+      
     
       </div>
     </div>

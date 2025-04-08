@@ -148,7 +148,7 @@ const Profile = () => {
               <div className="mt-4 md:mt-0">
                 <button
                   onClick={handleLogout}
-                  className="bg-[#383838] hover:bg-[#51a31d] text-white px-4 py-2 rounded-lg transition-colors"
+                  className="bg-[#383838] hover:bg-gray-900 text-white px-4 py-2 rounded-lg transition-colors"
                 >
                   تسجيل الخروج
                 </button>
