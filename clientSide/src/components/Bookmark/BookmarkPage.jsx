@@ -90,7 +90,7 @@ const BookmarkPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-[#51a31d]/5" dir="rtl">
+    <div className="min-h-screen bg-gradient-to-br from-white to-[#51a31d]/5 mb-20" dir="rtl">
       {/* Header */}
       <header className="bg-white shadow-lg sticky top-0 z-10 transition-all duration-300 border-b-2 border-[#51a31d]/10">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6">
