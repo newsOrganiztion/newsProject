@@ -307,7 +307,14 @@ const ResponsiveNavbar = () => {
         item.name === "انضم إلينا"
       );
     } else if (userRole === "journalist") {
-      return true; // يعرض كل العناصر
+      return (
+        item.name === "الصفحة الرئيسية" ||
+        item.name === "عن يقين" ||
+        item.name === "المقالات" ||
+        item.name === "تواصل معنا" ||
+        item.name ===  "ملف الناشر" ||
+        item.name ===  "انشر مقال"
+      ); 
     }
     return false;
   });
