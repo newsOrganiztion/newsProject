@@ -48,7 +48,7 @@ const ArticleCreationPage = () => {
           setId(res.data.userId);
           setFormData((prevData) => ({
             ...prevData,
-            authorId: res.data.userId,
+            authorId: res.data.user._id,
             author: res.data.user.name, 
           }));
           console.log("✅ User ID received:", res.data.userId);
